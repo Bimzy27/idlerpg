@@ -1,12 +1,13 @@
-import {useCounter} from "./Counter";
+import {Data, useCounter} from "./Counter";
 
 export default function Nested() {
-    const [count, { increment, decrement }] = useCounter();
+
+    const counter:Data | undefined = useCounter();
     return (
         <>
-            <div>{count()}</div>
-            <button onClick={increment}>+</button>
-            <button onClick={decrement}>-</button>
+            <div>{counter?.count()}</div>
+            <button onClick={counter?.increment}>+</button>
+            <button onClick={counter?.decrement}>-</button>
         </>
     );
 };

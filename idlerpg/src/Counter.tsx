@@ -1,20 +1,25 @@
-import { createSignal, createContext, useContext } from "solid-js";
+import {createSignal, createContext, useContext, JSX, Accessor} from "solid-js";
 
-const CounterContext = createContext();
+export type Data = {count: Accessor<number>, increment:()=>void, decrement:()=>void};
+export const CounterContext = createContext<Data>();
 
-export function CounterProvider(props) {
-    const [count, setCount] = createSignal(props.count || 0),
-        counter = [
-            count,
-            {
-                increment() {
-                    setCount(c => c + 1);
-                },
-                decrement() {
-                    setCount(c => c - 1);
-                }
-            }
-        ];
+interface CounterProps {
+    children?: JSX.Element; // Children elements
+}
+
+export function CounterProvider(props:CounterProps) {
+    const [_count, setCount] = createSignal(0);
+    const counter:Data = {
+        count: _count, // Access the current count value
+        increment: ()=>{
+            console.log("increment")
+            setCount(c => c + 1); // Increment the count
+        },
+        decrement: ()=>{
+            console.log("decrement")
+            setCount(c => c - 1); // Decrement the count
+        },
+    };
 
     return (
         <CounterContext.Provider value={counter}>
@@ -23,4 +28,4 @@ export function CounterProvider(props) {
     );
 }
 
-export function useCounter() { return useContext(CounterContext); }
+export function useCounter() { return useContext(CounterContext) }
