@@ -1,5 +1,6 @@
 import type { Component } from 'solid-js';
 import { Show } from 'solid-js';
+import {CoreText} from "./styles/styles";
 
 export interface IAutoClicker {
     id: string;
@@ -21,7 +22,7 @@ const AutoClicker: Component<IAutoClickerProps> = props => (
             <div className="clicker">
                 <div className="info">
                     <h2>{`${Intl.NumberFormat().format(props.amount)} × ${props.id}clicker`}</h2>
-                    <p>{`this ${props.id}clicker buys and sells for ${Intl.NumberFormat().format(props.cost)}`}</p>
+                    <CoreText>{`this ${props.id}clicker buys and sells for ${Intl.NumberFormat().format(props.cost)}`}</CoreText>
                 </div>
                 <button
                     className={`buy ${props.clicks >= props.cost ? undefined : 'disabled'}`}

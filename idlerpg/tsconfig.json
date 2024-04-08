@@ -1,16 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5", // Adjust target based on browser/environment support
-    "module": "commonjs", // Adjust module type as needed (e.g., "esnext" for modern modules)
-    "lib": ["dom", "dom.iterable", "esnext"], // Specify libraries to include type definitions
-    "allowJs": true, // Allow compiling JavaScript files alongside TypeScript
-    "skipLibCheck": true, // Optional: Skip type checking for external libraries (if trusted)
-    "strict": true, // Enable strict type checking (recommended)
-    "esModuleInterop": true, // Ensures compatibility between CommonJS and ES modules
-    "sourceMap": true, // Generate source maps for debugging
-    "resolveJsonModule": true, // Allow importing JSON files
-    "declaration": false, // Optional: Emit type declaration files (".d.ts") for external consumption
-    "experimentalDecorators": true, // Allow experimental decorator support (if needed)
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js"
   },
   "include": ["src/**/*.ts"]
 }

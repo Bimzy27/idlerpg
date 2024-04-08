@@ -1,4 +1,5 @@
 export const primaryColor = '#007bff';
+export const highlightColor = '#dcebff';
 export const primaryTrimColor = '#5fa1e8';
 export const secondaryColor = '#218871';
 export const backgroundColor = '#343c49';
