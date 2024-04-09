@@ -1,15 +1,16 @@
 import type { Component } from 'solid-js';
 
-import logo from './logo.svg';
-import styles from './App.module.css';
-import {CounterProvider} from "./Counter";
-import Nested from "./Nested";
+import {ActiveTaskProvider} from "./contexts/ActiveTaskContext";
+import {InventoryProvider} from "./contexts/InventoryContext";
+import GameView from "./views/GameView";
 
 const App: Component = () => {
   return (
-      <CounterProvider>
-        <Nested/>
-      </CounterProvider>
+      <ActiveTaskProvider>
+          <InventoryProvider>
+              <GameView/>
+          </InventoryProvider>
+      </ActiveTaskProvider>
   );
 };
 
