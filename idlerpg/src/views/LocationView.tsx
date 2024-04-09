@@ -12,8 +12,8 @@ const LocationView: Component<ILocationViewProps> = (props) => {
 
     return (
         <ColumnCenterAlignedView>
-            <CoreText>{location.name}</CoreText>
-            <ColumnCenterAlignedView>
+            <CoreText style={{"font-size": '50px'}}>{location.name}</CoreText>
+            <ColumnCenterAlignedView style={{'grid-gap': '30px'}}>
                 <For each={location.taskIds}>
                     {(id, index) => (<TaskView taskId={id}/>)}
                 </For>

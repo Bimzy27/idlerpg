@@ -1,5 +1,5 @@
 import {Component} from "solid-js";
-import {StyledTabView} from "../styles/styles";
+import {CoreText, StyledTabView} from "../styles/styles";
 
 interface IProfileViewProps
 {
@@ -9,7 +9,7 @@ interface IProfileViewProps
 const ProfileView: Component<IProfileViewProps> = (props) => {
     return (
         <div>
-
+            <CoreText>Profile</CoreText>
         </div>
     );
 };

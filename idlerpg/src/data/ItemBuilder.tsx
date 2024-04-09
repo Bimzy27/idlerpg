@@ -35,6 +35,11 @@ const itemBuilder:IItemBuilder =
                 name:'Oak Log',
                 value:8,
             },
+        'willow_log':
+            {
+                name:'Willow Log',
+                value:16,
+            },
     };
 
 export default itemBuilder;

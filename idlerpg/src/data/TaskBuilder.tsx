@@ -3,7 +3,7 @@ import {ItemReward} from "../models/Reward";
 
 interface ITaskBuilder
 {
-    [id:string]:ITask
+    [id:string]:ITask;
 }
 
 const taskBuilder:ITaskBuilder =
@@ -30,6 +30,25 @@ const taskBuilder:ITaskBuilder =
                 new ItemReward({id: 'oak_log', amount: 1})
             ]
         },
+    'woodcutting_chop_willow':
+        {
+            name:'Chop Willow Tree',
+            durationSeconds:10,
+            rewards:[
+                new ItemReward({id: 'willow_log', amount: 1})
+            ]
+        }
+};
+
+export const getTaskId = (task: any) => {
+    const taskAsITask = task as ITask; // Type assertion
+    // Access the id property from the object key in the taskBuilder map
+    for (const id in taskBuilder) {
+        if (taskBuilder[id] === taskAsITask) {
+            return id;
+        }
+    }
+    throw new Error('Task not found in taskBuilder');
 };
 
 export default taskBuilder;

@@ -3,6 +3,7 @@ import ItemView from "./ItemView";
 import {styled} from "solid-styled-components";
 import {backgroundAlt1Color, primaryTrimColor, transparentColor} from "../styles/colors";
 import useInventory from "../contexts/InventoryContext";
+import {CoreText} from "../styles/styles";
 
 interface IInventoryProps
 {
@@ -24,15 +25,18 @@ const StyledInventoryView = styled.div`
 const InventoryView: Component<IInventoryProps> = (props) => {
     const inventory= useInventory();
     return (
-        <StyledInventoryView>
-            <For each={inventory?.items}>
-                {(itemView, index) => (
-                    <ItemView
-                        {...itemView}
-                    />
-                )}
-            </For>
-        </StyledInventoryView>
+        <div>
+            <CoreText>Inventory</CoreText>
+            <StyledInventoryView>
+                <For each={inventory?.items}>
+                    {(itemView, index) => (
+                        <ItemView
+                            {...itemView}
+                        />
+                    )}
+                </For>
+            </StyledInventoryView>
+        </div>
     );
 };
 

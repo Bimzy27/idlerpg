@@ -7,11 +7,11 @@ interface IItemViewProps extends IItemAmount {
 
 const ItemView: Component<IItemViewProps> = (props) => {
     return (
-        <StyledItemView>
+        <StyledItemView style={{position: 'relative'}}>
             <Show when={props.id != ''} fallback={null} children={
                 <CoreImage src={`/assets/items/${props.id}.png`} alt="NO IMG" width={80} height={80}></CoreImage>
             }/>
-            <CoreText>{props.amount}</CoreText>
+            <CoreText style={{'position': 'absolute', 'top': '40%', 'z-index': 1, 'text-align': 'center'}}>{props.amount}</CoreText>
         </StyledItemView>
     );
 };

@@ -11,7 +11,7 @@ const locationBuilder:ILocationBuilder =
         'location_lumberton':
             {
                 name: 'Lumberton',
-                taskIds: [ 'woodcutting_chop_normal', 'woodcutting_chop_oak' ]
+                taskIds: [ 'woodcutting_chop_normal', 'woodcutting_chop_oak', 'woodcutting_chop_willow' ]
             },
     };
 

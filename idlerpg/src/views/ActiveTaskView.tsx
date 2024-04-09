@@ -1,8 +1,9 @@
-import {Component, createEffect, createSignal, onMount} from "solid-js";
-import {CoreText, StyledActiveTaskView, TaskProgressBar, TaskProgressBarContainer} from "../styles/styles";
+import {Component, createEffect, createSignal, onMount, Show} from "solid-js";
+import {CoreImage, CoreText, StyledActiveTaskView, TaskProgressBar, TaskProgressBarContainer} from "../styles/styles";
 import useActiveTask from "../contexts/ActiveTaskContext";
 import useInventory from "../contexts/InventoryContext";
 import {IReward, ItemReward} from "../models/Reward";
+import taskBuilder, {getTaskId} from "../data/TaskBuilder";
 
 interface IActiveTaskViewProps
 {
@@ -63,7 +64,12 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
 
     return (
         <StyledActiveTaskView>
-            <CoreText>{task?.task().name}</CoreText>
+            <div style={{'display': "flex", "flex-direction": 'row', "grid-gap": '15px'}}>
+                <Show when={task?.task() && task?.task().durationSeconds !== 0}>
+                    <CoreImage src={`/assets/tasks/${getTaskId(task?.task())}.png`} alt="NO IMG" width={50} height={50}/>
+                </Show>
+                <CoreText>{task?.task().name}</CoreText>
+            </div>
             <TaskProgressBarContainer>
                 <TaskProgressBar transitionDuration={duration()} style={`width: ${progress()}%`}></TaskProgressBar>
             </TaskProgressBarContainer>
