@@ -1,5 +1,5 @@
 import {Component, For} from "solid-js";
-import {CoreText} from "../styles/styles";
+import {ColumnCenterAlignedView, CoreText} from "../styles/styles";
 import {ILocation} from "../models/Location";
 import locationBuilder from "../data/LocationBuilder";
 import TaskView from "./TaskView";
@@ -11,12 +11,14 @@ const LocationView: Component<ILocationViewProps> = (props) => {
     const location:ILocation = locationBuilder['location_lumberton'];
 
     return (
-        <div>
+        <ColumnCenterAlignedView>
             <CoreText>{location.name}</CoreText>
-            <For each={location.taskIds}>
-                {(id, index) => (<TaskView taskId={id}/>)}
-            </For>
-        </div>
+            <ColumnCenterAlignedView>
+                <For each={location.taskIds}>
+                    {(id, index) => (<TaskView taskId={id}/>)}
+                </For>
+            </ColumnCenterAlignedView>
+        </ColumnCenterAlignedView>
     );
 };
 

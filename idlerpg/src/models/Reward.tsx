@@ -1,21 +1,26 @@
 import IId from "./Id";
+import useInventory from "../contexts/InventoryContext";
+import {IItemAmount} from "./Item";
 
-export interface IReward extends IId
+export interface IReward
 {
-    reward();
+    reward():void;
 }
 
 export class ItemReward implements IReward
 {
-    id: string;
+    itemAmount:IItemAmount;
 
-    constructor(id:string, amount:number)
+    constructor(itemAmount:IItemAmount)
     {
-        this.id = id;
+        this.itemAmount = itemAmount;
     }
 
-    reward() {
-        //TODO implement item rewards here.
+    reward():void {
+        const inventory = useInventory();
+        inventory?.addItem(this.itemAmount);
+
+        console.log('Item Rewarded: ' + this.itemAmount.id)
     }
 }
 

@@ -1,8 +1,8 @@
 import {Component, For} from "solid-js";
 import ItemView from "./ItemView";
 import {styled} from "solid-styled-components";
-import {primaryTrimColor, transparentColor} from "../styles/colors";
-import {useInventory} from "../contexts/InventoryContext";
+import {backgroundAlt1Color, primaryTrimColor, transparentColor} from "../styles/colors";
+import useInventory from "../contexts/InventoryContext";
 
 interface IInventoryProps
 {
@@ -10,9 +10,9 @@ interface IInventoryProps
 }
 
 const StyledInventoryView = styled.div`
-    width: fit-content;
+    width: 90%;
     height: fit-content;
-    background-color: ${transparentColor};
+    background-color: ${backgroundAlt1Color};
     border-radius: 5px;
     border: 3px solid ${primaryTrimColor};
     box-sizing: border-box;

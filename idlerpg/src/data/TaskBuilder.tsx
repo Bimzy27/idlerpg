@@ -1,4 +1,5 @@
 import {ITask} from "../models/Task";
+import {ItemReward} from "../models/Reward";
 
 interface ITaskBuilder
 {
@@ -17,13 +18,17 @@ const taskBuilder:ITaskBuilder =
         {
             name:'Chop Normal Tree',
             durationSeconds:3,
-            rewards:[]
+            rewards:[
+                new ItemReward({id: 'normal_log', amount: 1})
+            ]
         },
     'woodcutting_chop_oak':
         {
             name:'Chop Oak Tree',
             durationSeconds:5,
-            rewards:[]
+            rewards:[
+                new ItemReward({id: 'oak_log', amount: 1})
+            ]
         },
 };
 

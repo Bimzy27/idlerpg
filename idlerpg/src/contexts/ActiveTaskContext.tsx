@@ -26,4 +26,4 @@ export function ActiveTaskProvider(props:ActiveTaskProps) {
     );
 }
 
-export function useActiveTask() { return useContext(ActiveTaskContext) }
+export default function useActiveTask() { return useContext(ActiveTaskContext) }

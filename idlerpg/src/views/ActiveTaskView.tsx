@@ -1,7 +1,8 @@
 import {Component, createEffect, createSignal, onMount} from "solid-js";
-import {StyledTaskView, TaskProgressBar, TaskProgressBarContainer} from "../styles/styles";
-import {useActiveTask} from "../contexts/ActiveTaskContext";
-import {useInventory} from "../contexts/InventoryContext";
+import {CoreText, StyledActiveTaskView, TaskProgressBar, TaskProgressBarContainer} from "../styles/styles";
+import useActiveTask from "../contexts/ActiveTaskContext";
+import useInventory from "../contexts/InventoryContext";
+import {IReward, ItemReward} from "../models/Reward";
 
 interface IActiveTaskViewProps
 {
@@ -25,7 +26,10 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
         {
             const duration = getDuration();
             setDuration(duration);
-            setProgress(100);
+            if (duration !== 0)
+            {
+                setProgress(100);
+            }
 
             const intervalId = setInterval(() => {
                 setDuration(0);
@@ -36,9 +40,10 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
                 clearInterval(intervalId);
 
                 //give rewards
-                if (duration !== 0)
-                {
-                    inventory?.addItem({id:'normal_log', amount: 1})
+                const rewards:IReward[] = task?.task().rewards as IReward[];
+                for (let i = 0; i < rewards.length; i++) {
+                    const rewardAmount = (rewards[i] as ItemReward).itemAmount;
+                    inventory?.addItem(rewardAmount);
                 }
 
                 const offsetIntervalId = setInterval(() => {
@@ -57,12 +62,12 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
     });
 
     return (
-        <StyledTaskView>
-            <div>{task?.task().name}</div>
+        <StyledActiveTaskView>
+            <CoreText>{task?.task().name}</CoreText>
             <TaskProgressBarContainer>
                 <TaskProgressBar transitionDuration={duration()} style={`width: ${progress()}%`}></TaskProgressBar>
             </TaskProgressBarContainer>
-        </StyledTaskView>
+        </StyledActiveTaskView>
     );
 };
 

@@ -1,6 +1,6 @@
 import {IItemAmount} from "../models/Item";
 import {Component, Show} from "solid-js";
-import {CoreText, FullImage, StyledItemView} from "../styles/styles";
+import {CoreImage, CoreText, CoreText_Mid, StyledItemView} from "../styles/styles";
 
 interface IItemViewProps extends IItemAmount {
 }
@@ -9,9 +9,9 @@ const ItemView: Component<IItemViewProps> = (props) => {
     return (
         <StyledItemView>
             <Show when={props.id != ''} fallback={null} children={
-                <FullImage src={`/assets/items/${props.id}.png`} alt="NO IMG"></FullImage>
+                <CoreImage src={`/assets/items/${props.id}.png`} alt="NO IMG" width={80} height={80}></CoreImage>
             }/>
-            <CoreText style={{"margin-bottom": 'auto'}}>{props.amount}</CoreText>
+            <CoreText>{props.amount}</CoreText>
         </StyledItemView>
     );
 };

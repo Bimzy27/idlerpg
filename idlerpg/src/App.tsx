@@ -1,16 +1,13 @@
 import type { Component } from 'solid-js';
 
-import {ActiveTaskProvider} from "./contexts/ActiveTaskContext";
-import {InventoryProvider} from "./contexts/InventoryContext";
 import GameView from "./views/GameView";
+import ContextProvider from "./contexts/ContextProvider";
 
 const App: Component = () => {
   return (
-      <ActiveTaskProvider>
-          <InventoryProvider>
-              <GameView/>
-          </InventoryProvider>
-      </ActiveTaskProvider>
+      <ContextProvider>
+          <GameView/>
+      </ContextProvider>
   );
 };
 

@@ -8,9 +8,6 @@ export const InventoryContext = createContext<InventoryData>();
 
 const defaultItems:IItemAmount[] =
     [
-        {id:'oak_log', amount:1},
-        {id:'bronze_arrow', amount:2},
-        {id:'normal_shortbow', amount:2},
     ]
 
 interface InventoryProps {
@@ -32,7 +29,8 @@ export function InventoryProvider(props:InventoryProps) {
             else if (item.id !== '' && item.id !== 'none')
             {
                 //Add new item
-                const newItems:IItemAmount[] = [...items, item];
+                const newItem = {id: item.id, amount: item.amount}
+                const newItems:IItemAmount[] = [...items, newItem];
                 setItems(newItems);
             }
         },
@@ -45,4 +43,4 @@ export function InventoryProvider(props:InventoryProps) {
     );
 }
 
-export function useInventory() { return useContext(InventoryContext) }
+export default function useInventory() { return useContext(InventoryContext) }
