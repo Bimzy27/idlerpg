@@ -15,7 +15,7 @@ const ContentView: Component<IContentViewProps> = (props) => {
     return (
         <StyledContentView>
             <div style={{'overflow-y': 'auto', 'width': '100%'}}>
-                <div style={{ "padding-bottom": '200px' }}>
+                <div style={{ "padding-bottom": '260px' }}>
                     <Show when={gameView?.activeView() === 'profile'}>
                         <ProfileView/>
                     </Show>

@@ -41,18 +41,6 @@ export const CoreImage = styled.img<{width:number, height:number}>`
     object-fit: contain;
 `;
 
-export const StyledItemView = styled.div`
-    width: 100px;
-    height: 100px;
-    background-color: ${backgroundAlt2Color};
-    border-radius: 5px;
-    border: 3px solid ${primaryTrimColor};
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
 export const StyledActiveTaskView = styled.div`
     position: fixed;
     bottom: 0;

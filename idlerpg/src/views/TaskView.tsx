@@ -27,9 +27,11 @@ const TaskView: Component<ITaskViewProps> = (props) => {
                     <CoreImage src={`/assets/tasks/${props.taskId}.png`} alt="NO IMG" width={50} height={50}/>
                     <CoreText_Mid>Duration: {task.durationSeconds} seconds</CoreText_Mid>
                     <CoreText_Mid>Rewards:</CoreText_Mid>
-                    <For each={task.rewards}>
-                        {(reward, index) => (<RewardView reward={reward}/>)}
-                    </For>
+                    <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
+                        <For each={task.rewards}>
+                            {(reward, index) => (<RewardView reward={reward}/>)}
+                        </For>
+                    </div>
                 </ColumnCenterAlignedView>
             </TransparentButton>
         </StyledTaskView>

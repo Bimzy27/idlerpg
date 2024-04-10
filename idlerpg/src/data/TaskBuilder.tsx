@@ -1,5 +1,5 @@
 import {ITask} from "../models/Task";
-import {ItemReward} from "../models/Reward";
+import {ItemReward, SkillReward} from "../models/Reward";
 
 interface ITaskBuilder
 {
@@ -19,7 +19,8 @@ const taskBuilder:ITaskBuilder =
             name:'Chop Normal Tree',
             durationSeconds:3,
             rewards:[
-                new ItemReward({id: 'normal_log', amount: 1})
+                new ItemReward({id: 'normal_log', amount: 1}),
+                new SkillReward({id: 'woodcutting', exp: 25})
             ]
         },
     'woodcutting_chop_oak':
@@ -27,7 +28,8 @@ const taskBuilder:ITaskBuilder =
             name:'Chop Oak Tree',
             durationSeconds:5,
             rewards:[
-                new ItemReward({id: 'oak_log', amount: 1})
+                new ItemReward({id: 'oak_log', amount: 1}),
+                new SkillReward({id: 'woodcutting', exp: 38})
             ]
         },
     'woodcutting_chop_willow':
@@ -35,7 +37,8 @@ const taskBuilder:ITaskBuilder =
             name:'Chop Willow Tree',
             durationSeconds:10,
             rewards:[
-                new ItemReward({id: 'willow_log', amount: 1})
+                new ItemReward({id: 'willow_log', amount: 1}),
+                new SkillReward({id: 'woodcutting', exp: 68})
             ]
         }
 };

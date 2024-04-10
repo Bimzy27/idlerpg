@@ -1,13 +1,13 @@
-import {IItemAmount} from "../models/Item";
 import {Component, Show} from "solid-js";
 import {CoreImage, CoreText} from "../styles/styles";
 import {styled} from "solid-styled-components";
 import {backgroundAlt2Color, primaryTrimColor} from "../styles/colors";
+import {ISkillValue} from "../models/Skill";
 
-interface IItemViewProps extends IItemAmount {
+interface IExpViewProps extends ISkillValue {
 }
 
-const StyledItemView = styled.div`
+const StyledExpView = styled.div`
     width: 100px;
     height: 100px;
     background-color: ${backgroundAlt2Color};
@@ -19,15 +19,15 @@ const StyledItemView = styled.div`
     align-items: center;
 `;
 
-const ItemView: Component<IItemViewProps> = (props) => {
+const ExpView: Component<IExpViewProps> = (props) => {
     return (
-        <StyledItemView style={{position: 'relative'}}>
+        <StyledExpView style={{position: 'relative'}}>
             <Show when={props.id != ''} fallback={null} children={
-                <CoreImage src={`/assets/items/${props.id}.png`} alt="NO IMG" width={80} height={80}></CoreImage>
+                <CoreImage src={`/assets/skills/${props.id}.png`} alt="NO IMG" width={80} height={80}></CoreImage>
             }/>
-            <CoreText style={{'position': 'absolute', 'top': '40%', 'z-index': 1, 'text-align': 'center'}}>{props.amount}</CoreText>
-        </StyledItemView>
+            <CoreText style={{'position': 'absolute', 'top': '40%', 'z-index': 1, 'text-align': 'center'}}>{props.exp} EXP</CoreText>
+        </StyledExpView>
     );
 };
 
-export default ItemView;
+export default ExpView;

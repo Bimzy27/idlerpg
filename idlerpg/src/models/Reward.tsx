@@ -1,10 +1,12 @@
 import IId from "./Id";
-import useInventory from "../contexts/InventoryContext";
+import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import {IItemAmount} from "./Item";
+import {SkillsData} from "../contexts/SkillsContext";
+import {ISkillValue} from "./Skill";
 
 export interface IReward
 {
-    reward():void;
+    reward(contextData:unknown):void;
 }
 
 export class ItemReward implements IReward
@@ -16,11 +18,23 @@ export class ItemReward implements IReward
         this.itemAmount = itemAmount;
     }
 
-    reward():void {
-        const inventory = useInventory();
+    reward(contextData:unknown):void {
+        const inventory = contextData as InventoryData;
         inventory?.addItem(this.itemAmount);
-
-        console.log('Item Rewarded: ' + this.itemAmount.id)
     }
 }
 
+export class SkillReward implements IReward
+{
+    skillValue:ISkillValue;
+
+    constructor(skillValue:ISkillValue)
+    {
+        this.skillValue = skillValue;
+    }
+
+    reward(contextData:unknown):void {
+        const skills = contextData as SkillsData;
+        skills?.addExp(this.skillValue)
+    }
+}

@@ -2,6 +2,7 @@ import {GameViewProvider} from "./GameViewContext";
 import {InventoryProvider} from "./InventoryContext";
 import {ActiveTaskProvider} from "./ActiveTaskContext";
 import {JSX} from "solid-js";
+import {SkillProvider} from "./SkillsContext";
 
 interface ContextProviderProps {
     children?: JSX.Element; // Children elements
@@ -13,7 +14,9 @@ export function ContextProvider(props:ContextProviderProps) {
         <GameViewProvider>
             <ActiveTaskProvider>
                 <InventoryProvider>
-                    {props.children}
+                    <SkillProvider>
+                        {props.children}
+                    </SkillProvider>
                 </InventoryProvider>
             </ActiveTaskProvider>
         </GameViewProvider>

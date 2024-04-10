@@ -2,7 +2,7 @@ import {createContext, JSX, useContext} from "solid-js";
 import {IItemAmount} from "../models/Item";
 import {createStore} from "solid-js/store";
 
-type InventoryData = {items:IItemAmount[], addItem:(item:IItemAmount)=>void};
+export type InventoryData = {items:IItemAmount[], addItem:(item:IItemAmount)=>void};
 
 export const InventoryContext = createContext<InventoryData>();
 

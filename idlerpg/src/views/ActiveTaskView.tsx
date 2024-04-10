@@ -2,8 +2,9 @@ import {Component, createEffect, createSignal, onMount, Show} from "solid-js";
 import {CoreImage, CoreText, StyledActiveTaskView, TaskProgressBar, TaskProgressBarContainer} from "../styles/styles";
 import useActiveTask from "../contexts/ActiveTaskContext";
 import useInventory from "../contexts/InventoryContext";
-import {IReward, ItemReward} from "../models/Reward";
+import {IReward, ItemReward, SkillReward} from "../models/Reward";
 import taskBuilder, {getTaskId} from "../data/TaskBuilder";
+import useSkills from "../contexts/SkillsContext";
 
 interface IActiveTaskViewProps
 {
@@ -14,6 +15,7 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
     const [duration, setDuration] = createSignal<number>(0);
     const task= useActiveTask();
     const inventory= useInventory();
+    const skills= useSkills();
 
     function getDuration():number {
         if (task) {
@@ -43,8 +45,14 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
                 //give rewards
                 const rewards:IReward[] = task?.task().rewards as IReward[];
                 for (let i = 0; i < rewards.length; i++) {
-                    const rewardAmount = (rewards[i] as ItemReward).itemAmount;
-                    inventory?.addItem(rewardAmount);
+                    if (rewards[i] instanceof ItemReward)
+                    {
+                        rewards[i].reward(inventory);
+                    }
+                    else if (rewards[i] instanceof SkillReward)
+                    {
+                        rewards[i].reward(skills);
+                    }
                 }
 
                 const offsetIntervalId = setInterval(() => {
