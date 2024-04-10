@@ -5,6 +5,7 @@ import useInventory from "../contexts/InventoryContext";
 import {IReward, ItemReward, SkillReward} from "../models/Reward";
 import taskBuilder, {getTaskId} from "../data/TaskBuilder";
 import useSkills from "../contexts/SkillsContext";
+import {ITask} from "../models/Task";
 
 interface IActiveTaskViewProps
 {
@@ -13,62 +14,66 @@ interface IActiveTaskViewProps
 const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
     const [progress, setProgress] = createSignal<number>(0);
     const [duration, setDuration] = createSignal<number>(0);
-    const task= useActiveTask();
     const inventory= useInventory();
     const skills= useSkills();
+    const task = useActiveTask();
 
-    function getDuration():number {
-        if (task) {
-            return task?.task().durationSeconds;
-        }
-        return 0;
-    }
+    const timeoutIds:number[] = [];
 
     createEffect(() => {
-        function beginInterval()
+
+        const activeTask:ITask = task?.task() as ITask;
+
+        function startTask()
         {
-            const duration = getDuration();
-            setDuration(duration);
-            if (duration !== 0)
-            {
-                setProgress(100);
+            // Cleanup function
+            for (const id of timeoutIds) {
+                clearInterval(id);
             }
+            timeoutIds.length = 0;
 
-            const intervalId = setInterval(() => {
-                setDuration(0);
-                if (duration !== 0)
+            const timeoutId1 = setTimeout(()=>
+            {
+                setDuration(activeTask.durationSeconds);
+                setProgress(100);
+
+                const timeoutId2 = setTimeout(()=>
                 {
+                    //give rewards
+                    const rewards:IReward[] = task?.task().rewards as IReward[];
+                    for (let i = 0; i < rewards.length; i++) {
+                        if (rewards[i] instanceof ItemReward)
+                        {
+                            rewards[i].reward(inventory);
+                        }
+                        else if (rewards[i] instanceof SkillReward)
+                        {
+                            rewards[i].reward(skills);
+                        }
+                    }
+                    setDuration(0);
                     setProgress(0);
-                }
-                clearInterval(intervalId);
-
-                //give rewards
-                const rewards:IReward[] = task?.task().rewards as IReward[];
-                for (let i = 0; i < rewards.length; i++) {
-                    if (rewards[i] instanceof ItemReward)
+                    const timeoutId3 = setTimeout(()=>
                     {
-                        rewards[i].reward(inventory);
-                    }
-                    else if (rewards[i] instanceof SkillReward)
-                    {
-                        rewards[i].reward(skills);
-                    }
-                }
-
-                const offsetIntervalId = setInterval(() => {
-                    clearInterval(offsetIntervalId);
-                    beginInterval()
-                }, 5);
-            }, duration * 1000);
+                        startTask();
+                    }, 10);
+                    timeoutIds.push(timeoutId3)
+                }, activeTask.durationSeconds * 1000)
+                timeoutIds.push(timeoutId2);
+            }, 10);
+            timeoutIds.push(timeoutId1);
         }
 
-        onMount(() => {
-            beginInterval();
-        });
+        setDuration(0);
+        setProgress(0);
+        if (activeTask.durationSeconds !== 0)
+        {
+            startTask();
+        }
 
         return () => {
         };
-    });
+    }, [task]);
 
     return (
         <StyledActiveTaskView>

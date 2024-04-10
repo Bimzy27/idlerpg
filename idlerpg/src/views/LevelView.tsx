@@ -1,13 +1,13 @@
-import {Component, Show} from "solid-js";
-import {CoreImage, CoreText} from "../styles/styles";
+import {getLevel, ISkillValue} from "../models/Skill";
 import {styled} from "solid-styled-components";
 import {backgroundAlt2Color, primaryTrimColor} from "../styles/colors";
-import {ISkillValue} from "../models/Skill";
+import {Component, Show} from "solid-js";
+import {CoreImage, CoreText} from "../styles/styles";
 
-interface IExpViewProps extends ISkillValue {
+interface ILevelViewProps extends ISkillValue {
 }
 
-const StyledExpView = styled.div`
+const StyledLevelView = styled.div`
     width: 100px;
     height: 100px;
     background-color: ${backgroundAlt2Color};
@@ -19,15 +19,15 @@ const StyledExpView = styled.div`
     align-items: center;
 `;
 
-const ExpView: Component<IExpViewProps> = (props) => {
+const LevelView: Component<ILevelViewProps> = (props) => {
     return (
-        <StyledExpView style={{position: 'relative'}}>
+        <StyledLevelView style={{position: 'relative'}}>
             <Show when={props.id != ''} fallback={null} children={
                 <CoreImage src={`/assets/skills/${props.id}.png`} alt="NO IMG" width={60} height={60}></CoreImage>
             }/>
-            <CoreText style={{'position': 'absolute', 'top': '40%', 'z-index': 1, 'text-align': 'center'}}>{props.exp} EXP</CoreText>
-        </StyledExpView>
+            <CoreText style={{'position': 'absolute', 'top': '40%', 'z-index': 1, 'text-align': 'center'}}>{getLevel(props)} LVL</CoreText>
+        </StyledLevelView>
     );
 };
 
-export default ExpView;
+export default LevelView;

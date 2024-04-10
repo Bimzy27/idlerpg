@@ -170,7 +170,7 @@ export const StyledTabButtonInnerView = styled.div`
 `;
 
 export const StyledTaskView = styled.div`
-    width: 60%;
+    width: 40%;
     height: fit-content;
     background-color: ${backgroundAlt1Color};
     border-radius: 5px;

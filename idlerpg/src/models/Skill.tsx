@@ -46,6 +46,14 @@ export function getCurLevelXp(skillValue:ISkillValue): number {
     return exp;
 }
 
+export function getExpFromLevel(level:number):number
+{
+    let exp = 0;
+    for (let i = 0; i < level; i++) {
+        exp += levelExpRequirements[i];
+    }
+    return exp;
+}
 
 const levelExpRequirements: number[] =
     [

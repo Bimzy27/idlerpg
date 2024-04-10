@@ -1,6 +1,7 @@
 import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
-import {ITask} from "../models/Task";
+import {ITask, taskMeetsRequirements} from "../models/Task";
 import taskBuilder from "../data/TaskBuilder";
+import useSkills, {SkillsData} from "./SkillsContext";
 
 type ActiveTaskData = {task:Accessor<ITask>, setTask:(task:ITask)=>void};
 
@@ -11,11 +12,15 @@ interface ActiveTaskProps {
 }
 
 export function ActiveTaskProvider(props:ActiveTaskProps) {
+    const skills = useSkills();
     const [activeTask, setActiveTask] = createSignal(taskBuilder['none']);
     const task:ActiveTaskData = {
         task: activeTask,
         setTask: (task:ITask)=>{
-            setActiveTask(task);
+            if (taskMeetsRequirements(task, skills as SkillsData))
+            {
+                setActiveTask(task);
+            }
         },
     };
 
