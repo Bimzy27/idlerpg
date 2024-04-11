@@ -16,7 +16,7 @@ const ProfileView: Component<IProfileViewProps> = (props) => {
             <CoreText>Profile</CoreText>
             <div style={{ display: 'grid', "grid-gap": '15px', "grid-template-columns": 'repeat(3, 1fr)'}}>
                 <For each={skills?.skills}>
-                    {(skillValue, index) => (<SkillView skillValue={skillValue}/>)}
+                    {(skillValue, index) => (<SkillView skillId={skillValue.id}/>)}
                 </For>
             </div>
         </div>

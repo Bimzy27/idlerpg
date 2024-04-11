@@ -86,34 +86,6 @@ export const StyledHeaderView = styled.div`
     padding: 20px;
 `;
 
-export const StyledTabView = styled.div`
-    position: fixed;
-    top: 15vh;
-    left: 0;
-    width: 15vw;
-    height: 85vh;
-    background-color: ${backgroundAlt1Color};
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-`;
-
-export const StyledContentView = styled.div`
-    position: fixed;
-    top: 15vh;
-    left: 15vw;
-    width: 85vw;
-    height: 100%;
-    background-color: ${transparentColor};
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-`;
-
 export const ColumnCenterAlignedView = styled.div`
     width: 100%;
     height: 100%;
@@ -149,24 +121,6 @@ export const TaskProgressBar = styled.div<{transitionDuration: number}>`
     background-color: ${primaryColor};
     transition: width ${props => props.transitionDuration}s linear;
     border-radius: 10px;
-`;
-
-export const StyledTabButtonView = styled.div`
-    background-color: ${transparentColor};
-    border-radius: 5px;
-    border: 3px solid ${primaryTrimColor};
-    margin: 0.5em 1em;
-    width: 100%;
-    height: 80px;
-`;
-
-export const StyledTabButtonInnerView = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding-left: 20px;
 `;
 
 export const StyledTaskView = styled.div`

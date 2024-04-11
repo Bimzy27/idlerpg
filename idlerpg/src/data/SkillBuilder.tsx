@@ -23,10 +23,6 @@ const skillBuilder:ISkillBuilder =
         {
             name:'Ranged',
         },
-    'prayer':
-        {
-            name:'Prayer',
-        },
     'magic':
         {
             name:'Magic',
@@ -35,13 +31,9 @@ const skillBuilder:ISkillBuilder =
         {
             name:'Health',
         },
-    'runecrafting':
+    'prayer':
         {
-            name:'Runecrafting',
-        },
-    'crafting':
-        {
-            name:'Crafting',
+            name:'Prayer',
         },
     'mining':
         {
@@ -70,6 +62,14 @@ const skillBuilder:ISkillBuilder =
     'fletching':
         {
             name:'Fletching',
+        },
+    'runecrafting':
+        {
+            name:'Runecrafting',
+        },
+    'crafting':
+        {
+            name:'Crafting',
         },
 };
 

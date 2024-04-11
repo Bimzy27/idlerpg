@@ -1,5 +1,7 @@
 import {getLevel, ISkillValue} from "./Skill";
 import {SkillsData} from "../contexts/SkillsContext";
+import {IItemAmount} from "./Item";
+import {InventoryData} from "../contexts/InventoryContext";
 
 export interface IRequirement
 {
@@ -25,5 +27,20 @@ export class SkillRequirement implements IRequirement
         }
 
         return false;
+    }
+}
+
+export class ItemRequirement implements IRequirement
+{
+    itemAmount:IItemAmount;
+
+    constructor(itemAmount:IItemAmount)
+    {
+        this.itemAmount = itemAmount;
+    }
+
+    meetsRequirement(contextData:unknown): boolean {
+        const inventory = contextData as InventoryData;
+        return inventory.hasItem(this.itemAmount);
     }
 }

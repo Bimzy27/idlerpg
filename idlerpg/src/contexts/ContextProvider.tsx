@@ -5,18 +5,18 @@ import {JSX} from "solid-js";
 import useSkills, {SkillProvider} from "./SkillsContext";
 
 interface ContextProviderProps {
-    children?: JSX.Element; // Children elements
+    children?: JSX.Element;
 }
 
 export function ContextProvider(props:ContextProviderProps) {
     return (
         <GameViewProvider>
             <SkillProvider>
-                <ActiveTaskProvider>
-                    <InventoryProvider>
+                <InventoryProvider>
+                    <ActiveTaskProvider>
                             {props.children}
-                    </InventoryProvider>
-                </ActiveTaskProvider>
+                    </ActiveTaskProvider>
+                </InventoryProvider>
             </SkillProvider>
         </GameViewProvider>
     );

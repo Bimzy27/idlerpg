@@ -1,11 +1,12 @@
 import {Component, createEffect, createSignal, onMount, Show} from "solid-js";
 import {CoreImage, CoreText, StyledActiveTaskView, TaskProgressBar, TaskProgressBarContainer} from "../styles/styles";
 import useActiveTask from "../contexts/ActiveTaskContext";
-import useInventory from "../contexts/InventoryContext";
+import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import {IReward, ItemReward, SkillReward} from "../models/Reward";
-import taskBuilder, {getTaskId} from "../data/TaskBuilder";
-import useSkills from "../contexts/SkillsContext";
-import {ITask} from "../models/Task";
+import taskBuilder, {getTaskId} from "../data/tasks/TaskBuilder";
+import useSkills, {SkillsData} from "../contexts/SkillsContext";
+import {ITask, taskMeetsRequirements} from "../models/Task";
+import {ICost, ItemCost} from "../models/Cost";
 
 interface IActiveTaskViewProps
 {
@@ -51,11 +52,27 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
                             rewards[i].reward(skills);
                         }
                     }
+                    //consume costs
+                    const costs:ICost[] = task?.task().costs as ICost[];
+                    for (let i = 0; i < costs.length; i++) {
+                        if (costs[i] instanceof ItemCost)
+                        {
+                            costs[i].consume(inventory);
+                        }
+                    }
+
                     setDuration(0);
                     setProgress(0);
                     const timeoutId3 = setTimeout(()=>
                     {
-                        startTask();
+                        if (taskMeetsRequirements(activeTask, skills as SkillsData, inventory as InventoryData))
+                        {
+                            startTask();
+                        }
+                        else
+                        {
+                            task?.setTask(taskBuilder['none']);
+                        }
                     }, 10);
                     timeoutIds.push(timeoutId3)
                 }, activeTask.durationSeconds * 1000)
