@@ -1,4 +1,4 @@
-import {Component, createEffect, createSignal, onMount, Show} from "solid-js";
+import {Component, createEffect, createSignal, Show} from "solid-js";
 import {CoreImage, CoreText, StyledActiveTaskView, TaskProgressBar, TaskProgressBarContainer} from "../styles/styles";
 import useActiveTask from "../contexts/ActiveTaskContext";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
@@ -19,7 +19,7 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
     const skills= useSkills();
     const task = useActiveTask();
 
-    const timeoutIds:number[] = [];
+    const timeoutIds:NodeJS.Timeout[] = [];
 
     createEffect(() => {
 

@@ -4,9 +4,6 @@ import {styled} from "solid-styled-components";
 import {backgroundAlt2Color, primaryTrimColor} from "../styles/colors";
 import {ISkillValue} from "../models/Skill";
 
-interface IExpViewProps extends ISkillValue {
-}
-
 const StyledExpView = styled.div`
     width: 100px;
     height: 100px;
@@ -18,6 +15,9 @@ const StyledExpView = styled.div`
     flex-direction: column;
     align-items: center;
 `;
+
+interface IExpViewProps extends ISkillValue {
+}
 
 const ExpView: Component<IExpViewProps> = (props) => {
     return (

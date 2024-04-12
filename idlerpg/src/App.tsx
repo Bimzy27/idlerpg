@@ -4,11 +4,13 @@ import GameView from "./views/GameView";
 import ContextProvider from "./contexts/ContextProvider";
 
 const App: Component = () => {
-  return (
-      <ContextProvider>
-          <GameView/>
-      </ContextProvider>
-  );
+
+    return (
+        <ContextProvider>
+            <GameView/>
+        </ContextProvider>
+    );
 };
 
 export default App;
+

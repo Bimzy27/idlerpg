@@ -1,5 +1,6 @@
 import {Component} from "solid-js";
 import {
+    CoreButton,
     CoreImage,
     CoreText,
     TransparentButton
@@ -46,6 +47,7 @@ interface ITabViewProps
 }
 
 const TabView: Component<ITabViewProps> = (props) => {
+
     const gameView = useGameView();
     return (
         <StyledTabView>
