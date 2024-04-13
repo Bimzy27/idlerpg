@@ -2,6 +2,9 @@ import {createContext, JSX, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
 import {ISkillValue} from "../models/Skill";
 import skillBuilder from "../data/SkillBuilder";
+import {collection, getDocs, getFirestore} from "firebase/firestore";
+import {useAuth, useFirebaseApp} from "solid-firebase";
+import {getAuth} from "firebase/auth";
 
 export type SkillsData = {skills:ISkillValue[], addExp:(skillValue:ISkillValue)=>void};
 
@@ -17,7 +20,12 @@ interface SkillProps {
 }
 
 export function SkillProvider(props:SkillProps) {
-    const [skills, setSkills] = createStore(defaultSkills);
+    const app = useFirebaseApp();
+    const db = getFirestore(app);
+    const auth = useAuth(getAuth(app));
+
+    const [skills, setSkills] = createStore<ISkillValue[]>([]);
+
     const skillsExp:SkillsData = {
         skills: skills,
         addExp: (skillValue:ISkillValue)=>{
@@ -36,6 +44,35 @@ export function SkillProvider(props:SkillProps) {
             setSkills(newSkills);
         },
     };
+
+    async function loadUserSkillsData()
+    {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        querySnapshot.forEach((doc) =>
+        {
+            if (doc.id === auth.data?.uid)
+            {
+                const skills = doc.data().skills;
+                const skillValues:ISkillValue[] = defaultSkills;
+                for(let skillId in skills)
+                {
+                    for (let i = 0; i < skillValues.length; i++)
+                    {
+                        if (skillValues[i].id === skillId)
+                        {
+                            skillValues[i] = {
+                                id: skillId,
+                                exp: skills[skillId],
+                            }
+                        }
+                    }
+                }
+                setSkills(skillValues);
+            }
+        });
+    }
+
+    loadUserSkillsData();
 
     return (
         <SkillsContext.Provider value={skillsExp}>

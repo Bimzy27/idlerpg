@@ -1,21 +1,25 @@
 import {createContext, JSX, useContext} from "solid-js";
 import {IItemAmount} from "../models/Item";
 import {createStore} from "solid-js/store";
+import {collection, getDocs, getFirestore} from "firebase/firestore";
+import {useAuth, useFirebaseApp} from "solid-firebase";
+import {getAuth} from "firebase/auth";
+import {ISkillValue} from "../models/Skill";
 
 export type InventoryData = {items:IItemAmount[], addItem:(item:IItemAmount)=>void, removeItem:(item:IItemAmount)=>void, hasItem:(item:IItemAmount)=>boolean};
 
 export const InventoryContext = createContext<InventoryData>();
-
-const defaultItems:IItemAmount[] =
-    [
-    ]
 
 interface InventoryProps {
     children?: JSX.Element; // Children elements
 }
 
 export function InventoryProvider(props:InventoryProps) {
-    const [items, setItems] = createStore(defaultItems);
+    const app = useFirebaseApp();
+    const db = getFirestore(app);
+    const auth = useAuth(getAuth(app))
+
+    const [items, setItems] = createStore<IItemAmount[]>([]);
     const inventoryItems:InventoryData = {
         items: items,
         addItem: (item:IItemAmount)=>{
@@ -61,6 +65,31 @@ export function InventoryProvider(props:InventoryProps) {
             return false;
         }
     };
+
+    async function loadUserInventoryData()
+    {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        querySnapshot.forEach((doc) =>
+        {
+            if (doc.id === auth.data?.uid)
+            {
+                const inventory = doc.data().inventory;
+                const itemAmounts:IItemAmount[] = [];
+                for(let itemId in inventory)
+                {
+                    itemAmounts.push(
+                        {
+                            id: itemId,
+                            amount: inventory[itemId],
+                        }
+                    );
+                }
+                setItems(itemAmounts);
+            }
+        });
+    }
+
+    loadUserInventoryData();
 
     return (
         <InventoryContext.Provider value={inventoryItems}>
