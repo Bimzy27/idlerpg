@@ -1,8 +1,9 @@
-import {Component, For} from "solid-js";
-import {CoreText} from "../styles/styles";
-import skillBuilder from "../data/SkillBuilder";
-import SkillView from "./SkillView";
-import useSkills from "../contexts/SkillsContext";
+import {Component, createSignal, For, JSX} from "solid-js";
+import {CoreText} from "../../styles/styles";
+import skillBuilder from "../../data/SkillBuilder";
+import SkillView from "../skills/SkillView";
+import useSkills from "../../contexts/SkillsContext";
+import {createStore} from "solid-js/store";
 
 interface IProfileViewProps
 {

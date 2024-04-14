@@ -56,6 +56,12 @@ const TabView: Component<ITabViewProps> = (props) => {
             <TabButton viewName={'inventory'}></TabButton>
             <TabButton viewName={'location'}></TabButton>
             <CoreText>Combat</CoreText>
+            <TabButton viewName={'attack'} imagePath={'skills/attack'} viewOverride={'combat'}></TabButton>
+            <TabButton viewName={'strength'} imagePath={'skills/strength'} viewOverride={'combat'}></TabButton>
+            <TabButton viewName={'defense'} imagePath={'skills/defense'} viewOverride={'combat'}></TabButton>
+            <TabButton viewName={'hitpoints'} imagePath={'skills/hitpoints'} viewOverride={'combat'}></TabButton>
+            <TabButton viewName={'ranged'} imagePath={'skills/ranged'} viewOverride={'combat'}></TabButton>
+            <TabButton viewName={'magic'} imagePath={'skills/magic'} viewOverride={'combat'}></TabButton>
             <CoreText>Skills</CoreText>
             <TabButton viewName={'mining'} imagePath={'skills/mining'}></TabButton>
             <TabButton viewName={'smithing'} imagePath={'skills/smithing'} ></TabButton>
@@ -74,12 +80,13 @@ interface ITabButtonProps
 {
     viewName:string;
     imagePath?:string;
+    viewOverride?:string;
 }
 
 const TabButton = (props:ITabButtonProps) => {
     const gameView = useGameView();
     const handleButtonClick = () => {
-        gameView?.setActiveView(props.viewName);
+        gameView?.setActiveView(props.viewOverride ? props.viewOverride : props.viewName);
     };
     return (
         <StyledTabButtonView>

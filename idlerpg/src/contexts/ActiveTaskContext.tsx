@@ -4,15 +4,15 @@ import taskBuilder from "../data/tasks/TaskBuilder";
 import useSkills, {SkillsData} from "./SkillsContext";
 import useInventory, {InventoryData} from "./InventoryContext";
 
-type ActiveTaskData = {task:Accessor<ITask>, setTask:(task:ITask)=>void};
+export type ActiveTaskData = {task:Accessor<ITask>, setTask:(task:ITask)=>void};
 
 export const ActiveTaskContext = createContext<ActiveTaskData>();
 
-interface ActiveTaskProps {
+interface IActiveTaskProps {
     children?: JSX.Element; // Children elements
 }
 
-export function ActiveTaskProvider(props:ActiveTaskProps) {
+export function ActiveTaskProvider(props:IActiveTaskProps) {
     const skills = useSkills();
     const inventory = useInventory();
     const [activeTask, setActiveTask] = createSignal(taskBuilder['none']);

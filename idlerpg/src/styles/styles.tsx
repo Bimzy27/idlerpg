@@ -31,6 +31,7 @@ export const CoreButton = styled.button`
 
 export const TransparentButton = styled.button`
     background-color: ${transparentColor};
+    border-color: ${transparentColor};
     width: 100%;
     height: 100%;
 `;
@@ -106,21 +107,6 @@ export const RowCenterAlignedView = styled.div`
     align-items: center;
     padding: 20px;
     grid-gap: 30px;
-`;
-
-export const TaskProgressBarContainer = styled.div`
-    width: 90%;
-    height: 35px;
-    background-color: ${highlightColor};
-    border-radius: 10px;
-    margin-bottom: 5px;
-`;
-
-export const TaskProgressBar = styled.div<{transitionDuration: number}>`
-    height: 100%;
-    background-color: ${primaryColor};
-    transition: width ${props => props.transitionDuration}s linear;
-    border-radius: 10px;
 `;
 
 export const StyledTaskView = styled.div`

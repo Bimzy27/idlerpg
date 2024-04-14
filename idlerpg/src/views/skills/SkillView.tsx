@@ -1,10 +1,10 @@
 import {Accessor, Component, createMemo} from "solid-js";
-import {CoreImage, CoreText, CoreText_Mid} from "../styles/styles";
-import skillBuilder from "../data/SkillBuilder";
-import {getCurLevelXp, getLevel, getMaxLevel, getReqLevelXp, ISkillValue} from "../models/Skill";
+import {CoreImage, CoreText, CoreText_Mid} from "../../styles/styles";
+import skillBuilder from "../../data/SkillBuilder";
+import {getCurLevelXp, getLevel, getMaxLevel, getReqLevelXp, ISkillValue} from "../../models/Skill";
 import {styled} from "solid-styled-components";
-import {backgroundAlt1Color, primaryTrimColor} from "../styles/colors";
-import useSkills, {SkillsData} from "../contexts/SkillsContext";
+import {backgroundAlt1Color, primaryTrimColor} from "../../styles/colors";
+import useSkills, {SkillsData} from "../../contexts/SkillsContext";
 
 interface ISkillViewProps {
     skillId:string

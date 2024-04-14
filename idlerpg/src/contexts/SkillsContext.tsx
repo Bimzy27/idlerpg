@@ -1,6 +1,6 @@
 import {createContext, JSX, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
-import {ISkillValue} from "../models/Skill";
+import {getExpFromLevel, ISkillValue} from "../models/Skill";
 import skillBuilder from "../data/SkillBuilder";
 import {collection, getDocs, getFirestore} from "firebase/firestore";
 import {useAuth, useFirebaseApp} from "solid-firebase";
@@ -60,9 +60,10 @@ export function SkillProvider(props:SkillProps) {
                     {
                         if (skillValues[i].id === skillId)
                         {
+                            const exp = skillId === 'hitpoints' ? getExpFromLevel(10) : skills[skillId];
                             skillValues[i] = {
                                 id: skillId,
-                                exp: skills[skillId],
+                                exp: exp,
                             }
                         }
                     }

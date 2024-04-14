@@ -7,7 +7,6 @@ interface ILocationBuilder
 
 const locationBuilder:ILocationBuilder =
     {
-        //Ranged
         'location_lumberton':
             {
                 name: 'Lumberton',

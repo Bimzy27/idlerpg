@@ -27,9 +27,9 @@ const skillBuilder:ISkillBuilder =
         {
             name:'Magic',
         },
-    'health':
+    'hitpoints':
         {
-            name:'Health',
+            name:'Hitpoints',
         },
     'prayer':
         {

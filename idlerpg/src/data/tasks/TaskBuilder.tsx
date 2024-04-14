@@ -23,10 +23,9 @@ const taskBuilder:ITaskBuilder =
     ...woodcuttingTaskBuilder,
 }
 
-export const getTaskId = (task: any) => {
-    const taskAsITask = task as ITask;
+export const getTaskId = (task:ITask) => {
     for (const id in taskBuilder) {
-        if (taskBuilder[id] === taskAsITask) {
+        if (taskBuilder[id] === task) {
             return id;
         }
     }

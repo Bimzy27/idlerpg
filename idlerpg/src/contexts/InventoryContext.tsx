@@ -1,12 +1,19 @@
-import {createContext, JSX, useContext} from "solid-js";
-import {IItemAmount} from "../models/Item";
+import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
+import {IItem, IItemAmount} from "../models/Item";
 import {createStore} from "solid-js/store";
 import {collection, getDocs, getFirestore} from "firebase/firestore";
 import {useAuth, useFirebaseApp} from "solid-firebase";
 import {getAuth} from "firebase/auth";
 import {ISkillValue} from "../models/Skill";
 
-export type InventoryData = {items:IItemAmount[], addItem:(item:IItemAmount)=>void, removeItem:(item:IItemAmount)=>void, hasItem:(item:IItemAmount)=>boolean};
+export type InventoryData = {
+    items:IItemAmount[],
+    addItem:(item:IItemAmount)=>void,
+    removeItem:(item:IItemAmount)=>void,
+    hasItem:(item:IItemAmount)=>boolean
+    getItem:(itemId:string)=>IItemAmount
+    selectedItem:Accessor<IItem>,
+    setSelectedItem:(item:IItem)=>void};
 
 export const InventoryContext = createContext<InventoryData>();
 
@@ -20,6 +27,8 @@ export function InventoryProvider(props:InventoryProps) {
     const auth = useAuth(getAuth(app))
 
     const [items, setItems] = createStore<IItemAmount[]>([]);
+    const [selectedItem, setSelectedItem] = createSignal<IItem>({ name: '', value: -1 });
+
     const inventoryItems:InventoryData = {
         items: items,
         addItem: (item:IItemAmount)=>{
@@ -63,7 +72,21 @@ export function InventoryProvider(props:InventoryProps) {
                 }
             }
             return false;
-        }
+        },
+        getItem: (itemId:string)=>{
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].id === itemId)
+                {
+                    return items[i];
+                }
+            }
+            return { id:'', amount: -1 };
+        },
+        selectedItem: selectedItem,
+        setSelectedItem: (item:IItem)=>
+        {
+            setSelectedItem(item);
+        },
     };
 
     async function loadUserInventoryData()

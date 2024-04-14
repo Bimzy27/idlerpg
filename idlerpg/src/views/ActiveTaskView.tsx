@@ -1,12 +1,29 @@
 import {Component, createEffect, createSignal, Show} from "solid-js";
-import {CoreImage, CoreText, StyledActiveTaskView, TaskProgressBar, TaskProgressBarContainer} from "../styles/styles";
-import useActiveTask from "../contexts/ActiveTaskContext";
+import {CoreImage, CoreText, StyledActiveTaskView} from "../styles/styles";
+import useActiveTask, {ActiveTaskData} from "../contexts/ActiveTaskContext";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import {IReward, ItemReward, SkillReward} from "../models/Reward";
 import taskBuilder, {getTaskId} from "../data/tasks/TaskBuilder";
 import useSkills, {SkillsData} from "../contexts/SkillsContext";
 import {ITask, taskMeetsRequirements} from "../models/Task";
 import {ICost, ItemCost} from "../models/Cost";
+import {styled} from "solid-styled-components";
+import {highlightColor, primaryColor} from "../styles/colors";
+
+const TaskProgressBarContainer = styled.div`
+    width: 90%;
+    height: 35px;
+    background-color: ${highlightColor};
+    border-radius: 10px;
+    margin-bottom: 5px;
+`;
+
+const TaskProgressBar = styled.div<{transitionDuration: number}>`
+    height: 100%;
+    background-color: ${primaryColor};
+    transition: width ${props => props.transitionDuration}s linear;
+    border-radius: 10px;
+`;
 
 interface IActiveTaskViewProps
 {
@@ -15,15 +32,15 @@ interface IActiveTaskViewProps
 const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
     const [progress, setProgress] = createSignal<number>(0);
     const [duration, setDuration] = createSignal<number>(0);
-    const inventory= useInventory();
-    const skills= useSkills();
-    const task = useActiveTask();
+    const inventory= useInventory() as InventoryData;
+    const skills= useSkills() as SkillsData;
+    const task = useActiveTask() as ActiveTaskData;
 
     const timeoutIds:NodeJS.Timeout[] = [];
 
     createEffect(() => {
 
-        const activeTask:ITask = task?.task() as ITask;
+        const activeTask:ITask = task.task() as ITask;
 
         function startTask()
         {
@@ -65,13 +82,13 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
                     setProgress(0);
                     const timeoutId3 = setTimeout(()=>
                     {
-                        if (taskMeetsRequirements(activeTask, skills as SkillsData, inventory as InventoryData))
+                        if (taskMeetsRequirements(activeTask, skills, inventory))
                         {
                             startTask();
                         }
                         else
                         {
-                            task?.setTask(taskBuilder['none']);
+                            task.setTask(taskBuilder['none']);
                         }
                     }, 10);
                     timeoutIds.push(timeoutId3)
@@ -95,10 +112,10 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
     return (
         <StyledActiveTaskView>
             <div style={{'display': "flex", "flex-direction": 'row', "grid-gap": '15px'}}>
-                <Show when={task?.task() && task?.task().durationSeconds !== 0}>
-                    <CoreImage src={`/assets/tasks/${getTaskId(task?.task())}.png`} alt="NO IMG" width={50} height={50}/>
+                <Show when={task.task() && task.task().durationSeconds !== 0}>
+                    <CoreImage src={`/assets/tasks/${getTaskId(task.task())}.png`} alt="NO IMG" width={50} height={50}/>
                 </Show>
-                <CoreText>{task?.task().name}</CoreText>
+                <CoreText>{task.task().name}</CoreText>
             </div>
             <TaskProgressBarContainer>
                 <TaskProgressBar transitionDuration={duration()} style={`width: ${progress()}%`}></TaskProgressBar>

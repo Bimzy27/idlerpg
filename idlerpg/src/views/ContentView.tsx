@@ -1,6 +1,6 @@
 import {Component, Show} from "solid-js";
 import useGameView from "../contexts/GameViewContext";
-import ProfileView from "./ProfileView";
+import ProfileView from "./profile/ProfileView";
 import InventoryView from "./InventoryView";
 import LocationView from "./LocationView";
 import WoodcuttingView from "./skills/WoodcuttingView";
@@ -14,6 +14,7 @@ import RunecraftingView from "./skills/RunecraftingView";
 import CraftingView from "./skills/CraftingView";
 import {styled} from "solid-styled-components";
 import {transparentColor} from "../styles/colors";
+import CombatView from "./combat/CombatView";
 
 const StyledContentView = styled.div`
     position: fixed;
@@ -48,6 +49,10 @@ const ContentView: Component<IContentViewProps> = (props) => {
                     </Show>
                     <Show when={gameView?.activeView() === 'location'}>
                         <LocationView/>
+                    </Show>
+
+                    <Show when={gameView?.activeView() === 'combat'}>
+                        <CombatView/>
                     </Show>
 
                     <Show when={gameView?.activeView() === 'mining'}>

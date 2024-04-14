@@ -1,5 +1,5 @@
 import {Component, For, JSX, Show} from "solid-js";
-import SkillView from "../SkillView";
+import SkillView from "./SkillView";
 import TaskView from "../TaskView";
 import {ColumnCenterAlignedView} from "../../styles/styles";
 
