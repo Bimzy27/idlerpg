@@ -17,20 +17,25 @@ interface ISkillContentViewProps {
 
 const SkillContentView: Component<ISkillContentViewProps> = (props) => {
     return (
-        <ColumnCenterAlignedView>
+        <ColumnCenterAlignedView style={{"grid-gap": '50px'}}>
             <SkillView skillId={props.skillId}/>
 
-            <Show when={props.navigationTabs.length === 1}>
-                <For each={props.navigationTabs[0].taskIds}>
-                    {(id, index) => (<TaskView taskId={id}/>)}
-                </For>
-            </Show>
+            <div style={{width: '100%', height: "fit-content", display: "flex", "align-items": "flex-start", "flex-wrap": "wrap", "grid-gap": '20px'}}>
 
-            <Show when={props.navigationTabs.length > 1}>
-                <For each={props.navigationTabs[0].taskIds}>
-                    {(id, index) => (<TaskView taskId={id}/>)}
-                </For>
-            </Show>
+                {/*TODO implement tabs here with buttons*/}
+                <Show when={props.navigationTabs.length === 1}>
+                    <For each={props.navigationTabs[0].taskIds}>
+                        {(id, index) => (<TaskView taskId={id}/>)}
+                    </For>
+                </Show>
+
+                {/*TODO implement tabs here with buttons*/}
+                <Show when={props.navigationTabs.length > 1}>
+                    <For each={props.navigationTabs[0].taskIds}>
+                        {(id, index) => (<TaskView taskId={id}/>)}
+                    </For>
+                </Show>
+            </div>
 
             {props.children}
         </ColumnCenterAlignedView>

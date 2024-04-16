@@ -108,12 +108,3 @@ export const RowCenterAlignedView = styled.div`
     padding: 20px;
     grid-gap: 30px;
 `;
-
-export const StyledTaskView = styled.div`
-    width: 40%;
-    height: fit-content;
-    background-color: ${backgroundAlt1Color};
-    border-radius: 5px;
-    border: 3px solid ${primaryTrimColor};
-    align-items: center;
-`;

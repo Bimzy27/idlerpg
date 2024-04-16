@@ -35,52 +35,6 @@ const App: Component = () => {
     const app = useFirebaseApp()
     const state = useAuth(getAuth(app))
 
-    console.error("Hit Chance1: " +
-        getHitChance(
-            {
-                hitpoints:1,
-                attack:1,
-                strength:1,
-                defense:1,
-            },
-            {
-                hitpoints:10,
-                attack:10,
-                strength:10,
-                defense:10,
-            }
-        ))
-    console.error("Hit Chance2: " +
-        getHitChance(
-            {
-                hitpoints:10,
-                attack:10,
-                strength:10,
-                defense:10,
-            },
-            {
-                hitpoints:1,
-                attack:1,
-                strength:1,
-                defense:1,
-            }
-        ))
-    console.error("Hit Chance3: " +
-        getHitChance(
-            {
-                hitpoints:10,
-                attack:10,
-                strength:10,
-                defense:10,
-            },
-            {
-                hitpoints:10,
-                attack:10,
-                strength:10,
-                defense:10,
-            }
-        ))
-
     return (
         <Switch fallback={<Login/>}>
             <Match when={state.loading}>

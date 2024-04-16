@@ -39,7 +39,6 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
     const timeoutIds:NodeJS.Timeout[] = [];
 
     createEffect(() => {
-
         const activeTask:ITask = task.task() as ITask;
 
         function startTask()

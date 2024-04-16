@@ -3,7 +3,6 @@ import {
     ColumnCenterAlignedView, CoreImage,
     CoreText,
     CoreText_Mid,
-    StyledTaskView,
     TransparentButton
 } from "../styles/styles";
 import {ITask, taskMeetsRequirements} from "../models/Task";
@@ -12,8 +11,25 @@ import useActiveTask from "../contexts/ActiveTaskContext";
 import RewardView from "./RewardView";
 import RequirementView from "./RequirementView";
 import useSkills, {SkillsData} from "../contexts/SkillsContext";
-import {redColor, textPrimaryColor} from "../styles/colors";
+import {backgroundAlt1Color, primaryTrimColor, redColor, textPrimaryColor} from "../styles/colors";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
+import {styled} from "solid-styled-components";
+
+const StyledTaskView = styled.div`
+    width: 32%;
+    background-color: ${backgroundAlt1Color};
+    border-radius: 5px;
+    border: 3px solid ${primaryTrimColor};
+    align-items: center;
+    flex: 1 1 auto;
+    align-self: stretch;
+`;
+
+export const TaskText = styled.p<{color:string}>`
+    color: ${props => props.color};
+    font-size: clamp(1rem, 1.5rem, 2rem);
+    white-space: nowrap;
+`;
 
 interface ITaskViewProps
 {
@@ -27,9 +43,9 @@ const TaskView: Component<ITaskViewProps> = (props) => {
     const inventory = useInventory();
     return (
         <StyledTaskView>
-            <TransparentButton onClick={()=>{activeTask?.setTask(task)}} style={{display:"flex", "flex-direction": "row", "align-items": "center", "padding-left": '60px', "padding-right": '60px'}}>
+            <TransparentButton onClick={()=>{activeTask?.setTask(task)}} style={{display:"flex", "flex-direction": "row", "align-items": "center"}}>
                 <ColumnCenterAlignedView>
-                    <CoreText style={{ 'color': `${taskMeetsRequirements(task, skills as SkillsData, inventory as InventoryData) ? textPrimaryColor : redColor}`, "font-size": '32px', "white-space": 'nowrap'  }}>{task.name}</CoreText>
+                    <TaskText color={taskMeetsRequirements(task, skills as SkillsData, inventory as InventoryData) ? textPrimaryColor : redColor}>{task.name}</TaskText>
                     <CoreImage src={`/assets/tasks/${props.taskId}.png`} alt="NO IMG" width={80} height={80}/>
                     <CoreText_Mid>Duration: {task.durationSeconds} seconds</CoreText_Mid>
                 </ColumnCenterAlignedView>

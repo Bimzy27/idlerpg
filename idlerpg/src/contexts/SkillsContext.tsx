@@ -1,12 +1,12 @@
 import {createContext, JSX, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
-import {getExpFromLevel, ISkillValue} from "../models/Skill";
+import {getExpFromLevel, getLevel, ISkillValue} from "../models/Skill";
 import skillBuilder from "../data/SkillBuilder";
 import {collection, getDocs, getFirestore} from "firebase/firestore";
 import {useAuth, useFirebaseApp} from "solid-firebase";
 import {getAuth} from "firebase/auth";
 
-export type SkillsData = {skills:ISkillValue[], addExp:(skillValue:ISkillValue)=>void};
+export type SkillsData = {skills:ISkillValue[], addExp:(skillValue:ISkillValue)=>void, getSkillLevel:(skillId:string)=>number};
 
 export const SkillsContext = createContext<SkillsData>();
 
@@ -42,6 +42,16 @@ export function SkillProvider(props:SkillProps) {
                 }
             }
             setSkills(newSkills);
+        },
+        getSkillLevel: (skillId:string)=>
+        {
+            for (let i = 0; i < skills.length; i++) {
+                if (skills[i].id === skillId)
+                {
+                    return getLevel(skills[i]);
+                }
+            }
+            return 0;
         },
     };
 

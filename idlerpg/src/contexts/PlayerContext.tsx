@@ -1,32 +1,44 @@
-import {ISkillValue} from "../models/Skill";
 import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
-import {IPlayer} from "../models/combat/Player";
+import {addStats, getHitpoints, ICombatStats} from "../models/combat/CombatStats";
+import useSkills, {SkillsData} from "./SkillsContext";
+import useEquipment, {EquipmentData} from "./EquipmentContext";
 
-export type PlayerData = {player:Accessor<IPlayer>, curHealth:Accessor<number>};
+export type PlayerData = {getPlayerStats:()=>ICombatStats, curHealth:Accessor<number>, loseHealth:(health:number)=>boolean, gainHealth:(health:number)=>void};
 
 export const PlayerContext = createContext<PlayerData>();
-
-const defaultPlayer:IPlayer = {
-    combatStats:
-        {
-            hitpoints: 10,
-            attack: 1,
-            strength: 1,
-            defense: 1,
-        }
-}
 
 interface PlayerProps {
     children?: JSX.Element; // Children elements
 }
 
 export function PlayerProvider(props:PlayerProps) {
-    const [player, setPlayer] = createSignal<IPlayer>(defaultPlayer);
-    const [curHealth, setCurHealth] = createSignal<number>(0);
+    const skills = useSkills() as SkillsData;
+    const equipment = useEquipment() as EquipmentData;
+
+    const [curHealth, setCurHealth] = createSignal<number>(1);
 
     const myPlayer:PlayerData = {
-        player:player,
-        curHealth:curHealth
+        getPlayerStats:()=>{
+            let stats:ICombatStats = {
+                hitpoints: skills.getSkillLevel('hitpoints'),
+                attack: skills.getSkillLevel('attack'),
+                strength: skills.getSkillLevel('strength'),
+                defense: skills.getSkillLevel('defense') };
+            stats = addStats(stats, equipment.getCombatStats());
+            console.log("Stats:  " + stats)
+            return stats;
+        },
+        curHealth:curHealth,
+        loseHealth:(health:number)=>{
+            let newHealth = Math.max(0, curHealth() - health);
+            newHealth = Math.floor(newHealth)
+            setCurHealth(newHealth);
+            return newHealth <= 0;
+        },
+        gainHealth:(health:number)=>{
+            const newHealth = Math.min(getHitpoints(myPlayer.getPlayerStats()), curHealth() + health);
+            setCurHealth(newHealth);
+        },
     };
 
     return (
@@ -36,4 +48,4 @@ export function PlayerProvider(props:PlayerProps) {
     );
 }
 
-export default function useSkills() { return useContext(PlayerContext) }
+export default function usePlayer() { return useContext(PlayerContext) }

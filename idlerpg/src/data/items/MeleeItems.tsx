@@ -10,8 +10,8 @@ export const meleeItemBuilder:IItemBuilder =
                 slot: [EquippableSlot.MainHand],
                 combatStats: {
                     hitpoints: 0,
-                    attack: 0,
-                    strength: 0,
+                    attack: 3,
+                    strength: 3,
                     defense: 0,
                 },
             },
@@ -22,8 +22,8 @@ export const meleeItemBuilder:IItemBuilder =
                 slot: [EquippableSlot.MainHand],
                 combatStats: {
                     hitpoints: 0,
-                    attack: 0,
-                    strength: 0,
+                    attack: 3,
+                    strength: 3,
                     defense: 0,
                 },
             },

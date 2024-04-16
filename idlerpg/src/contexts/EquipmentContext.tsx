@@ -2,9 +2,10 @@ import {createContext, JSX, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
 import {EquippableSlot, IEquippableItem, IEquipSlot} from "../models/Item";
 import useInventory, {InventoryData} from "./InventoryContext";
-import {getItemId} from "../data/items/ItemBuilder";
+import itemBuilder, {getItemId} from "../data/items/ItemBuilder";
+import {addStats, ICombatStats} from "../models/combat/CombatStats";
 
-export type EquipmentData = {equipment:IEquipSlot[], equip:(item:IEquippableItem)=>void};
+export type EquipmentData = {equipment:IEquipSlot[], equip:(item:IEquippableItem)=>void, getCombatStats:()=>ICombatStats};
 
 export const EquipmentContext = createContext<EquipmentData>();
 
@@ -53,6 +54,15 @@ export function EquipmentProvider(props:EquipmentProps) {
                 inventory.removeItem({ id: getItemId(item), amount: 1});
             }
         },
+        getCombatStats: ()=>
+        {
+            let stats:ICombatStats = {hitpoints:0, attack:0, strength:0, defense:0};
+            equipment.forEach(item =>
+            {
+                stats = addStats(stats, (itemBuilder[item.itemId] as IEquippableItem).combatStats);
+            });
+            return stats;
+        }
     };
 
     return (

@@ -8,34 +8,48 @@ export interface ICombatStats
     defense:number
 }
 
-function getStrength(stats:ICombatStats):number
-{
-    return stats.strength + 8
+export function addStats(stats1: ICombatStats | undefined, stats2: ICombatStats | undefined): ICombatStats {
+    return {
+        hitpoints: Math.floor((stats1?.hitpoints || 0) + (stats2?.hitpoints || 0)),
+        attack: Math.floor((stats1?.attack || 0) + (stats2?.attack || 0)),
+        strength: Math.floor((stats1?.strength || 0) + (stats2?.strength || 0)),
+        defense: Math.floor((stats1?.defense || 0) + (stats2?.defense || 0)),
+    };
 }
 
-function getMaxHit(stats:ICombatStats):number
+export function getHitpoints(stats:ICombatStats):number
 {
-    return ((getStrength(stats) * 64) + 320) / 640
+    return stats.hitpoints;
 }
 
-function getAttack(stats:ICombatStats):number
+export function getStrength(stats:ICombatStats):number
 {
-    return stats.attack + 8
+    return stats.strength + 8;
+}
+
+export function getMaxHit(stats:ICombatStats):number
+{
+    return ((getStrength(stats) * 64) + 320) / 640;
+}
+
+export function getAttack(stats:ICombatStats):number
+{
+    return stats.attack + 8;
 }
 
 function getAttackRoll(stats:ICombatStats, targetStats:ICombatStats):number
 {
-    return getAttack(stats) * 64 //TODO add target gear bonus as per doco
+    return getAttack(stats) * 64; //TODO add target gear bonus as per doco
 }
 
-function getDefense(stats:ICombatStats):number
+export function getDefense(stats:ICombatStats):number
 {
-    return stats.defense + 8
+    return stats.defense + 8;
 }
 
 function getDefenseRoll(stats:ICombatStats, targetStats:ICombatStats):number
 {
-    return getDefense(stats) * 64 //TODO add target gear bonus as per doco
+    return getDefense(stats) * 64; //TODO add target gear bonus as per doco
 }
 
 export function getHitChance(stats:ICombatStats, targetStats:ICombatStats):number

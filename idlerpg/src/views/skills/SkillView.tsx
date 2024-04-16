@@ -18,7 +18,7 @@ const StyledSkillView = styled.div`
     border: 3px solid ${primaryTrimColor};
     box-sizing: border-box;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     grid-gap: 10px;
     padding: 10px;
 `;
