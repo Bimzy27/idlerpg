@@ -3,7 +3,7 @@ import {styled} from "solid-styled-components";
 import {redColor, highlightColor, primaryColor} from "../../styles/colors";
 import usePlayer, {PlayerData} from "../../contexts/PlayerContext";
 import {getHitpoints} from "../../models/combat/CombatStats";
-import {CoreButton} from "../../styles/styles";
+import {CoreButton, CoreImage, CoreText, RowCenterAlignedView} from "../../styles/styles";
 import useCombat, {CombatData} from "../../contexts/CombatContext";
 import enemyBuilder from "../../data/EnemyBuilder";
 
@@ -12,7 +12,7 @@ const HealthBarContainer = styled.div`
     height: 35px;
     background-color: ${highlightColor};
     border-radius: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 50px;
 `;
 
 const HealthBar = styled.div<{}>`
@@ -32,6 +32,10 @@ export const PlayerHealthbarView: Component<IHealthbarViewProps> = (props) => {
     return (
         <HealthBarContainer>
             <HealthBar style={`width: ${(player.curHealth() / getHitpoints(playerStats)) * 100}%`}></HealthBar>
+            <RowCenterAlignedView>
+                <CoreImage width={26} height={26} src={`/assets/skills/hitpoints.png`} />
+                <CoreText>{player.curHealth()}/{getHitpoints(playerStats)}</CoreText>
+            </RowCenterAlignedView>
             <CoreButton onClick={()=>{player.gainHealth(1)}}>GainHP</CoreButton>
             <CoreButton onClick={()=>{player.loseHealth(1)}}>LoseHP</CoreButton>
         </HealthBarContainer>
@@ -44,12 +48,10 @@ export const EnemyHealthbarView: Component<IHealthbarViewProps> = (props) => {
     return (
         <HealthBarContainer>
             <HealthBar style={`width: ${(combat.curEnemyHealth() / getHitpoints(combat.enemy().combatStats)) * 100}%`}></HealthBar>
-            <CoreButton onClick={()=>{
-                if (combat.loseEnemyHealth(1).died)
-                {
-                    combat.setEnemy(enemyBuilder['goblin']);
-                }
-            }}>LoseHP</CoreButton>
+            <RowCenterAlignedView>
+                <CoreImage width={26} height={26} src={`/assets/skills/hitpoints.png`} />
+                <CoreText>{combat.curEnemyHealth()}/{getHitpoints(combat.enemy().combatStats)}</CoreText>
+            </RowCenterAlignedView>
         </HealthBarContainer>
     );
 };

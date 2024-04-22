@@ -10,7 +10,12 @@ const FishingView: Component<IFishingViewProps> = (props) => {
         <div>
             <SkillContentView
                 skillId={'fishing'}
-                navigationTabs={ [] }/>
+                navigationTabs={ [
+                    {
+                        title: 'fishing',
+                        taskIds: ['fishing_shrimp_raw',]
+                    }
+                ] }/>
         </div>
     );
 };

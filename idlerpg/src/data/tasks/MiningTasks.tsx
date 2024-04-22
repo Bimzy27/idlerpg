@@ -8,7 +8,7 @@ export const miningTaskBuilder:ITaskBuilder =
         'mining_copper_ore':
             {
                 name:'Mine Copper Ore',
-                durationSeconds:4,
+                intervalSeconds:4,
                 requirements:[],
                 rewards:[
                     new ItemReward({id: 'copper_ore', amount: 1}),
@@ -19,7 +19,7 @@ export const miningTaskBuilder:ITaskBuilder =
         'mining_tin_ore':
             {
                 name:'Mine Tin Ore',
-                durationSeconds:4,
+                intervalSeconds:4,
                 requirements:[],
                 rewards:[
                     new ItemReward({id: 'tin_ore', amount: 1}),
@@ -30,7 +30,7 @@ export const miningTaskBuilder:ITaskBuilder =
         'mining_iron_ore':
             {
                 name:'Mine Iron Ore',
-                durationSeconds:6,
+                intervalSeconds:6,
                 requirements:[
                     new SkillRequirement({id: 'mining', exp: getExpFromLevel(15)})
                 ],
@@ -43,7 +43,7 @@ export const miningTaskBuilder:ITaskBuilder =
         'mining_silver_ore':
             {
                 name:'Mine Silver Ore',
-                durationSeconds:8,
+                intervalSeconds:8,
                 requirements:[
                     new SkillRequirement({id: 'mining', exp: getExpFromLevel(20)})
                 ],
@@ -56,7 +56,7 @@ export const miningTaskBuilder:ITaskBuilder =
         'mining_coal_ore':
             {
                 name:'Mine Coal Ore',
-                durationSeconds:8,
+                intervalSeconds:8,
                 requirements:[
                     new SkillRequirement({id: 'mining', exp: getExpFromLevel(30)})
                 ],
@@ -69,7 +69,7 @@ export const miningTaskBuilder:ITaskBuilder =
         'mining_gold_ore':
             {
                 name:'Mine Gold Ore',
-                durationSeconds:10,
+                intervalSeconds:10,
                 requirements:[
                     new SkillRequirement({id: 'mining', exp: getExpFromLevel(40)})
                 ],
@@ -82,7 +82,7 @@ export const miningTaskBuilder:ITaskBuilder =
         'mining_mithril_ore':
             {
                 name:'Mine Mithril Ore',
-                durationSeconds:12,
+                intervalSeconds:12,
                 requirements:[
                     new SkillRequirement({id: 'mining', exp: getExpFromLevel(55)})
                 ],
@@ -95,7 +95,7 @@ export const miningTaskBuilder:ITaskBuilder =
         'mining_adamantite_ore':
             {
                 name:'Mine Adamantite Ore',
-                durationSeconds:14,
+                intervalSeconds:14,
                 requirements:[
                     new SkillRequirement({id: 'mining', exp: getExpFromLevel(70)})
                 ],
@@ -108,7 +108,7 @@ export const miningTaskBuilder:ITaskBuilder =
         'mining_runite_ore':
             {
                 name:'Mine Runite Ore',
-                durationSeconds:16,
+                intervalSeconds:16,
                 requirements:[
                     new SkillRequirement({id: 'mining', exp: getExpFromLevel(85)})
                 ],

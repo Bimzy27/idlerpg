@@ -9,7 +9,7 @@ import useGameView from "../contexts/GameViewContext";
 import {styled} from "solid-styled-components";
 import {backgroundAlt1Color, primaryTrimColor, transparentColor} from "../styles/colors";
 
-export const StyledTabButtonInnerView = styled.div`
+const StyledTabButtonInnerView = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;

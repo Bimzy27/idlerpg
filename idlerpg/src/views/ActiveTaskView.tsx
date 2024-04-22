@@ -51,7 +51,7 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
 
             const timeoutId1 = setTimeout(()=>
             {
-                setDuration(activeTask.durationSeconds);
+                setDuration(activeTask.intervalSeconds);
                 setProgress(100);
 
                 const timeoutId2 = setTimeout(()=>
@@ -91,7 +91,7 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
                         }
                     }, 10);
                     timeoutIds.push(timeoutId3)
-                }, activeTask.durationSeconds * 1000)
+                }, activeTask.intervalSeconds * 1000)
                 timeoutIds.push(timeoutId2);
             }, 10);
             timeoutIds.push(timeoutId1);
@@ -99,7 +99,7 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
 
         setDuration(0);
         setProgress(0);
-        if (activeTask.durationSeconds !== 0)
+        if (activeTask.intervalSeconds !== 0)
         {
             startTask();
         }
@@ -109,17 +109,20 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
     }, [task]);
 
     return (
-        <StyledActiveTaskView>
-            <div style={{'display': "flex", "flex-direction": 'row', "grid-gap": '15px'}}>
-                <Show when={task.task() && task.task().durationSeconds !== 0}>
-                    <CoreImage src={`/assets/tasks/${getTaskId(task.task())}.png`} alt="NO IMG" width={50} height={50}/>
-                </Show>
-                <CoreText>{task.task().name}</CoreText>
-            </div>
-            <TaskProgressBarContainer>
-                <TaskProgressBar transitionDuration={duration()} style={`width: ${progress()}%`}></TaskProgressBar>
-            </TaskProgressBarContainer>
-        </StyledActiveTaskView>
+
+        <Show when={getTaskId(task.task()) !== 'none'}>
+            <StyledActiveTaskView>
+                <div style={{'display': "flex", "flex-direction": 'row', "grid-gap": '15px'}}>
+                    <Show when={task.task() && task.task().intervalSeconds !== 0}>
+                        <CoreImage src={`/assets/tasks/${getTaskId(task.task())}.png`} alt="NO IMG" width={50} height={50}/>
+                    </Show>
+                    <CoreText>{task.task().name}</CoreText>
+                </div>
+                <TaskProgressBarContainer>
+                    <TaskProgressBar transitionDuration={duration()} style={`width: ${progress()}%`}></TaskProgressBar>
+                </TaskProgressBarContainer>
+            </StyledActiveTaskView>
+        </Show>
     );
 };
 

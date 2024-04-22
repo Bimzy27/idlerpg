@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "firebase": "^10.11.0",
+    "solid-collapse": "^1.1.0",
     "solid-firebase": "^0.3.0",
     "solid-js": "^1.8.11",
     "solid-styled-components": "^0.28.5"

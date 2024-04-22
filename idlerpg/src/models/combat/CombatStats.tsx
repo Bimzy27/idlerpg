@@ -1,11 +1,16 @@
 //https://oldschool.runescape.wiki/w/Damage_per_second/Melee
 
+import MathUtil from "../../common/MathUtil";
+
 export interface ICombatStats
 {
     hitpoints:number
     attack:number
     strength:number
     defense:number
+    ranged:number
+    magic:number
+    prayer:number
 }
 
 export function addStats(stats1: ICombatStats | undefined, stats2: ICombatStats | undefined): ICombatStats {
@@ -14,7 +19,16 @@ export function addStats(stats1: ICombatStats | undefined, stats2: ICombatStats 
         attack: Math.floor((stats1?.attack || 0) + (stats2?.attack || 0)),
         strength: Math.floor((stats1?.strength || 0) + (stats2?.strength || 0)),
         defense: Math.floor((stats1?.defense || 0) + (stats2?.defense || 0)),
+        ranged: Math.floor((stats1?.ranged || 0) + (stats2?.ranged || 0)),
+        magic: Math.floor((stats1?.magic || 0) + (stats2?.magic || 0)),
+        prayer: Math.floor((stats1?.prayer || 0) + (stats2?.prayer || 0)),
     };
+}
+
+export function getCombatLevel(stats:ICombatStats):number
+{
+    //TODO implement combat level
+    return -1;
 }
 
 export function getHitpoints(stats:ICombatStats):number
@@ -57,5 +71,5 @@ export function getHitChance(stats:ICombatStats, targetStats:ICombatStats):numbe
     const atkRoll:number = getAttackRoll(stats, targetStats);
     const defRoll:number = getDefenseRoll(targetStats, stats);
 
-    return atkRoll / (2*(defRoll + 1));
+    return MathUtil.clamp(atkRoll / (2*(defRoll + 1)), 0, 1);
 }

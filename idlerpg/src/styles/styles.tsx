@@ -13,6 +13,7 @@ import TaskView from "../views/TaskView";
 export const CoreText = styled.p`
     color: ${textPrimaryColor};
     font-size: 24px;
+    line-height: 0.2;
 `;
 
 export const CoreText_Mid = styled.p`
@@ -94,7 +95,6 @@ export const ColumnCenterAlignedView = styled.div`
     box-sizing: border-box;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
     grid-gap: 5px;
 `;
 
@@ -105,6 +105,24 @@ export const RowCenterAlignedView = styled.div`
     box-sizing: border-box;
     flex-direction: row;
     align-items: center;
+    grid-gap: 5px;
+`;
+
+export const ContentFitView = styled.div`
+    width: fit-content;
+    height: fit-content;
+    box-sizing: border-box;
     padding: 20px;
-    grid-gap: 30px;
+    background-color: ${backgroundAlt1Color};
+    border-radius: 10px;
+    border: 3px solid ${primaryTrimColor};
+`;
+
+export const ContentFitAltView = styled.div`
+    width: fit-content;
+    height: fit-content;
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: ${backgroundAlt2Color};
 `;

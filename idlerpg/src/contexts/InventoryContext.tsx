@@ -4,11 +4,11 @@ import {createStore} from "solid-js/store";
 import {collection, getDocs, getFirestore} from "firebase/firestore";
 import {useAuth, useFirebaseApp} from "solid-firebase";
 import {getAuth} from "firebase/auth";
-import {ISkillValue} from "../models/Skill";
 
 export type InventoryData = {
     items:IItemAmount[],
     addItem:(item:IItemAmount)=>void,
+    addItems:(items:IItemAmount[])=>void,
     removeItem:(item:IItemAmount)=>void,
     hasItem:(item:IItemAmount)=>boolean
     getItem:(itemId:string)=>IItemAmount
@@ -22,10 +22,6 @@ interface InventoryProps {
 }
 
 export function InventoryProvider(props:InventoryProps) {
-    const app = useFirebaseApp();
-    const db = getFirestore(app);
-    const auth = useAuth(getAuth(app))
-
     const [items, setItems] = createStore<IItemAmount[]>([]);
     const [selectedItem, setSelectedItem] = createSignal<IItem>({ name: '', value: -1 });
 
@@ -47,13 +43,19 @@ export function InventoryProvider(props:InventoryProps) {
                 setItems(newItems);
             }
         },
+        addItems:(items:IItemAmount[])=>
+        {
+            for (const item of items) {
+                inventoryItems.addItem(item);
+            }
+        },
         removeItem: (item:IItemAmount)=>{
             const currentItem: IItemAmount | undefined = items.find(invItem => invItem.id === item.id);
             if (currentItem)
             {
                 //Has existing item
                 let finalAmount = Math.max(0, currentItem.amount - item.amount)
-                if (finalAmount == 0)
+                if (finalAmount === 0)
                 {
                     const filteredItems = items.filter(invItem => invItem.id !== item.id);
                     setItems(filteredItems);
@@ -88,6 +90,10 @@ export function InventoryProvider(props:InventoryProps) {
             setSelectedItem(item);
         },
     };
+
+    const app = useFirebaseApp();
+    const db = getFirestore(app);
+    const auth = useAuth(getAuth(app))
 
     async function loadUserInventoryData()
     {

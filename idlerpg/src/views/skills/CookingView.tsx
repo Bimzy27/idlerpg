@@ -10,7 +10,12 @@ const CookingView: Component<ICookingViewProps> = (props) => {
         <div>
             <SkillContentView
                 skillId={'cooking'}
-                navigationTabs={ [] }/>
+                navigationTabs={ [
+                    {
+                        title: 'cooking',
+                        taskIds: ['cooking_shrimp', 'cooking_meat', 'cooking_chicken',]
+                    }
+                ] }/>
         </div>
     );
 };

@@ -9,7 +9,7 @@ export const woodcuttingTaskBuilder:ITaskBuilder =
     'woodcutting_normal_log':
         {
             name:'Chop Normal Tree',
-            durationSeconds:4,
+            intervalSeconds:4,
             requirements:[],
             rewards:[
                 new ItemReward({id: 'normal_log', amount: 1}),
@@ -20,7 +20,7 @@ export const woodcuttingTaskBuilder:ITaskBuilder =
     'woodcutting_oak_log':
         {
             name:'Chop Oak Tree',
-            durationSeconds:6,
+            intervalSeconds:6,
             requirements:[
                 new SkillRequirement({id: 'woodcutting', exp: getExpFromLevel(15)})
             ],
@@ -33,7 +33,7 @@ export const woodcuttingTaskBuilder:ITaskBuilder =
     'woodcutting_willow_log':
         {
             name:'Chop Willow Tree',
-            durationSeconds:8,
+            intervalSeconds:8,
             requirements:[
                 new SkillRequirement({id: 'woodcutting', exp: getExpFromLevel(30)})
             ],
@@ -46,7 +46,7 @@ export const woodcuttingTaskBuilder:ITaskBuilder =
     'woodcutting_maple_log':
         {
             name:'Chop Maple Tree',
-            durationSeconds:10,
+            intervalSeconds:10,
             requirements:[
                 new SkillRequirement({id: 'woodcutting', exp: getExpFromLevel(45)})
             ],
@@ -59,7 +59,7 @@ export const woodcuttingTaskBuilder:ITaskBuilder =
     'woodcutting_yew_log':
         {
             name:'Chop Yew Tree',
-            durationSeconds:12,
+            intervalSeconds:12,
             requirements:[
                 new SkillRequirement({id: 'woodcutting', exp: getExpFromLevel(60)})
             ],
@@ -72,7 +72,7 @@ export const woodcuttingTaskBuilder:ITaskBuilder =
     'woodcutting_magic_log':
         {
             name:'Chop Magic Tree',
-            durationSeconds:14,
+            intervalSeconds:14,
             requirements:[
                 new SkillRequirement({id: 'woodcutting', exp: getExpFromLevel(75)})
             ],
@@ -85,7 +85,7 @@ export const woodcuttingTaskBuilder:ITaskBuilder =
     'woodcutting_redwood_log':
         {
             name:'Chop Redwood Tree',
-            durationSeconds:16,
+            intervalSeconds:16,
             requirements:[
                 new SkillRequirement({id: 'woodcutting', exp: getExpFromLevel(90)})
             ],

@@ -18,6 +18,11 @@ class MathUtil
         // Add the minimum value to get the final random number within the range
         return min + scaledValue;
     }
+
+    public static clamp(num: number, lower: number, upper: number): number
+    {
+        return Math.min(Math.max(num, lower), upper);
+    }
 }
 
 export default MathUtil;

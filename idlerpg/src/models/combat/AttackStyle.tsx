@@ -9,5 +9,7 @@ export enum CombatType
 
 export interface IAttackStyle
 {
-    expPerHit:ISkillValue[]
+    name:string;
+    attackInterval:number;
+    expPerHit:ISkillValue[];
 }

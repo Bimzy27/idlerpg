@@ -1,5 +1,5 @@
 import {Component, For} from "solid-js";
-import {CoreText, TransparentButton} from "../styles/styles";
+import {ContentFitAltView, CoreText, RowCenterAlignedView, TransparentButton} from "../styles/styles";
 import itemBuilder from "../data/items/ItemBuilder";
 import ItemView from "./ItemView";
 import useEquipment, {EquipmentData} from "../contexts/EquipmentContext";
@@ -13,15 +13,18 @@ const EquipmentView: Component<IEquipmentViewProps> = (props) => {
     const equipment = useEquipment() as EquipmentData;
 
     return (
-        <div>
-            <For each={equipment.equipment}>
-                {(equipSlot, index) => (
-                    <TransparentButton style={{width: "fit-content", height: "fit-content"}} onClick={()=>{}}>
-                        <ItemView id={equipSlot.itemId} amount={1}/>
-                    </TransparentButton>
-                )}
-            </For>
-        </div>
+        <ContentFitAltView>
+            <CoreText>Equipment</CoreText>
+            <RowCenterAlignedView>
+                <For each={equipment.equipment}>
+                    {(equipSlot, index) => (
+                        <TransparentButton style={{width: "fit-content", height: "fit-content"}} onClick={()=>{}}>
+                            <ItemView id={equipSlot.itemId} amount={1}/>
+                        </TransparentButton>
+                    )}
+                </For>
+            </RowCenterAlignedView>
+        </ContentFitAltView>
     );
 };
 

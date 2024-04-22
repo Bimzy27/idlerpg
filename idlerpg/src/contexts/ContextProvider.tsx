@@ -6,6 +6,7 @@ import {SkillProvider} from "./SkillsContext";
 import {CombatProvider} from "./CombatContext";
 import {EquipmentProvider} from "./EquipmentContext";
 import {PlayerProvider} from "./PlayerContext";
+import {ContextLoader} from "./ContextLoader";
 
 interface ContextProviderProps {
     children?: JSX.Element;
@@ -18,11 +19,13 @@ export function ContextProvider(props:ContextProviderProps) {
                 <InventoryProvider>
                     <EquipmentProvider>
                         <PlayerProvider>
-                            <ActiveTaskProvider>
-                                <CombatProvider>
-                                    {props.children}
-                                </CombatProvider>
-                            </ActiveTaskProvider>
+                            <CombatProvider>
+                                <ActiveTaskProvider>
+                                    <ContextLoader>
+                                        {props.children}
+                                    </ContextLoader>
+                                </ActiveTaskProvider>
+                            </CombatProvider>
                         </PlayerProvider>
                     </EquipmentProvider>
                 </InventoryProvider>

@@ -7,7 +7,7 @@ import {InventoryData} from "../contexts/InventoryContext";
 export interface ITask
 {
     name:string;
-    durationSeconds:number;
+    intervalSeconds:number;
     requirements:IRequirement[];
     rewards:IReward[];
     costs:ICost[];

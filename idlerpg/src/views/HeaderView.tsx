@@ -7,6 +7,7 @@ import {getAuth, signOut} from "firebase/auth";
 import useSkills, {SkillsData} from "../contexts/SkillsContext";
 import {ISkillValue} from "../models/Skill";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
+import useEquipment, {EquipmentData} from "../contexts/EquipmentContext";
 
 interface IHeaderViewProps
 {
@@ -20,6 +21,7 @@ const HeaderView: Component<IHeaderViewProps> = (props) => {
     const auth = useAuth(getAuth(app));
     const skills = useSkills() as SkillsData;
     const inventory = useInventory() as InventoryData;
+    const equipment = useEquipment() as EquipmentData;
     async function saveUserData()
     {
         const userDocRef = doc(collection(db, "users"), auth.data?.uid); // Create doc ref with user ID
@@ -29,7 +31,6 @@ const HeaderView: Component<IHeaderViewProps> = (props) => {
                 skillMap[skill.id] = skill.exp;
             }
             await updateDoc(userDocRef, { skills: skillMap });
-            console.log("Skills saved successfully!");
         } catch (error) {
             console.error("Error saving skills to Firestore:", error);
         }
@@ -40,9 +41,18 @@ const HeaderView: Component<IHeaderViewProps> = (props) => {
                 invMap[item.id] = item.amount;
             }
             await updateDoc(userDocRef, { inventory: invMap });
-            console.log("Skills saved successfully!");
         } catch (error) {
-            console.error("Error saving skills to Firestore:", error);
+            console.error("Error saving inventory to Firestore:", error);
+        }
+
+        try {
+            const equipMap: Record<number, string> = {};
+            for (const equipSlot of equipment.equipment) {
+                equipMap[equipSlot.slot] = equipSlot.itemId;
+            }
+            await updateDoc(userDocRef, { equipment: equipMap });
+        } catch (error) {
+            console.error("Error saving equipment to Firestore:", error);
         }
     }
 

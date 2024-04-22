@@ -1,4 +1,4 @@
-import {Component, For} from "solid-js";
+import {Component, createSignal, For, JSX, Show} from "solid-js";
 import {
     ColumnCenterAlignedView, CoreImage,
     CoreText,
@@ -6,8 +6,8 @@ import {
     TransparentButton
 } from "../styles/styles";
 import {ITask, taskMeetsRequirements} from "../models/Task";
-import taskBuilder from "../data/tasks/TaskBuilder";
-import useActiveTask from "../contexts/ActiveTaskContext";
+import taskBuilder, {getTaskId} from "../data/tasks/TaskBuilder";
+import useActiveTask, {ActiveTaskData} from "../contexts/ActiveTaskContext";
 import RewardView from "./RewardView";
 import RequirementView from "./RequirementView";
 import useSkills, {SkillsData} from "../contexts/SkillsContext";
@@ -37,17 +37,20 @@ interface ITaskViewProps
 }
 
 const TaskView: Component<ITaskViewProps> = (props) => {
-    const activeTask = useActiveTask();
+    const activeTask = useActiveTask() as ActiveTaskData;
     const task:ITask = taskBuilder[props.taskId];
     const skills = useSkills();
     const inventory = useInventory();
+
+    const skillId = props.taskId.substring(0, props.taskId.indexOf('_'));
+
     return (
         <StyledTaskView>
             <TransparentButton onClick={()=>{activeTask?.setTask(task)}} style={{display:"flex", "flex-direction": "row", "align-items": "center"}}>
                 <ColumnCenterAlignedView>
                     <TaskText color={taskMeetsRequirements(task, skills as SkillsData, inventory as InventoryData) ? textPrimaryColor : redColor}>{task.name}</TaskText>
-                    <CoreImage src={`/assets/tasks/${props.taskId}.png`} alt="NO IMG" width={80} height={80}/>
-                    <CoreText_Mid>Duration: {task.durationSeconds} seconds</CoreText_Mid>
+                    <TaskImage taskId={props.taskId} skillId={skillId} width={80} height={80}/>
+                    <CoreText_Mid>Interval: {task.intervalSeconds} seconds</CoreText_Mid>
                 </ColumnCenterAlignedView>
                 <ColumnCenterAlignedView>
                     <CoreText_Mid>Requirements:</CoreText_Mid>
@@ -65,6 +68,36 @@ const TaskView: Component<ITaskViewProps> = (props) => {
                 </ColumnCenterAlignedView>
             </TransparentButton>
         </StyledTaskView>
+    );
+};
+
+type TaskImageProps = {
+    taskId: string;
+    skillId: string;
+    width?: number;
+    height?: number;
+};
+
+export const TaskImage: (props: TaskImageProps) => JSX.Element = ({
+                                                           taskId,
+                                                           skillId,
+                                                           width = 80,
+                                                           height = 80,
+                                                       }) => {
+    const [isError, setIsError] = createSignal(false);
+
+    const handleError = () => {
+        setIsError(true);
+    };
+
+    return (
+        <img
+            src={isError() ? `/assets/skills/${skillId}.png` : `/assets/tasks/${taskId}.png`}
+            alt={'NO IMG'}
+            width={width}
+            height={height}
+            onError={handleError}
+        />
     );
 };
 

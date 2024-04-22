@@ -48,7 +48,7 @@ const SkillView: Component<ISkillViewProps> = (props) => {
             <CoreImage src={`/assets/skills/${props.skillId}.png`} alt="NO IMG" width={50} height={50}></CoreImage>
             <CoreText>{skillBuilder[props.skillId].name}</CoreText>
             <CoreText>{curLvl()}/{getMaxLevel()} LVL</CoreText>
-            <CoreText_Mid>{curExp()}/{reqExp()} EXP</CoreText_Mid>
+            <CoreText_Mid>{Math.floor(curExp())}/{reqExp()} EXP</CoreText_Mid>
         </StyledSkillView>
     );
 };

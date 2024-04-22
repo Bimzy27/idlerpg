@@ -2,6 +2,8 @@ import {ITask} from "../../models/Task";
 import {smithingTaskBuilder} from "./SmithingTasks";
 import {woodcuttingTaskBuilder} from "./WoodcuttingTasks";
 import {miningTaskBuilder} from "./MiningTasks";
+import {cookingTaskBuilder} from "./CookingTasks";
+import {fishingTaskBuilder} from "./FishingTasks";
 
 export interface ITaskBuilder
 {
@@ -13,7 +15,7 @@ const taskBuilder:ITaskBuilder =
     'none':
         {
             name:'No Task',
-            durationSeconds:0,
+            intervalSeconds:0,
             requirements:[],
             rewards:[],
             costs:[]
@@ -21,6 +23,8 @@ const taskBuilder:ITaskBuilder =
     ...miningTaskBuilder,
     ...smithingTaskBuilder,
     ...woodcuttingTaskBuilder,
+    ...cookingTaskBuilder,
+    ...fishingTaskBuilder,
 }
 
 export const getTaskId = (task:ITask) => {

@@ -6,11 +6,16 @@ import {collection, getDocs, getFirestore} from "firebase/firestore";
 import {useAuth, useFirebaseApp} from "solid-firebase";
 import {getAuth} from "firebase/auth";
 
-export type SkillsData = {skills:ISkillValue[], addExp:(skillValue:ISkillValue)=>void, getSkillLevel:(skillId:string)=>number};
+export type SkillsData = {
+    skills:ISkillValue[],
+    addExp:(skillValue:ISkillValue)=>void,
+    getSkillLevel:(skillId:string)=>number,
+    setSkills:(skills:ISkillValue[])=>void,
+};
 
 export const SkillsContext = createContext<SkillsData>();
 
-const defaultSkills:ISkillValue[] = Object.keys(skillBuilder).map(id => ({
+export const defaultSkills:ISkillValue[] = Object.keys(skillBuilder).map(id => ({
     id,
     exp: 0,
 }));
@@ -20,10 +25,6 @@ interface SkillProps {
 }
 
 export function SkillProvider(props:SkillProps) {
-    const app = useFirebaseApp();
-    const db = getFirestore(app);
-    const auth = useAuth(getAuth(app));
-
     const [skills, setSkills] = createStore<ISkillValue[]>([]);
 
     const skillsExp:SkillsData = {
@@ -53,37 +54,11 @@ export function SkillProvider(props:SkillProps) {
             }
             return 0;
         },
-    };
-
-    async function loadUserSkillsData()
-    {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        querySnapshot.forEach((doc) =>
+        setSkills:(skills:ISkillValue[])=>
         {
-            if (doc.id === auth.data?.uid)
-            {
-                const skills = doc.data().skills;
-                const skillValues:ISkillValue[] = defaultSkills;
-                for(let skillId in skills)
-                {
-                    for (let i = 0; i < skillValues.length; i++)
-                    {
-                        if (skillValues[i].id === skillId)
-                        {
-                            const exp = skillId === 'hitpoints' ? getExpFromLevel(10) : skills[skillId];
-                            skillValues[i] = {
-                                id: skillId,
-                                exp: exp,
-                            }
-                        }
-                    }
-                }
-                setSkills(skillValues);
-            }
-        });
-    }
-
-    loadUserSkillsData();
+            setSkills(skills);
+        }
+    };
 
     return (
         <SkillsContext.Provider value={skillsExp}>

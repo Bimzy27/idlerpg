@@ -1,5 +1,7 @@
 import IId from "./Id";
 import {ICombatStats} from "./combat/CombatStats";
+import {CombatType} from "./combat/AttackStyle";
+import {IRequirement} from "./Requirement";
 
 export interface IItem
 {
@@ -17,6 +19,12 @@ export interface IEquippableItem extends IItem
 {
     slot:EquippableSlot[]
     combatStats:ICombatStats;
+    requirements:IRequirement[];
+}
+
+export interface IWeapon extends IEquippableItem
+{
+    combatType:CombatType;
 }
 
 export interface IEquipSlot
