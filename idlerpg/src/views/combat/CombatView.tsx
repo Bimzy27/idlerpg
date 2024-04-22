@@ -25,6 +25,7 @@ import AttackStyleView from "./AttackStyleView";
 import useActiveTask, {ActiveTaskData} from "../../contexts/ActiveTaskContext";
 import taskBuilder, {getTaskId} from "../../data/tasks/TaskBuilder";
 import {PlayerStatsView} from "./StatsView";
+import FoodView from "./FoodView";
 
 interface ICombatViewProps
 {
@@ -112,7 +113,8 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                     if (rng <= hitChance)
                     {
                         const maxHit = getMaxHit(playerStats);
-                        const damage = MathUtil.getRandomNumber(1, maxHit);
+                        const damage = MathUtil.getRandomWholeNumber(1, maxHit);
+
                         const enemyDamage = combat.loseEnemyHealth(damage);
 
                         for (const skillExp of combat.attackStyle().expPerHit)
@@ -177,7 +179,7 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                     if (rng <= hitChance)
                     {
                         const maxHit = getMaxHit(enemyStats);
-                        const damage = MathUtil.getRandomNumber(1, maxHit);
+                        const damage = MathUtil.getRandomWholeNumber(1, maxHit);
                         const playerDamage = player.loseHealth(damage);
 
                         if (playerDamage.died)
@@ -208,12 +210,14 @@ const CombatView: Component<ICombatViewProps> = (props) => {
             <StyledCombatChildView>
                 <CoreText>Player</CoreText>
                 <PlayerHealthbarView/>
-                <EquipmentView/>
+                <RowCenterAlignedView>
+                    <EquipmentView/>
+                    <FoodView/>
+                </RowCenterAlignedView>
                 <RowCenterAlignedView>
                     <AttackStyleView/>
                     <PlayerStatsView/>
                 </RowCenterAlignedView>
-
                 <ContentFitAltView>
                     <ColumnCenterAlignedView>
                         <CoreButton onClick={() => setIsExpanded(!isExpanded())}>Skills</CoreButton>

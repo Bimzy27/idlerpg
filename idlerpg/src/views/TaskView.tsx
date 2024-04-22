@@ -42,14 +42,12 @@ const TaskView: Component<ITaskViewProps> = (props) => {
     const skills = useSkills();
     const inventory = useInventory();
 
-    const skillId = props.taskId.substring(0, props.taskId.indexOf('_'));
-
     return (
         <StyledTaskView>
             <TransparentButton onClick={()=>{activeTask?.setTask(task)}} style={{display:"flex", "flex-direction": "row", "align-items": "center"}}>
                 <ColumnCenterAlignedView>
                     <TaskText color={taskMeetsRequirements(task, skills as SkillsData, inventory as InventoryData) ? textPrimaryColor : redColor}>{task.name}</TaskText>
-                    <TaskImage taskId={props.taskId} skillId={skillId} width={80} height={80}/>
+                    <TaskImage taskId={props.taskId} width={80} height={80}/>
                     <CoreText_Mid>Interval: {task.intervalSeconds} seconds</CoreText_Mid>
                 </ColumnCenterAlignedView>
                 <ColumnCenterAlignedView>
@@ -73,23 +71,21 @@ const TaskView: Component<ITaskViewProps> = (props) => {
 
 type TaskImageProps = {
     taskId: string;
-    skillId: string;
     width?: number;
     height?: number;
 };
 
 export const TaskImage: (props: TaskImageProps) => JSX.Element = ({
                                                            taskId,
-                                                           skillId,
                                                            width = 80,
                                                            height = 80,
-                                                       }) => {
+                                                       }) =>
+{
     const [isError, setIsError] = createSignal(false);
-
     const handleError = () => {
         setIsError(true);
     };
-
+    const skillId = taskId.substring(0, taskId.indexOf('_'));
     return (
         <img
             src={isError() ? `/assets/skills/${skillId}.png` : `/assets/tasks/${taskId}.png`}

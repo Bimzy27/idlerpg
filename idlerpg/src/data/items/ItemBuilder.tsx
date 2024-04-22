@@ -1,4 +1,4 @@
-import {IEquippableItem, IItem, IWeapon} from "../../models/Item";
+import {IEquippableItem, IFood, IItem, IWeapon} from "../../models/Item";
 import {meleeItemBuilder} from "./MeleeItems";
 import {rangedItemBuilder} from "./RangedItems";
 import {woodcuttingItemBuilder} from "./WoodcuttingItems";
@@ -12,7 +12,7 @@ import {craftingItemBuilder} from "./CraftingItems";
 
 export interface IItemBuilder
 {
-    [id:string]:IItem | IEquippableItem | IWeapon
+    [id:string]:IItem | IEquippableItem | IWeapon | IFood
 }
 
 const itemBuilder:IItemBuilder =

@@ -1,6 +1,6 @@
-import {createContext, JSX, useContext} from "solid-js";
+import {createContext, createSignal, JSX, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
-import {EquippableSlot, IEquippableItem, IEquipSlot, IItemAmount} from "../models/Item";
+import {EquippableSlot, IEquippableItem, IEquipSlot, IFood, IItemAmount} from "../models/Item";
 import useInventory, {InventoryData} from "./InventoryContext";
 import itemBuilder, {getItemId} from "../data/items/ItemBuilder";
 import {addStats, ICombatStats} from "../models/combat/CombatStats";
@@ -8,6 +8,7 @@ import {collection, getDocs, getFirestore} from "firebase/firestore";
 import {useAuth, useFirebaseApp} from "solid-firebase";
 import {getAuth} from "firebase/auth";
 import {getExpFromLevel} from "../models/Skill";
+import usePlayer, {PlayerData} from "./PlayerContext";
 
 export type EquipmentData = {
     equipment:IEquipSlot[],
@@ -88,7 +89,7 @@ export function EquipmentProvider(props:EquipmentProps) {
                 stats = addStats(stats, (itemBuilder[item.itemId] as IEquippableItem).combatStats);
             });
             return stats;
-        }
+        },
     };
 
     return (

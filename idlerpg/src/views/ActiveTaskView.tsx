@@ -9,6 +9,7 @@ import {ITask, taskMeetsRequirements} from "../models/Task";
 import {ICost, ItemCost} from "../models/Cost";
 import {styled} from "solid-styled-components";
 import {highlightColor, primaryColor} from "../styles/colors";
+import {TaskImage} from "./TaskView";
 
 const TaskProgressBarContainer = styled.div`
     width: 90%;
@@ -114,7 +115,7 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
             <StyledActiveTaskView>
                 <div style={{'display': "flex", "flex-direction": 'row', "grid-gap": '15px'}}>
                     <Show when={task.task() && task.task().intervalSeconds !== 0}>
-                        <CoreImage src={`/assets/tasks/${getTaskId(task.task())}.png`} alt="NO IMG" width={50} height={50}/>
+                        <TaskImage taskId={getTaskId(task.task())} width={50} height={50}/>
                     </Show>
                     <CoreText>{task.task().name}</CoreText>
                 </div>

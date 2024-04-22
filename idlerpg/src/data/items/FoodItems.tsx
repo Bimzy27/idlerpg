@@ -6,15 +6,18 @@ export const foodItemBuilder:IItemBuilder =
             {
                 name:'Shrimp',
                 value:3,
+                healing: 3,
             },
         'meat':
             {
                 name:'Meat',
                 value:3,
+                healing: 3,
             },
         'chicken':
             {
                 name:'Chicken',
                 value:3,
+                healing: 3,
             },
     }

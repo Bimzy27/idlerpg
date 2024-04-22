@@ -6,7 +6,8 @@ import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import {ColumnCenterAlignedView, CoreButton, CoreText, RowCenterAlignedView, TransparentButton} from "../styles/styles";
 import itemBuilder, {getItemId} from "../data/items/ItemBuilder";
 import useEquipment, {EquipmentData} from "../contexts/EquipmentContext";
-import {IEquippableItem} from "../models/Item";
+import {IEquippableItem, IFood} from "../models/Item";
+import usePlayer, {PlayerData} from "../contexts/PlayerContext";
 
 interface IInventoryProps
 {
@@ -43,6 +44,7 @@ const StyledSelectedItemView = styled.div`
 const InventoryView: Component<IInventoryProps> = (props) => {
     const inventory= useInventory() as InventoryData;
     const equipment= useEquipment() as EquipmentData;
+    const player= usePlayer() as PlayerData;
     return (
         <ColumnCenterAlignedView>
             <CoreText>Inventory</CoreText>
@@ -64,6 +66,10 @@ const InventoryView: Component<IInventoryProps> = (props) => {
                         <ItemView {...inventory.getItem(getItemId(inventory.selectedItem()))}/>
                         <Show when={'slot' in inventory.selectedItem()}>
                             <CoreButton onClick={()=> {equipment.equip(inventory.selectedItem() as IEquippableItem)}}>Equip</CoreButton>
+                        </Show>
+                        <Show when={'healing' in inventory.selectedItem()}>
+                            <CoreText>Healing: {(inventory.selectedItem() as IFood).healing}</CoreText>
+                            <CoreButton onClick={()=> {player.setFood(getItemId(inventory.selectedItem()))}}>Equip</CoreButton>
                         </Show>
                     </Show>
                 </StyledSelectedItemView>

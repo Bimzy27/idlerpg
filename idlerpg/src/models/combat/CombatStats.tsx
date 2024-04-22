@@ -43,7 +43,7 @@ export function getStrength(stats:ICombatStats):number
 
 export function getMaxHit(stats:ICombatStats):number
 {
-    return ((getStrength(stats) * 64) + 320) / 640;
+    return Math.floor(((getStrength(stats) * 64) + 320) / 640);
 }
 
 export function getAttack(stats:ICombatStats):number

@@ -36,7 +36,7 @@ export function ContextLoader(props:IContextLoaderProps) {
                     {
                         if (skillValues[i].id === skillId)
                         {
-                            const exp = skillId === 'hitpoints' ? getExpFromLevel(10) : skills[skillId];
+                            const exp = skillId === 'hitpoints' && skills[skillId] < getExpFromLevel(10) ? getExpFromLevel(10) : skills[skillId];
                             skillValues[i] = {
                                 id: skillId,
                                 exp: exp,

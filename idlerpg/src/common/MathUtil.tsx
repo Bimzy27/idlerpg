@@ -19,6 +19,11 @@ class MathUtil
         return min + scaledValue;
     }
 
+    public static getRandomWholeNumber(min: number, max: number): number
+    {
+        return Math.round(this.getRandomNumber(min, max));
+    }
+
     public static clamp(num: number, lower: number, upper: number): number
     {
         return Math.min(Math.max(num, lower), upper);

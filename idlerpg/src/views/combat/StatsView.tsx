@@ -5,7 +5,7 @@ import useCombat, {CombatData} from "../../contexts/CombatContext";
 import {ColumnCenterAlignedView, ContentFitAltView, ContentFitView, CoreButton, CoreText} from "../../styles/styles";
 import ItemView from "../ItemView";
 import usePlayer, {PlayerData} from "../../contexts/PlayerContext";
-import {getCombatLevel, getHitChance, ICombatStats} from "../../models/combat/CombatStats";
+import {getCombatLevel, getHitChance, getMaxHit, ICombatStats} from "../../models/combat/CombatStats";
 import {getEnemyId} from "../../data/EnemyBuilder";
 
 
@@ -36,6 +36,7 @@ const CombatStatsView: Component<ICombatStatsViewProps> = (props) => {
             <Show when={getEnemyId(combat.enemy()) !== 'none'}>
                 <CoreText>Hit Chance: {getHitChance(props.stats, props.opponentStats).toFixed(2)}</CoreText>
             </Show>
+            <CoreText>Max Hit: {getMaxHit(props.stats)}</CoreText>
             <CoreText>Attack: {props.stats.attack}</CoreText>
             <CoreText>Strength: {props.stats.strength}</CoreText>
             <CoreText>Defense: {props.stats.defense}</CoreText>

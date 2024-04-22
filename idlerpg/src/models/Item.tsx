@@ -27,6 +27,11 @@ export interface IWeapon extends IEquippableItem
     combatType:CombatType;
 }
 
+export interface IFood extends IItem
+{
+    healing:number
+}
+
 export interface IEquipSlot
 {
     slot:EquippableSlot;
