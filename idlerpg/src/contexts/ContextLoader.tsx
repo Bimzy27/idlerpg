@@ -82,6 +82,24 @@ export function ContextLoader(props:IContextLoaderProps) {
 
     loadUserEquipmentData().then(r => player.setInitialPlayerStats());
 
+    async function loadUserFood()
+    {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        querySnapshot.forEach((doc) =>
+        {
+            if (doc.id === auth.data?.uid)
+            {
+                const food = doc.data().food;
+                if (food)
+                {
+                    player.setFood(food);
+                }
+            }
+        });
+    }
+
+    loadUserFood()
+
     return (
         <div>
             {props.children}

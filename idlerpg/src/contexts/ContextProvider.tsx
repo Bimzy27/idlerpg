@@ -7,6 +7,7 @@ import {CombatProvider} from "./CombatContext";
 import {EquipmentProvider} from "./EquipmentContext";
 import {PlayerProvider} from "./PlayerContext";
 import {ContextLoader} from "./ContextLoader";
+import {ContextSaver} from "./ContextSaver";
 
 interface ContextProviderProps {
     children?: JSX.Element;
@@ -22,7 +23,9 @@ export function ContextProvider(props:ContextProviderProps) {
                             <CombatProvider>
                                 <ActiveTaskProvider>
                                     <ContextLoader>
-                                        {props.children}
+                                        <ContextSaver>
+                                            {props.children}
+                                        </ContextSaver>
                                     </ContextLoader>
                                 </ActiveTaskProvider>
                             </CombatProvider>

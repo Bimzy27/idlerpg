@@ -27,8 +27,11 @@ export function addStats(stats1: ICombatStats | undefined, stats2: ICombatStats 
 
 export function getCombatLevel(stats:ICombatStats):number
 {
-    //TODO implement combat level
-    return -1;
+    const baseCombatLevel = 0.25 * (stats.defense + stats.hitpoints + (0.5 * stats.prayer));
+    const meleeLevel = stats.attack + stats.strength;
+    const rangedLevel = stats.ranged * 1.5;
+    const magicLevel = stats.magic * 1.5;
+    return Math.floor(baseCombatLevel + 0.325 * Math.max(meleeLevel, rangedLevel, magicLevel));
 }
 
 export function getHitpoints(stats:ICombatStats):number

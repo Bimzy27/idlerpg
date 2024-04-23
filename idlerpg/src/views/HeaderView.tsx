@@ -8,6 +8,7 @@ import useSkills, {SkillsData} from "../contexts/SkillsContext";
 import {ISkillValue} from "../models/Skill";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import useEquipment, {EquipmentData} from "../contexts/EquipmentContext";
+import useContextSaver, {ContextSaverData} from "../contexts/ContextSaver";
 
 interface IHeaderViewProps
 {
@@ -15,46 +16,8 @@ interface IHeaderViewProps
 }
 
 const HeaderView: Component<IHeaderViewProps> = (props) => {
-
     const app = useFirebaseApp();
-    const db = getFirestore(app);
-    const auth = useAuth(getAuth(app));
-    const skills = useSkills() as SkillsData;
-    const inventory = useInventory() as InventoryData;
-    const equipment = useEquipment() as EquipmentData;
-    async function saveUserData()
-    {
-        const userDocRef = doc(collection(db, "users"), auth.data?.uid); // Create doc ref with user ID
-        try {
-            const skillMap: Record<string, number> = {};
-            for (const skill of skills.skills) {
-                skillMap[skill.id] = skill.exp;
-            }
-            await updateDoc(userDocRef, { skills: skillMap });
-        } catch (error) {
-            console.error("Error saving skills to Firestore:", error);
-        }
-
-        try {
-            const invMap: Record<string, number> = {};
-            for (const item of inventory.items) {
-                invMap[item.id] = item.amount;
-            }
-            await updateDoc(userDocRef, { inventory: invMap });
-        } catch (error) {
-            console.error("Error saving inventory to Firestore:", error);
-        }
-
-        try {
-            const equipMap: Record<number, string> = {};
-            for (const equipSlot of equipment.equipment) {
-                equipMap[equipSlot.slot] = equipSlot.itemId;
-            }
-            await updateDoc(userDocRef, { equipment: equipMap });
-        } catch (error) {
-            console.error("Error saving equipment to Firestore:", error);
-        }
-    }
+    const contextSaver = useContextSaver() as ContextSaverData;
 
     async function signOutUser()
     {
@@ -65,7 +28,7 @@ const HeaderView: Component<IHeaderViewProps> = (props) => {
         <StyledHeaderView>
             <CoreImage src={`/assets/icon.png`} alt="NO IMG" style={{"margin-right": '50px'}} width={120} height={120}></CoreImage>
             <CoreText style={{"font-size": '46px'}}>Idle RPG</CoreText>
-            <CoreButton style={{"margin-left": "auto", 'width': '180px', 'height': '50px'}} onClick={saveUserData}>Save</CoreButton>
+            <CoreButton style={{"margin-left": "auto", 'width': '180px', 'height': '50px'}} onClick={contextSaver.saveUserData}>Save</CoreButton>
             <CoreButton style={{"margin-left": "auto", 'width': '180px', 'height': '50px'}} onClick={signOutUser}>Sign Out</CoreButton>
         </StyledHeaderView>
     );

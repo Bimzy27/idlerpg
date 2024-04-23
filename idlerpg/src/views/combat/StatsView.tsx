@@ -24,15 +24,17 @@ const LootContainer = styled.div`
 
 interface ICombatStatsViewProps
 {
+    baseStats?:ICombatStats
     stats:ICombatStats
     opponentStats:ICombatStats
 }
 
 const CombatStatsView: Component<ICombatStatsViewProps> = (props) => {
     const combat = useCombat() as CombatData;
+
     return (
         <ContentFitAltView>
-            <CoreText>Combat Level: {getCombatLevel(props.stats)}</CoreText>
+            <CoreText>Combat Level: {getCombatLevel(props.baseStats ? props.baseStats : props.stats)}</CoreText>
             <Show when={getEnemyId(combat.enemy()) !== 'none'}>
                 <CoreText>Hit Chance: {getHitChance(props.stats, props.opponentStats).toFixed(2)}</CoreText>
             </Show>

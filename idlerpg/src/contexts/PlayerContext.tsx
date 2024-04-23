@@ -9,6 +9,7 @@ import useInventory, {InventoryData} from "./InventoryContext";
 
 export type PlayerData = {
     setInitialPlayerStats:()=>void,
+    getPlayerBaseStats:()=>ICombatStats,
     getPlayerStats:()=>ICombatStats,
     curHealth:Accessor<number>,
     loseHealth:(damage:number)=>CombatDamage,
@@ -25,21 +26,6 @@ interface PlayerProps {
 }
 
 export function PlayerProvider(props:PlayerProps) {
-
-    function getPlayerStats_Internal():ICombatStats
-    {
-        let stats:ICombatStats = {
-            hitpoints: skills.getSkillLevel('hitpoints'),
-            attack: skills.getSkillLevel('attack'),
-            strength: skills.getSkillLevel('strength'),
-            defense: skills.getSkillLevel('defense'),
-            ranged: skills.getSkillLevel('ranged'),
-            magic: skills.getSkillLevel('magic'),
-            prayer: skills.getSkillLevel('prayer'), };
-        stats = addStats(stats, equipment.getCombatStats());
-        return stats;
-    }
-
     const [food, setFood] = createSignal('');
     const [curHealth, setCurHealth] = createSignal<number>(0);
 
@@ -52,7 +38,22 @@ export function PlayerProvider(props:PlayerProps) {
         {
             myPlayer.gainHealth(myPlayer.getPlayerStats().hitpoints);
         },
-        getPlayerStats:getPlayerStats_Internal,
+        getPlayerBaseStats:()=>
+        {
+            return {
+                hitpoints: skills.getSkillLevel('hitpoints'),
+                attack: skills.getSkillLevel('attack'),
+                strength: skills.getSkillLevel('strength'),
+                defense: skills.getSkillLevel('defense'),
+                ranged: skills.getSkillLevel('ranged'),
+                magic: skills.getSkillLevel('magic'),
+                prayer: skills.getSkillLevel('prayer'),
+            };
+        },
+        getPlayerStats:()=>
+        {
+            return addStats(myPlayer.getPlayerBaseStats(), equipment.getCombatStats());
+        },
         curHealth:curHealth,
         loseHealth:(damage:number)=>{
             damage = Math.floor(damage);
