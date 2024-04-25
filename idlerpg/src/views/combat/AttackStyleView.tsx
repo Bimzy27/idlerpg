@@ -3,7 +3,7 @@ import useCombat, {CombatData} from "../../contexts/CombatContext";
 import {ColumnCenterAlignedView, ContentFitAltView, CoreImage, CoreText, TransparentButton} from "../../styles/styles";
 import useEquipment, {EquipmentData} from "../../contexts/EquipmentContext";
 import {EquippableSlot, IWeapon} from "../../models/Item";
-import {CombatType, IAttackStyle} from "../../models/combat/AttackStyle";
+import {AttackStyle, AttackType, IAttackStyle} from "../../models/combat/AttackStyle";
 import itemBuilder from "../../data/items/ItemBuilder";
 import {
     backgroundAlt1Color,
@@ -19,16 +19,16 @@ const AttackStyleView: Component<IAttackStyleViewProps> = (props) => {
     const combat = useCombat() as CombatData;
     const equipment = useEquipment() as EquipmentData;
 
-    function weaponStyle():CombatType
+    function weaponStyle():AttackType
     {
         const weaponId = equipment.getEquipment(EquippableSlot.MainHand).itemId;
         if (weaponId === 'none' || weaponId === '')
         {
             //is fists
-            return CombatType.Melee;
+            return AttackType.Melee;
         }
 
-        return (itemBuilder[weaponId] as IWeapon).combatType;
+        return (itemBuilder[weaponId] as IWeapon).attackType;
     }
 
     return (
@@ -36,20 +36,17 @@ const AttackStyleView: Component<IAttackStyleViewProps> = (props) => {
             <CoreText>Attack Style</CoreText>
             <ContentFitAltView>
                 <ColumnCenterAlignedView>
-                    <Show when={ weaponStyle() === CombatType.Melee }>
+                    <Show when={ weaponStyle() === AttackType.Melee }>
                         <AttackStyleButtonView attackStyle={{
-                            name: 'Stab',
-                            attackInterval: 1.5,
+                            attackStyle: AttackStyle.stab,
                             expPerHit: [{ id: 'attack', exp: 0.4}, { id: 'hitpoints', exp: 0.133}]
                         }}/>
                         <AttackStyleButtonView attackStyle={{
-                            name: 'Slash',
-                            attackInterval: 1.5,
+                            attackStyle: AttackStyle.slash,
                             expPerHit: [{ id: 'strength', exp: 0.4}, { id: 'hitpoints', exp: 0.133}]
                         }}/>
                         <AttackStyleButtonView attackStyle={{
-                            name: 'Block',
-                            attackInterval: 1.5,
+                            attackStyle: AttackStyle.block,
                             expPerHit: [{ id: 'defense', exp: 0.4}, { id: 'hitpoints', exp: 0.133}]
                         }}/>
                     </Show>
@@ -76,10 +73,10 @@ const StyledAttackStyleButtonView = styled.div`
 const AttackStyleButtonView: Component<IAttackStyleButtonViewProps> = (props) => {
     const combat = useCombat() as CombatData;
     return (
-        <TransparentButton onClick={()=>{combat.setAttackStyle(props.attackStyle)}} style={{"background-color": `${combat.attackStyle().name == props.attackStyle.name ? primaryTrimColor : backgroundAlt1Color}`, "border-radius": '5px'}}>
+        <TransparentButton onClick={()=>{combat.setAttackStyle(props.attackStyle)}} style={{"background-color": `${combat.attackStyle().attackStyle == props.attackStyle.attackStyle ? primaryTrimColor : backgroundAlt1Color}`, "border-radius": '5px'}}>
             <StyledAttackStyleButtonView>
-                <CoreImage src={`/assets/attackStyles/${props.attackStyle.name.toLowerCase()}.png`} alt="NO IMG" width={35} height={35}></CoreImage>
-                <CoreText style={{"padding-left": '10px', "padding-right": '10px'}}>{props.attackStyle.name}</CoreText>
+                <CoreImage src={`/assets/attackStyles/${props.attackStyle.attackStyle.toLowerCase()}.png`} alt="NO IMG" width={35} height={35}></CoreImage>
+                <CoreText style={{"padding-left": '10px', "padding-right": '10px'}}>{props.attackStyle.attackStyle.toString()}</CoreText>
             </StyledAttackStyleButtonView>
         </TransparentButton>
     );

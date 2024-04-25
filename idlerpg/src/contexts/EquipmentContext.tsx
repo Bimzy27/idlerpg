@@ -1,21 +1,18 @@
-import {createContext, createSignal, JSX, useContext} from "solid-js";
+import {createContext, JSX, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
-import {EquippableSlot, IEquippableItem, IEquipSlot, IFood, IItemAmount} from "../models/Item";
+import {EquippableSlot, IEquippableItem, IEquipSlot, IWeapon} from "../models/Item";
 import useInventory, {InventoryData} from "./InventoryContext";
 import itemBuilder, {getItemId} from "../data/items/ItemBuilder";
-import {addStats, ICombatStats} from "../models/combat/CombatStats";
-import {collection, getDocs, getFirestore} from "firebase/firestore";
-import {useAuth, useFirebaseApp} from "solid-firebase";
-import {getAuth} from "firebase/auth";
-import {getExpFromLevel} from "../models/Skill";
-import usePlayer, {PlayerData} from "./PlayerContext";
+import {combineAttackStats, combineDefenseStats, IAttackStats, IDefenseStats} from "../models/combat/CombatStats";
 
 export type EquipmentData = {
     equipment:IEquipSlot[],
     equip:(item:IEquippableItem)=>void,
-    getCombatStats:()=>ICombatStats,
+    getAttackStats:()=>IAttackStats,
+    getDefenseStats:()=>IDefenseStats,
     getEquipment:(equipSlot:EquippableSlot)=>IEquipSlot,
     setEquipment:(itemEquips:IEquipSlot[])=>void,
+    getWeapon:()=>IWeapon,
 };
 
 export const EquipmentContext = createContext<EquipmentData>();
@@ -55,19 +52,16 @@ export function EquipmentProvider(props:EquipmentProps) {
             let equipped:boolean = false;
             let oldItemId:string = '';
 
-            for (let i = 0; i < item.slot.length; i++)
+            for (let i = 0; i < equipment.length; i++)
             {
-                for (let j = 0; j < equipment.length; j++)
+                if (equipment[i].slot === item.slot)
                 {
-                    if (equipment[j].slot === item.slot[i])
+                    const itemId = getItemId(item);
+                    if (equipment[i].itemId !== itemId)
                     {
-                        const itemId = getItemId(item);
-                        if (equipment[j].itemId !== itemId)
-                        {
-                            oldItemId = equipment[j].itemId;
-                            setEquipment(equipSlot => equipSlot.itemId === equipment[j].itemId, 'itemId', itemId);
-                            equipped = true;
-                        }
+                        oldItemId = equipment[i].itemId;
+                        setEquipment(equipSlot => equipSlot.itemId === equipment[i].itemId, 'itemId', itemId);
+                        equipped = true;
                     }
                 }
             }
@@ -81,15 +75,42 @@ export function EquipmentProvider(props:EquipmentProps) {
                 inventory.removeItem({ id: getItemId(item), amount: 1});
             }
         },
-        getCombatStats: ()=>
+        getAttackStats: ()=>
         {
-            let stats:ICombatStats = {hitpoints:0, attack:0, strength:0, defense:0, ranged:0, magic:0, prayer:0,};
+            let stats:IAttackStats = {
+                stabBonus:0,
+                slashBonus:0,
+                blockBonus:0,
+                meleeStrength:0,
+                rangedBonus:0,
+                rangedStrength:0,
+                magicBonus:0,
+                magicStrength:0,
+            };
             equipment.forEach(item =>
             {
-                stats = addStats(stats, (itemBuilder[item.itemId] as IEquippableItem).combatStats);
+                stats = combineAttackStats(stats, (itemBuilder[item.itemId] as IEquippableItem).attackStats);
             });
             return stats;
         },
+        getDefenseStats: ()=>
+        {
+            let stats:IDefenseStats = {
+                meleeDefense:0,
+                rangedDefense:0,
+                magicDefense:0,
+                damageReduction:0,
+            };
+            equipment.forEach(item =>
+            {
+                stats = combineDefenseStats(stats, (itemBuilder[item.itemId] as IEquippableItem).defenseStats);
+            });
+            return stats;
+        },
+        getWeapon: ()=>
+        {
+            return itemBuilder[equips.getEquipment(EquippableSlot.MainHand).itemId] as IWeapon;
+        }
     };
 
     return (

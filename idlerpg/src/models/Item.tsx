@@ -1,6 +1,6 @@
 import IId from "./Id";
-import {ICombatStats} from "./combat/CombatStats";
-import {CombatType} from "./combat/AttackStyle";
+import {IAttackStats, ICombatStats, IDefenseStats} from "./combat/CombatStats";
+import {AttackType} from "./combat/AttackStyle";
 import {IRequirement} from "./Requirement";
 
 export interface IItem
@@ -17,14 +17,17 @@ export enum EquippableSlot
 
 export interface IEquippableItem extends IItem
 {
-    slot:EquippableSlot[]
-    combatStats:ICombatStats;
-    requirements:IRequirement[];
+    slot:EquippableSlot;
+    requirements?:IRequirement[];
+    attackStats?:IAttackStats;
+    defenseStats?:IDefenseStats;
 }
 
 export interface IWeapon extends IEquippableItem
 {
-    combatType:CombatType;
+    attackSpeed:number;
+    attackType:AttackType;
+    isTwoHanded:boolean;
 }
 
 export interface IFood extends IItem

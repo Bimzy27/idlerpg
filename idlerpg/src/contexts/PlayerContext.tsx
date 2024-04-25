@@ -1,7 +1,6 @@
 import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
-import {addStats, getHitpoints, ICombatStats} from "../models/combat/CombatStats";
+import {getHitpoints, ICombatStats} from "../models/combat/CombatStats";
 import useSkills, {SkillsData} from "./SkillsContext";
-import useEquipment, {EquipmentData} from "./EquipmentContext";
 import {CombatDamage} from "./CombatContext";
 import itemBuilder from "../data/items/ItemBuilder";
 import {IFood} from "../models/Item";
@@ -9,7 +8,6 @@ import useInventory, {InventoryData} from "./InventoryContext";
 
 export type PlayerData = {
     setInitialPlayerStats:()=>void,
-    getPlayerBaseStats:()=>ICombatStats,
     getPlayerStats:()=>ICombatStats,
     curHealth:Accessor<number>,
     loseHealth:(damage:number)=>CombatDamage,
@@ -30,15 +28,14 @@ export function PlayerProvider(props:PlayerProps) {
     const [curHealth, setCurHealth] = createSignal<number>(0);
 
     const skills = useSkills() as SkillsData;
-    const equipment = useEquipment() as EquipmentData;
     const inventory = useInventory() as InventoryData;
 
     const myPlayer:PlayerData = {
         setInitialPlayerStats:()=>
         {
-            myPlayer.gainHealth(myPlayer.getPlayerStats().hitpoints);
+            myPlayer.gainHealth(getHitpoints(myPlayer.getPlayerStats()));
         },
-        getPlayerBaseStats:()=>
+        getPlayerStats:()=>
         {
             return {
                 hitpoints: skills.getSkillLevel('hitpoints'),
@@ -50,10 +47,6 @@ export function PlayerProvider(props:PlayerProps) {
                 prayer: skills.getSkillLevel('prayer'),
             };
         },
-        getPlayerStats:()=>
-        {
-            return addStats(myPlayer.getPlayerBaseStats(), equipment.getCombatStats());
-        },
         curHealth:curHealth,
         loseHealth:(damage:number)=>{
             damage = Math.floor(damage);
@@ -62,7 +55,7 @@ export function PlayerProvider(props:PlayerProps) {
 
             setCurHealth(Math.floor(newHealth));
 
-            if (curHealth() > 0 && curHealth() <= myPlayer.getPlayerStats().hitpoints * 0.3)
+            if (curHealth() > 0 && curHealth() <= getHitpoints(myPlayer.getPlayerStats()) * 0.3)
             {
                 myPlayer.eatFood();
             }
@@ -92,7 +85,7 @@ export function PlayerProvider(props:PlayerProps) {
             if (food() != 'none' && inventory.hasItem(foodItem) && (itemBuilder[foodItem.id] as IFood).healing !== undefined)
             {
                 inventory.removeItem(foodItem);
-                myPlayer.gainHealth((itemBuilder[foodItem.id] as IFood).healing);
+                myPlayer.gainHealth((itemBuilder[foodItem.id] as IFood).healing * 10);
                 if (!inventory.hasItem(foodItem))
                 {
                     myPlayer.setFood('none');

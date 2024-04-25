@@ -14,7 +14,13 @@ import EquipmentView from "../EquipmentView";
 import {styled} from "solid-styled-components";
 import {backgroundAlt1Color, primaryTrimColor, transparentColor} from "../../styles/colors";
 import usePlayer, {PlayerData} from "../../contexts/PlayerContext";
-import {getHitChance, getMaxHit} from "../../models/combat/CombatStats";
+import {
+    getAccuracyBonus,
+    getAccuracyRating,
+    getAttackType,
+    getHitChance,
+    getMaxHit, getMinHit
+} from "../../models/combat/CombatStats";
 import MathUtil from "../../common/MathUtil";
 import useSkills, {SkillsData} from "../../contexts/SkillsContext";
 import {Collapse} from "solid-collapse";
@@ -26,6 +32,7 @@ import useActiveTask, {ActiveTaskData} from "../../contexts/ActiveTaskContext";
 import taskBuilder, {getTaskId} from "../../data/tasks/TaskBuilder";
 import {PlayerStatsView} from "./StatsView";
 import FoodView from "./FoodView";
+import useEquipment, {EquipmentData} from "../../contexts/EquipmentContext";
 
 interface ICombatViewProps
 {
@@ -62,6 +69,7 @@ const CombatView: Component<ICombatViewProps> = (props) => {
     const player = usePlayer() as PlayerData;
     const skills = useSkills() as SkillsData;
     const tasks = useActiveTask() as ActiveTaskData;
+    const equipment = useEquipment() as EquipmentData;
     const [isExpanded, setIsExpanded] = createSignal(false);
 
     let respawnTimeoutId:NodeJS.Timeout;
@@ -97,6 +105,12 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                 return;
             }
 
+            function getPlayerAttackSpeed():number
+            {
+                const weapon = equipment.getWeapon();
+                return weapon.name === '' ? 3000 : equipment.getWeapon().attackSpeed * 1000;
+            }
+
             const timeoutId1 = setTimeout(()=>
             {
                 const timeoutId2 = setTimeout(()=>
@@ -105,15 +119,18 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                     const playerStats = player.getPlayerStats();
 
                     //Attack Enemy
-                    const hitChance = getHitChance(playerStats, activeEnemy.combatStats);
+                    const attackStyle = combat.attackStyle().attackStyle;
+                    const attackType = getAttackType(attackStyle);
+                    const accuracyBonus = getAccuracyBonus(attackStyle, equipment.getAttackStats());
+                    const hitChance = getHitChance(attackType, getAccuracyRating(attackType, playerStats, accuracyBonus) , playerStats, activeEnemy.combatStats, activeEnemy.defenseStats);
 
                     console.log("Player Attempt Hit")
                     const rng = MathUtil.getRandomNumber(0, 1);
                     console.log('Player hit chance: ' + hitChance.toFixed(2) + ' rng: ' + rng.toFixed(2));
                     if (rng <= hitChance)
                     {
-                        const maxHit = getMaxHit(playerStats);
-                        const damage = MathUtil.getRandomWholeNumber(1, maxHit);
+                        const maxHit = getMaxHit(attackType, playerStats, equipment.getAttackStats());
+                        const damage = MathUtil.getRandomWholeNumber(getMinHit(), maxHit);
 
                         const enemyDamage = combat.loseEnemyHealth(damage);
 
@@ -143,7 +160,7 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                         startPlayerAttack();
                     }, 10);
                     playerTimeoutIds.push(timeoutId3)
-                }, combat.attackStyle().attackInterval * 1000)
+                }, getPlayerAttackSpeed())
                 playerTimeoutIds.push(timeoutId2);
             }, 10);
             playerTimeoutIds.push(timeoutId1);
@@ -171,15 +188,14 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                     const enemyStats = activeEnemy.combatStats;
 
                     //Attack Player
-                    const hitChance = getHitChance(enemyStats, player.getPlayerStats());
+                    const hitChance = getHitChance(activeEnemy.attackType, activeEnemy.accuracyRating, enemyStats, player.getPlayerStats(), equipment.getDefenseStats());
 
                     console.log("Enemy Attempt Hit")
                     const rng = MathUtil.getRandomNumber(0, 1);
                     console.log('Enemy hit chance: ' + hitChance.toFixed(2) + ' rng: ' + rng.toFixed(2));
                     if (rng <= hitChance)
                     {
-                        const maxHit = getMaxHit(enemyStats);
-                        const damage = MathUtil.getRandomWholeNumber(1, maxHit);
+                        const damage = MathUtil.getRandomWholeNumber(getMinHit(), activeEnemy.maxHit);
                         const playerDamage = player.loseHealth(damage);
 
                         if (playerDamage.died)

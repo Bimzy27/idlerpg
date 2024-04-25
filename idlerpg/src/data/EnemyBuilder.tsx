@@ -1,6 +1,5 @@
 import {IEnemy} from "../models/combat/Enemy";
-import {ITask} from "../models/Task";
-import taskBuilder from "./tasks/TaskBuilder";
+import {AttackType} from "../models/combat/AttackStyle";
 
 interface IEnemyBuilder
 {
@@ -12,6 +11,10 @@ const enemyBuilder:IEnemyBuilder =
         'none':
             {
                 name: 'None',
+                attackInterval: 0,
+                attackType:AttackType.Melee,
+                accuracyRating:0,
+                maxHit:0,
                 combatStats:
                     {
                         hitpoints: 0,
@@ -22,12 +25,20 @@ const enemyBuilder:IEnemyBuilder =
                         magic: 0,
                         prayer: 0,
                     },
-                attackInterval: 0
+                defenseStats:
+                    {
+                        meleeDefense: 0,
+                        rangedDefense: 0,
+                        magicDefense: 0,
+                    },
             },
         'chicken':
             {
                 name: 'Chicken',
-                attackInterval: 2,
+                attackInterval: 2.4,
+                attackType:AttackType.Melee,
+                accuracyRating:170,
+                maxHit:11,
                 combatStats:
                     {
                         hitpoints: 3,
@@ -37,6 +48,12 @@ const enemyBuilder:IEnemyBuilder =
                         ranged: 1,
                         magic: 1,
                         prayer: 0,
+                    },
+                defenseStats:
+                    {
+                        meleeDefense: 220,
+                        rangedDefense: 640,
+                        magicDefense: 640,
                     },
                 guaranteedDrops:
                     [
@@ -57,7 +74,10 @@ const enemyBuilder:IEnemyBuilder =
         'cow':
             {
                 name: 'Cow',
-                attackInterval: 2,
+                attackInterval: 2.4,
+                attackType:AttackType.Melee,
+                accuracyRating:490,
+                maxHit:18,
                 combatStats:
                     {
                         hitpoints: 8,
@@ -67,6 +87,12 @@ const enemyBuilder:IEnemyBuilder =
                         ranged: 1,
                         magic: 1,
                         prayer: 0,
+                    },
+                defenseStats:
+                    {
+                        meleeDefense: 430,
+                        rangedDefense: 640,
+                        magicDefense: 640,
                     },
                 guaranteedDrops:
                     [
@@ -87,7 +113,10 @@ const enemyBuilder:IEnemyBuilder =
         'goblin':
             {
                 name: 'Goblin',
-                attackInterval: 2,
+                attackInterval: 3,
+                attackType:AttackType.Melee,
+                accuracyRating:640,
+                maxHit:23,
                 combatStats:
                     {
                         hitpoints: 5,
@@ -97,6 +126,12 @@ const enemyBuilder:IEnemyBuilder =
                         ranged: 1,
                         magic: 1,
                         prayer: 0,
+                    },
+                defenseStats:
+                    {
+                        meleeDefense: 640,
+                        rangedDefense: 640,
+                        magicDefense: 640,
                     },
                 guaranteedDrops:
                     [

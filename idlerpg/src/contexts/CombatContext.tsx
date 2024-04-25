@@ -1,14 +1,14 @@
 import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
 import {IEnemy} from "../models/combat/Enemy";
 import enemyBuilder, {getEnemyId} from "../data/EnemyBuilder";
-import {getHitpoints} from "../models/combat/CombatStats";
 import {createStore} from "solid-js/store";
 import {IItemAmount} from "../models/Item";
 import useInventory, {InventoryData} from "./InventoryContext";
-import {IAttackStyle} from "../models/combat/AttackStyle";
+import {AttackStyle, IAttackStyle} from "../models/combat/AttackStyle";
 import {ActiveTaskData} from "./ActiveTaskContext";
 import taskBuilder from "../data/tasks/TaskBuilder";
 import usePlayer, {PlayerData} from "./PlayerContext";
+import {getHitpoints} from "../models/combat/CombatStats";
 
 export type CombatDamage = {died:boolean, damage:number}
 export type CombatData = {
@@ -32,8 +32,7 @@ export function CombatProvider(props:ICombatProps) {
     const [activeEnemy, setActiveEnemy] = createSignal(enemyBuilder['none']);
     const [curHealth, setCurHealth] = createSignal<number>(0);
     const [attackStyle, setAttackStyle] = createSignal<IAttackStyle>({
-        name: 'Stab',
-        attackInterval: 1.5,
+        attackStyle: AttackStyle.stab,
         expPerHit: [{ id: 'attack', exp: 2}, { id: 'hitpoints', exp: 0.5}]
     });
     const [loot, setLoot] = createStore<IItemAmount[]>([]);

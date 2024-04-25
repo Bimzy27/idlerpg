@@ -14,12 +14,24 @@ const FoodView: Component<IFoodViewProps> = (props) => {
     const inventory = useInventory() as InventoryData;
     const player = usePlayer() as PlayerData;
 
+    function getHealing():number
+    {
+        if (player.food() !== 'none' && player.food() !== '')
+        {
+            return (itemBuilder[player.food()] as IFood).healing * 10;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
     return (
         <ColumnCenterAlignedView>
             <CoreText>Food</CoreText>
             <ContentFitAltView>
                 <ItemView amount={inventory.getItem(player.food()).amount} id={player.food()}/>
-                <CoreText>Healing: {(itemBuilder[player.food()] as IFood).healing}</CoreText>
+                <CoreText>Healing: {getHealing()}</CoreText>
                 <CoreButton onClick={()=>player.eatFood()}>Eat</CoreButton>
             </ContentFitAltView>
         </ColumnCenterAlignedView>
