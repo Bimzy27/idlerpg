@@ -4,16 +4,21 @@ import {createStore} from "solid-js/store";
 import {collection, getDocs, getFirestore} from "firebase/firestore";
 import {useAuth, useFirebaseApp} from "solid-firebase";
 import {getAuth} from "firebase/auth";
+import {itemData} from "../loaders/ItemLoader";
 
 export type InventoryData = {
+    coins:Accessor<number>,
+    hasCoins:(amount:number)=>boolean,
+    addCoins:(amount:number)=>void,
+    removeCoins:(amount:number)=>void,
     items:IItemAmount[],
     addItem:(item:IItemAmount)=>void,
     addItems:(items:IItemAmount[])=>void,
     removeItem:(item:IItemAmount)=>void,
     hasItem:(item:IItemAmount)=>boolean
     getItem:(itemId:string)=>IItemAmount
-    selectedItem:Accessor<IItem>,
-    setSelectedItem:(item:IItem)=>void};
+    selectedItem:Accessor<string>,
+    setSelectedItem:(itemId:string)=>void};
 
 export const InventoryContext = createContext<InventoryData>();
 
@@ -22,10 +27,24 @@ interface InventoryProps {
 }
 
 export function InventoryProvider(props:InventoryProps) {
+    const [coins, setCoins] = createSignal(0);
     const [items, setItems] = createStore<IItemAmount[]>([]);
-    const [selectedItem, setSelectedItem] = createSignal<IItem>({ name: '', value: -1 });
+    const [selectedItem, setSelectedItem] = createSignal('none');
 
     const inventoryItems:InventoryData = {
+        coins:coins,
+        hasCoins:(amount:number)=>
+        {
+            return coins() >= amount;
+        },
+        addCoins:(amount:number)=>
+        {
+            setCoins(coins() + amount);
+        },
+        removeCoins:(amount:number)=>
+        {
+            setCoins(Math.max(coins() - amount, 0));
+        },
         items: items,
         addItem: (item:IItemAmount)=>{
             const currentItem: IItemAmount | undefined = items.find(invItem => invItem.id === item.id);
@@ -85,9 +104,9 @@ export function InventoryProvider(props:InventoryProps) {
             return { id:'', amount: -1 };
         },
         selectedItem: selectedItem,
-        setSelectedItem: (item:IItem)=>
+        setSelectedItem: (itemId:string)=>
         {
-            setSelectedItem(item);
+            setSelectedItem(itemId);
         },
     };
 

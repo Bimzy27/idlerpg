@@ -1,4 +1,4 @@
-import {Component} from "solid-js";
+import {Component, JSX} from "solid-js";
 import {
     CoreButton,
     CoreImage,
@@ -8,6 +8,8 @@ import {
 import useGameView from "../contexts/GameViewContext";
 import {styled} from "solid-styled-components";
 import {backgroundAlt1Color, primaryTrimColor, transparentColor} from "../styles/colors";
+import CoinsView from "./CoinsView";
+import useInventory, {InventoryData} from "../contexts/InventoryContext";
 
 const StyledTabButtonInnerView = styled.div`
     display: flex;
@@ -49,12 +51,17 @@ interface ITabViewProps
 const TabView: Component<ITabViewProps> = (props) => {
 
     const gameView = useGameView();
+    const inventory = useInventory() as InventoryData;
+
     return (
         <StyledTabView>
             <CoreText>Active view: {gameView?.activeView()}</CoreText>
             <TabButton viewName={'profile'}></TabButton>
-            <TabButton viewName={'inventory'}></TabButton>
+            <TabButton viewName={'inventory'}>
+                <CoinsView amount={inventory.coins()}/>
+            </TabButton>
             <TabButton viewName={'location'}></TabButton>
+            <TabButton viewName={'map'}></TabButton>
             <CoreText>Combat</CoreText>
             <TabButton viewName={'attack'} imagePath={'skills/attack'} viewOverride={'combat'}></TabButton>
             <TabButton viewName={'strength'} imagePath={'skills/strength'} viewOverride={'combat'}></TabButton>
@@ -81,6 +88,7 @@ interface ITabButtonProps
     viewName:string;
     imagePath?:string;
     viewOverride?:string;
+    children?: JSX.Element;
 }
 
 const TabButton = (props:ITabButtonProps) => {
@@ -94,6 +102,7 @@ const TabButton = (props:ITabButtonProps) => {
                 <StyledTabButtonInnerView>
                     <CoreImage src={`/assets/${props.imagePath ? props.imagePath: props.viewName}.png`} alt="NO IMG" width={35} height={35}></CoreImage>
                     <CoreText style={{"padding-left": '20px'}}>{props.viewName}</CoreText>
+                    {props.children}
                 </StyledTabButtonInnerView>
             </TransparentButton>
         </StyledTabButtonView>

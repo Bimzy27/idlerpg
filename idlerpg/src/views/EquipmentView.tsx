@@ -1,6 +1,5 @@
 import {Component, For} from "solid-js";
 import {ContentFitAltView, CoreText, RowCenterAlignedView, TransparentButton} from "../styles/styles";
-import itemBuilder from "../data/items/ItemBuilder";
 import ItemView from "./ItemView";
 import useEquipment, {EquipmentData} from "../contexts/EquipmentContext";
 

@@ -1,11 +1,12 @@
-import {createContext, JSX, useContext} from "solid-js";
-import {collection, doc, getFirestore, updateDoc} from "firebase/firestore";
+import {createContext, createEffect, createSignal, JSX, useContext} from "solid-js";
+import {collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc} from "firebase/firestore";
 import {useAuth, useFirebaseApp} from "solid-firebase";
 import {getAuth} from "firebase/auth";
 import useSkills, {SkillsData} from "./SkillsContext";
 import useInventory, {InventoryData} from "./InventoryContext";
 import useEquipment, {EquipmentData} from "./EquipmentContext";
 import usePlayer, {PlayerData} from "./PlayerContext";
+import useMap, {MapData} from "./MapContext";
 
 export type ContextSaverData = {
     saveUserData:()=>void,
@@ -25,10 +26,18 @@ export function ContextSaver(props:IContextSaverProps) {
     const inventory = useInventory() as InventoryData;
     const equipment = useEquipment() as EquipmentData;
     const player = usePlayer() as PlayerData;
+    const map = useMap() as MapData;
 
     async function saveUserData()
     {
-        const userDocRef = doc(collection(db, "users"), auth.data?.uid); // Create doc ref with user ID
+        const userDocRef = doc(collection(db, "users"), auth.data?.uid);
+        const docRef = await getDoc(userDocRef);
+
+        if (!docRef.exists())
+        {
+            await setDoc(userDocRef, { food: player.food() });
+        }
+
         try {
             const skillMap: Record<string, number> = {};
             for (const skill of skills.skills) {
@@ -62,7 +71,19 @@ export function ContextSaver(props:IContextSaverProps) {
         try {
             await updateDoc(userDocRef, { food: player.food() });
         } catch (error) {
-            console.error("Error saving equipment to Firestore:", error);
+            console.error("Error saving food to Firestore:", error);
+        }
+
+        try {
+            await updateDoc(userDocRef, { coins: inventory.coins() });
+        } catch (error) {
+            console.error("Error saving coins to Firestore:", error);
+        }
+
+        try {
+            await updateDoc(userDocRef, { location: map.location() });
+        } catch (error) {
+            console.error("Error saving location to Firestore:", error);
         }
     }
 
@@ -72,6 +93,16 @@ export function ContextSaver(props:IContextSaverProps) {
             saveUserData();
         },
     };
+
+    const [isSaving, setIsSaving] = createSignal(false);
+    createEffect(() => {
+        const intervalId = setInterval(() => {
+            setIsSaving(true); // Set loading indicator before saving
+            saveUserData().then(() => setIsSaving(false)); // Update loading indicator after saving
+        }, 30 * 60 * 1000); // 30 minutes in milliseconds
+
+        return () => clearInterval(intervalId); // Cleanup function to clear interval on unmount
+    });
 
     return (
         <ContextSaverContext.Provider value={contextSaver}>

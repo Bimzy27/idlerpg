@@ -7,9 +7,9 @@ import {
     CoreText,
     RowCenterAlignedView
 } from "../../styles/styles";
-import {getEnemyId} from "../../data/EnemyBuilder";
 import {EnemyHealthbarView} from "./HealthbarView";
 import {EnemyStatsView} from "./StatsView";
+import {getEnemyId} from "../../loaders/EnemyLoader";
 
 interface IEnemyViewProps
 {

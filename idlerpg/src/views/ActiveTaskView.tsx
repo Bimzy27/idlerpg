@@ -3,13 +3,13 @@ import {CoreImage, CoreText, StyledActiveTaskView} from "../styles/styles";
 import useActiveTask, {ActiveTaskData} from "../contexts/ActiveTaskContext";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import {IReward, ItemReward, SkillReward} from "../models/Reward";
-import taskBuilder, {getTaskId} from "../data/tasks/TaskBuilder";
 import useSkills, {SkillsData} from "../contexts/SkillsContext";
 import {ITask, taskMeetsRequirements} from "../models/Task";
 import {ICost, ItemCost} from "../models/Cost";
 import {styled} from "solid-styled-components";
 import {highlightColor, primaryColor} from "../styles/colors";
 import {TaskImage} from "./TaskView";
+import {getTaskId, taskData} from "../loaders/TaskLoader";
 
 const TaskProgressBarContainer = styled.div`
     width: 90%;
@@ -88,7 +88,7 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
                         }
                         else
                         {
-                            task.setTask(taskBuilder['none']);
+                            task.setTask(taskData['none']);
                         }
                     }, 10);
                     timeoutIds.push(timeoutId3)

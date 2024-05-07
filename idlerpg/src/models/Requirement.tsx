@@ -44,3 +44,19 @@ export class ItemRequirement implements IRequirement
         return inventory.hasItem(this.itemAmount);
     }
 }
+
+export function getRequirements(data:Object[]):IRequirement[]
+{
+    let requirements:IRequirement[] = [];
+    for (const requirement of data) {
+        if ('itemAmount' in requirement)
+        {
+            requirements.push(new ItemRequirement(requirement.itemAmount as IItemAmount));
+        }
+        else if ('skillValue' in requirement)
+        {
+            requirements.push(new SkillRequirement(requirement.skillValue as ISkillValue));
+        }
+    }
+    return requirements;
+}

@@ -1,14 +1,25 @@
-import {CoreButton, CoreImage, CoreText, StyledHeaderView} from "../styles/styles";
+import {CoreButton, CoreImage, CoreText} from "../styles/styles";
 import { Component } from 'solid-js'
-import {useAuth, useFirebaseApp} from "solid-firebase";
-import {addDoc, collection, doc, getFirestore, setDoc, updateDoc} from "firebase/firestore";
-import {signInWithEmailAndPassword} from "@firebase/auth";
+import {useFirebaseApp} from "solid-firebase";
 import {getAuth, signOut} from "firebase/auth";
-import useSkills, {SkillsData} from "../contexts/SkillsContext";
-import {ISkillValue} from "../models/Skill";
-import useInventory, {InventoryData} from "../contexts/InventoryContext";
-import useEquipment, {EquipmentData} from "../contexts/EquipmentContext";
 import useContextSaver, {ContextSaverData} from "../contexts/ContextSaver";
+import {styled} from "solid-styled-components";
+import {secondaryColor} from "../styles/colors";
+
+const StyledHeaderView = styled.div`
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 15vh;
+    background-color: ${secondaryColor}; // Set default if not exported
+    z-index: 200;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+`;
 
 interface IHeaderViewProps
 {

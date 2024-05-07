@@ -1,11 +1,10 @@
 import {Component} from "solid-js";
 import {styled} from "solid-styled-components";
-import {redColor, highlightColor, primaryColor} from "../../styles/colors";
+import {redColor, highlightColor} from "../../styles/colors";
 import usePlayer, {PlayerData} from "../../contexts/PlayerContext";
 import {getHitpoints} from "../../models/combat/CombatStats";
 import {CoreButton, CoreImage, CoreText, RowCenterAlignedView} from "../../styles/styles";
 import useCombat, {CombatData} from "../../contexts/CombatContext";
-import enemyBuilder from "../../data/EnemyBuilder";
 
 const HealthBarContainer = styled.div`
     width: 100%;
@@ -36,8 +35,6 @@ export const PlayerHealthbarView: Component<IHealthbarViewProps> = (props) => {
                 <CoreImage width={26} height={26} src={`/assets/skills/hitpoints.png`} />
                 <CoreText>{player.curHealth()}/{getHitpoints(playerStats)}</CoreText>
             </RowCenterAlignedView>
-            <CoreButton onClick={()=>{player.gainHealth(1)}}>GainHP</CoreButton>
-            <CoreButton onClick={()=>{player.loseHealth(1)}}>LoseHP</CoreButton>
         </HealthBarContainer>
     );
 };

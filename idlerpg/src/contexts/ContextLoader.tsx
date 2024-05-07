@@ -7,6 +7,8 @@ import {getAuth} from "firebase/auth";
 import usePlayer, {PlayerData} from "./PlayerContext";
 import {EquippableSlot, IEquipSlot} from "../models/Item";
 import useEquipment, {defaultEquipment, EquipmentData} from "./EquipmentContext";
+import useInventory, {InventoryData} from "./InventoryContext";
+import useMap, {MapData} from "./MapContext";
 
 interface IContextLoaderProps {
     children?: JSX.Element;
@@ -20,6 +22,8 @@ export function ContextLoader(props:IContextLoaderProps) {
     const skillsData = useSkills() as SkillsData;
     const equipmentData = useEquipment() as EquipmentData;
     const player = usePlayer() as PlayerData;
+    const inventory = useInventory() as InventoryData;
+    const map = useMap() as MapData;
 
     async function loadUserSkillsData()
     {
@@ -99,6 +103,42 @@ export function ContextLoader(props:IContextLoaderProps) {
     }
 
     loadUserFood()
+
+    async function loadUserCoins()
+    {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        querySnapshot.forEach((doc) =>
+        {
+            if (doc.id === auth.data?.uid)
+            {
+                const coins = doc.data().coins;
+                if (coins)
+                {
+                    inventory.addCoins(coins);
+                }
+            }
+        });
+    }
+
+    loadUserCoins()
+
+    async function loadUserLocation()
+    {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        querySnapshot.forEach((doc) =>
+        {
+            if (doc.id === auth.data?.uid)
+            {
+                const location = doc.data().location;
+                if (location)
+                {
+                    map.setLocation(location);
+                }
+            }
+        });
+    }
+
+    loadUserLocation()
 
     return (
         <div>

@@ -60,34 +60,6 @@ export const StyledActiveTaskView = styled.div`
     border-radius: 25px;
 `;
 
-export const StyledGameView = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: ${backgroundColor};
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-`;
-
-export const StyledHeaderView = styled.div`
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 15vh;
-    background-color: ${secondaryColor}; // Set default if not exported
-    z-index: 200;
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: row;
-    align-items: center;
-    padding: 20px;
-`;
-
 export const ColumnCenterAlignedView = styled.div`
     width: 100%;
     height: 100%;

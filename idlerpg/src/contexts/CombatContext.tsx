@@ -1,14 +1,14 @@
 import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
 import {IEnemy} from "../models/combat/Enemy";
-import enemyBuilder, {getEnemyId} from "../data/EnemyBuilder";
 import {createStore} from "solid-js/store";
 import {IItemAmount} from "../models/Item";
 import useInventory, {InventoryData} from "./InventoryContext";
 import {AttackStyle, IAttackStyle} from "../models/combat/AttackStyle";
 import {ActiveTaskData} from "./ActiveTaskContext";
-import taskBuilder from "../data/tasks/TaskBuilder";
 import usePlayer, {PlayerData} from "./PlayerContext";
 import {getHitpoints} from "../models/combat/CombatStats";
+import {enemyData, getEnemyId} from "../loaders/EnemyLoader";
+import {taskData} from "../loaders/TaskLoader";
 
 export type CombatDamage = {died:boolean, damage:number}
 export type CombatData = {
@@ -29,7 +29,7 @@ interface ICombatProps {
 }
 
 export function CombatProvider(props:ICombatProps) {
-    const [activeEnemy, setActiveEnemy] = createSignal(enemyBuilder['none']);
+    const [activeEnemy, setActiveEnemy] = createSignal(enemyData['none']);
     const [curHealth, setCurHealth] = createSignal<number>(0);
     const [attackStyle, setAttackStyle] = createSignal<IAttackStyle>({
         attackStyle: AttackStyle.stab,
@@ -39,9 +39,11 @@ export function CombatProvider(props:ICombatProps) {
     const inventory = useInventory() as InventoryData;
     const player = usePlayer() as PlayerData;
 
+    console.log('Combat Provider Loaded.');
+
     const combat:CombatData = {
         enemy: activeEnemy,
-        setEnemy: (enemy:IEnemy, taskData:ActiveTaskData)=>{
+        setEnemy: (enemy:IEnemy, tasksData:ActiveTaskData)=>{
 
             if (getEnemyId(enemy) !== 'none')
             {
@@ -49,7 +51,7 @@ export function CombatProvider(props:ICombatProps) {
                 {
                     return;
                 }
-                taskData.setTask(taskBuilder['none']);
+                tasksData.setTask(taskData['none']);
             }
             setActiveEnemy(enemy);
             setCurHealth(getHitpoints(activeEnemy().combatStats))

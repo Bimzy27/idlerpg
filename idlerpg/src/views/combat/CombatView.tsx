@@ -1,7 +1,6 @@
 import {Component, createEffect, createSignal} from "solid-js";
 import EnemyView from "./EnemyView";
 import useCombat, {CombatData} from "../../contexts/CombatContext";
-import enemyBuilder, {getEnemyId} from "../../data/EnemyBuilder";
 import {
     ColumnCenterAlignedView,
     ContentFitAltView,
@@ -29,10 +28,12 @@ import {tryRewardDrops} from "../../models/combat/Droptable";
 import LootView from "./LootView";
 import AttackStyleView from "./AttackStyleView";
 import useActiveTask, {ActiveTaskData} from "../../contexts/ActiveTaskContext";
-import taskBuilder, {getTaskId} from "../../data/tasks/TaskBuilder";
 import {PlayerStatsView} from "./StatsView";
 import FoodView from "./FoodView";
 import useEquipment, {EquipmentData} from "../../contexts/EquipmentContext";
+import {enemyData, getEnemyId} from "../../loaders/EnemyLoader";
+import {getTaskId} from "../../loaders/TaskLoader";
+import {getItemId} from "../../loaders/ItemLoader";
 
 interface ICombatViewProps
 {
@@ -66,9 +67,9 @@ const StyledCombatChildView = styled.div`
 
 const CombatView: Component<ICombatViewProps> = (props) => {
     const combat = useCombat() as CombatData;
+    const tasks = useActiveTask() as ActiveTaskData;
     const player = usePlayer() as PlayerData;
     const skills = useSkills() as SkillsData;
-    const tasks = useActiveTask() as ActiveTaskData;
     const equipment = useEquipment() as EquipmentData;
     const [isExpanded, setIsExpanded] = createSignal(false);
 
@@ -79,12 +80,12 @@ const CombatView: Component<ICombatViewProps> = (props) => {
     function startEnemyRespawn()
     {
         const prevEnemyId = getEnemyId(combat.enemy());
-        combat.setEnemy(enemyBuilder['none'], tasks);
+        combat.setEnemy(enemyData['none'], tasks);
         respawnTimeoutId = setTimeout(()=>
         {
             if (getTaskId(tasks.task()) === 'none')
             {
-                combat.setEnemy(enemyBuilder[prevEnemyId], tasks);
+                combat.setEnemy(enemyData[prevEnemyId], tasks);
             }
         }, 1000)
     }
@@ -108,7 +109,7 @@ const CombatView: Component<ICombatViewProps> = (props) => {
             function getPlayerAttackSpeed():number
             {
                 const weapon = equipment.getWeapon();
-                return weapon.name === '' ? 3000 : equipment.getWeapon().attackSpeed * 1000;
+                return getItemId(weapon) === 'none' ? 3000 : equipment.getWeapon().attackSpeed * 1000;
             }
 
             const timeoutId1 = setTimeout(()=>
@@ -122,10 +123,10 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                     const attackStyle = combat.attackStyle().attackStyle;
                     const attackType = getAttackType(attackStyle);
                     const accuracyBonus = getAccuracyBonus(attackStyle, equipment.getAttackStats());
-                    const hitChance = getHitChance(attackType, getAccuracyRating(attackType, playerStats, accuracyBonus) , playerStats, activeEnemy.combatStats, activeEnemy.defenseStats);
+                    const hitChance = getHitChance(attackType, getAccuracyRating(attackType, playerStats, accuracyBonus), activeEnemy.combatStats, activeEnemy.defenseStats);
 
                     console.log("Player Attempt Hit")
-                    const rng = MathUtil.getRandomNumber(0, 1);
+                    const rng = MathUtil.getRandomNumber(0, 100);
                     console.log('Player hit chance: ' + hitChance.toFixed(2) + ' rng: ' + rng.toFixed(2));
                     if (rng <= hitChance)
                     {
@@ -188,10 +189,10 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                     const enemyStats = activeEnemy.combatStats;
 
                     //Attack Player
-                    const hitChance = getHitChance(activeEnemy.attackType, activeEnemy.accuracyRating, enemyStats, player.getPlayerStats(), equipment.getDefenseStats());
+                    const hitChance = getHitChance(activeEnemy.attackType, activeEnemy.accuracyRating, player.getPlayerStats(), equipment.getDefenseStats());
 
                     console.log("Enemy Attempt Hit")
-                    const rng = MathUtil.getRandomNumber(0, 1);
+                    const rng = MathUtil.getRandomNumber(0, 100);
                     console.log('Enemy hit chance: ' + hitChance.toFixed(2) + ' rng: ' + rng.toFixed(2));
                     if (rng <= hitChance)
                     {
@@ -200,13 +201,13 @@ const CombatView: Component<ICombatViewProps> = (props) => {
 
                         if (playerDamage.died)
                         {
-                            combat.setEnemy(enemyBuilder['none'], tasks);
+                            combat.setEnemy(enemyData['none'], tasks);
                         }
                     }
 
                     const timeoutId3 = setTimeout(()=>
                     {
-                        startPlayerAttack();
+                        startEnemyAttack();
                     }, 10);
                     enemyTimeoutIds.push(timeoutId3)
                 }, combat.enemy().attackInterval * 1000)
@@ -254,15 +255,6 @@ const CombatView: Component<ICombatViewProps> = (props) => {
             </StyledCombatChildView>
             <StyledCombatChildView>
                 <CoreText>Enemy</CoreText>
-                <CoreButton onClick={() => {
-                    combat.setEnemy(enemyBuilder['chicken'], tasks);
-                }}>Fight Chicken!</CoreButton>
-                <CoreButton onClick={() => {
-                    combat.setEnemy(enemyBuilder['cow'], tasks);
-                }}>Fight Cow!</CoreButton>
-                <CoreButton onClick={() => {
-                    combat.setEnemy(enemyBuilder['goblin'], tasks);
-                }}>Fight Goblin!</CoreButton>
                 <EnemyView/>
                 <LootView/>
             </StyledCombatChildView>

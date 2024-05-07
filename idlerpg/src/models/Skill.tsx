@@ -7,7 +7,6 @@ export interface ISkill
 
 export interface ISkillValue extends IId
 {
-    id:string
     exp:number
 }
 

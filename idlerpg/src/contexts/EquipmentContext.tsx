@@ -2,8 +2,8 @@ import {createContext, JSX, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
 import {EquippableSlot, IEquippableItem, IEquipSlot, IWeapon} from "../models/Item";
 import useInventory, {InventoryData} from "./InventoryContext";
-import itemBuilder, {getItemId} from "../data/items/ItemBuilder";
 import {combineAttackStats, combineDefenseStats, IAttackStats, IDefenseStats} from "../models/combat/CombatStats";
+import {getItemId, itemData} from "../loaders/ItemLoader";
 
 export type EquipmentData = {
     equipment:IEquipSlot[],
@@ -18,8 +18,8 @@ export type EquipmentData = {
 export const EquipmentContext = createContext<EquipmentData>();
 
 export const defaultEquipment:IEquipSlot[] = [
-    { slot: EquippableSlot.MainHand, itemId: '' },
-    { slot: EquippableSlot.OffHand, itemId: '' },
+    { slot: EquippableSlot.MainHand, itemId: 'none' },
+    { slot: EquippableSlot.OffHand, itemId: 'none' },
 ];
 
 interface EquipmentProps {
@@ -89,7 +89,7 @@ export function EquipmentProvider(props:EquipmentProps) {
             };
             equipment.forEach(item =>
             {
-                stats = combineAttackStats(stats, (itemBuilder[item.itemId] as IEquippableItem).attackStats);
+                stats = combineAttackStats(stats, (itemData[item.itemId] as IEquippableItem).attackStats);
             });
             return stats;
         },
@@ -103,13 +103,13 @@ export function EquipmentProvider(props:EquipmentProps) {
             };
             equipment.forEach(item =>
             {
-                stats = combineDefenseStats(stats, (itemBuilder[item.itemId] as IEquippableItem).defenseStats);
+                stats = combineDefenseStats(stats, (itemData[item.itemId] as IEquippableItem).defenseStats);
             });
             return stats;
         },
         getWeapon: ()=>
         {
-            return itemBuilder[equips.getEquipment(EquippableSlot.MainHand).itemId] as IWeapon;
+            return itemData[equips.getEquipment(EquippableSlot.MainHand).itemId] as IWeapon;
         }
     };
 

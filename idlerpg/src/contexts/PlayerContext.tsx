@@ -2,9 +2,9 @@ import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
 import {getHitpoints, ICombatStats} from "../models/combat/CombatStats";
 import useSkills, {SkillsData} from "./SkillsContext";
 import {CombatDamage} from "./CombatContext";
-import itemBuilder from "../data/items/ItemBuilder";
 import {IFood} from "../models/Item";
 import useInventory, {InventoryData} from "./InventoryContext";
+import {itemData} from "../loaders/ItemLoader";
 
 export type PlayerData = {
     setInitialPlayerStats:()=>void,
@@ -24,7 +24,7 @@ interface PlayerProps {
 }
 
 export function PlayerProvider(props:PlayerProps) {
-    const [food, setFood] = createSignal('');
+    const [food, setFood] = createSignal('none');
     const [curHealth, setCurHealth] = createSignal<number>(0);
 
     const skills = useSkills() as SkillsData;
@@ -70,7 +70,7 @@ export function PlayerProvider(props:PlayerProps) {
         setFood:(foodId:string)=>
         {
             const foodItem = { id: foodId, amount: 1 };
-            if (foodId !== 'none' && inventory.hasItem(foodItem) && (itemBuilder[foodItem.id] as IFood).healing !== undefined)
+            if (foodId !== 'none' && inventory.hasItem(foodItem) && (itemData[foodItem.id] as IFood).healing !== undefined)
             {
                 setFood(foodId);
             }
@@ -82,10 +82,10 @@ export function PlayerProvider(props:PlayerProps) {
         eatFood:()=>
         {
             const foodItem = { id: food(), amount: 1 };
-            if (food() != 'none' && inventory.hasItem(foodItem) && (itemBuilder[foodItem.id] as IFood).healing !== undefined)
+            if (food() != 'none' && inventory.hasItem(foodItem) && (itemData[foodItem.id] as IFood).healing !== undefined)
             {
                 inventory.removeItem(foodItem);
-                myPlayer.gainHealth((itemBuilder[foodItem.id] as IFood).healing * 10);
+                myPlayer.gainHealth((itemData[foodItem.id] as IFood).healing * 10);
                 if (!inventory.hasItem(foodItem))
                 {
                     myPlayer.setFood('none');

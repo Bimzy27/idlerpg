@@ -7,6 +7,20 @@ export enum AttackType
     Magic
 }
 
+export function getAttackType(attackType:AttackType):string
+{
+    switch (attackType)
+    {
+        default:
+        case 0:
+            return 'Melee';
+        case 1:
+            return 'Ranged';
+        case 2:
+            return 'Magic';
+    }
+}
+
 export enum AttackStyle
 {
     stab='stab',

@@ -10,6 +10,7 @@ import { signInWithEmailAndPassword } from "@firebase/auth";
 import {ColumnCenterAlignedView, CoreButton} from "./styles/styles";
 import {backgroundColor} from "./styles/colors";
 import {getHitChance} from "./models/combat/CombatStats";
+import LoadingScreen from "./loaders/LoadingScreen";
 
 function Login() {
     const app = useFirebaseApp()
@@ -44,9 +45,9 @@ const App: Component = () => {
                 <Login />
             </Match>
             <Match when={state.data}>
-                <ContextProvider>
+                <LoadingScreen>
                     <GameView/>
-                </ContextProvider>
+                </LoadingScreen>
             </Match>
         </Switch>
     );

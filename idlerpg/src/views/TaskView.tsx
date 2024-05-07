@@ -1,12 +1,10 @@
-import {Component, createSignal, For, JSX, Show} from "solid-js";
+import {Component, createSignal, For, JSX} from "solid-js";
 import {
-    ColumnCenterAlignedView, CoreImage,
-    CoreText,
+    ColumnCenterAlignedView,
     CoreText_Mid,
     TransparentButton
 } from "../styles/styles";
 import {ITask, taskMeetsRequirements} from "../models/Task";
-import taskBuilder, {getTaskId} from "../data/tasks/TaskBuilder";
 import useActiveTask, {ActiveTaskData} from "../contexts/ActiveTaskContext";
 import RewardView from "./RewardView";
 import RequirementView from "./RequirementView";
@@ -14,6 +12,7 @@ import useSkills, {SkillsData} from "../contexts/SkillsContext";
 import {backgroundAlt1Color, primaryTrimColor, redColor, textPrimaryColor} from "../styles/colors";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import {styled} from "solid-styled-components";
+import {taskData} from "../loaders/TaskLoader";
 
 const StyledTaskView = styled.div`
     width: 32%;
@@ -38,7 +37,7 @@ interface ITaskViewProps
 
 const TaskView: Component<ITaskViewProps> = (props) => {
     const activeTask = useActiveTask() as ActiveTaskData;
-    const task:ITask = taskBuilder[props.taskId];
+    const task:ITask = taskData[props.taskId];
     const skills = useSkills();
     const inventory = useInventory();
 

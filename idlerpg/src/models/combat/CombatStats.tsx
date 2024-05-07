@@ -135,7 +135,7 @@ export function getAccuracyRating(attackType:AttackType, stats:ICombatStats, acc
     }
 
     let accuracyModifier = 0; //todo implement this
-    return (skillLevel) * (accuracyBonus)*(1+(accuracyModifier/100));
+    return (skillLevel + 9) * (accuracyBonus + 64) * (1+(accuracyModifier/100));
 }
 
 export function getEvasionRating(attackType:AttackType, stats:ICombatStats, defenseStats:IDefenseStats):number
@@ -158,7 +158,7 @@ export function getEvasionRating(attackType:AttackType, stats:ICombatStats, defe
     }
 }
 
-export function getHitChance(attackType:AttackType, accuracyRating:number, stats:ICombatStats, opponentStats:ICombatStats, opponentDefenseStats:IDefenseStats):number
+export function getHitChance(attackType:AttackType, accuracyRating:number, opponentStats:ICombatStats, opponentDefenseStats:IDefenseStats):number
 {
     const accuracy = accuracyRating;
     const evasion = getEvasionRating(attackType, opponentStats, opponentDefenseStats);

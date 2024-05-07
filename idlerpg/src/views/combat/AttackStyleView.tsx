@@ -4,12 +4,12 @@ import {ColumnCenterAlignedView, ContentFitAltView, CoreImage, CoreText, Transpa
 import useEquipment, {EquipmentData} from "../../contexts/EquipmentContext";
 import {EquippableSlot, IWeapon} from "../../models/Item";
 import {AttackStyle, AttackType, IAttackStyle} from "../../models/combat/AttackStyle";
-import itemBuilder from "../../data/items/ItemBuilder";
 import {
     backgroundAlt1Color,
     primaryTrimColor,
 } from "../../styles/colors";
 import {styled} from "solid-styled-components";
+import {itemData} from "../../loaders/ItemLoader";
 
 interface IAttackStyleViewProps
 {
@@ -28,7 +28,7 @@ const AttackStyleView: Component<IAttackStyleViewProps> = (props) => {
             return AttackType.Melee;
         }
 
-        return (itemBuilder[weaponId] as IWeapon).attackType;
+        return (itemData[weaponId] as IWeapon).attackType;
     }
 
     return (
