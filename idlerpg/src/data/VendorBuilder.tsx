@@ -1,27 +1,28 @@
-import {ILocation} from "../models/Location";
-import {IVendor} from "../models/Vendor";
+import {IVendor, IVendorItem} from "../models/Vendor";
 
 interface IVendorBuilder
 {
     [id:string]:IVendor
 }
 
-const Builder:IVendorBuilder =
+const vendorBuilder:IVendorBuilder =
     {
-        'location_lumberton':
+        'vendor_lumberton':
             {
-                name: 'Lumberton',
-                skillIds: [ 'cooking', 'smithing', 'firemaking', 'fletching', 'crafting' ],
-                taskIds: [ 'fishing_shrimp_raw', 'mining_tin_ore', 'mining_copper_ore', 'woodcutting_normal_log' ],
-                enemyIds: [ 'chicken', 'cow' ]
+                name: 'Lumberton General Store',
+                items:[
+                    {cost: 150, item: {id: 'meat', amount: 1}},
+                    {cost: 300, item: {id: 'iron_arrow', amount: 50}},
+                ]
             },
-        'location_faldomere':
+        'vendor_faldomere':
             {
-                name: 'Faldomere',
-                skillIds: [ 'cooking', 'smithing', 'firemaking', 'fletching', 'crafting' ],
-                taskIds: [ 'mining_iron_ore', 'mining_coal_ore', 'woodcutting_oak_log' ],
-                enemyIds: [ 'goblin' ]
+                name: 'Faldomere General Store',
+                items:[
+                    {cost: 10000, item: {id: 'dragon_scimitar', amount: 1}},
+                    {cost: 10000, item: {id: 'dragon_dagger', amount: 1}}
+                ]
             },
     };
 
-export default locationBuilder;
+export default vendorBuilder;
