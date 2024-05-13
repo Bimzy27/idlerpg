@@ -12,7 +12,16 @@ export interface IItem
 export enum EquippableSlot
 {
     MainHand,
-    OffHand
+    OffHand,
+    Head,
+    Torso,
+    Legs,
+    Feet,
+    Hands,
+    Ring,
+    Neck,
+    Cape,
+    Ammo,
 }
 
 export interface IEquippableItem extends IItem

@@ -17,6 +17,7 @@ const StyledItemView = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 `;
 
 const ItemView: Component<IItemViewProps> = (props) => {
@@ -25,7 +26,9 @@ const ItemView: Component<IItemViewProps> = (props) => {
             <Show when={props.id != ''} fallback={null} children={
                 <CoreImage src={`/assets/items/${props.id}.png`} alt="NO IMG" width={60} height={60}></CoreImage>
             }/>
-            <CoreText style={{'position': 'absolute', 'top': '40%', 'z-index': 1, 'text-align': 'center'}}>{props.amount}</CoreText>
+            <Show when={props.amount >= 0}>
+                <CoreText style={{'position': 'absolute', 'top': '55%', 'z-index': 1, 'text-align': 'center'}}>{props.amount}</CoreText>
+            </Show>
         </StyledItemView>
     );
 };
