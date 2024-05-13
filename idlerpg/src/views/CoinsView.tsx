@@ -8,9 +8,9 @@ interface ICoinsViewProps
 
 const CoinsView: Component<ICoinsViewProps> = (props) => {
     return (
-        <RowCenterAlignedView>
-            <CoreImage src={`/assets/coins.png`} width={30} height={30}/>
-            <CoreText>{props.amount}</CoreText>
+        <RowCenterAlignedView style={{"margin-left": '10px'}}>
+            <CoreImage src={`/assets/coins.png`} width={18} height={18}/>
+            <CoreText style={{"font-size": '20px'}}>{props.amount}</CoreText>
         </RowCenterAlignedView>
     );
 };

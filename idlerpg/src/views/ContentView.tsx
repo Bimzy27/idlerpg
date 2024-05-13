@@ -16,19 +16,17 @@ import {styled} from "solid-styled-components";
 import {transparentColor} from "../styles/colors";
 import CombatView from "./combat/CombatView";
 import MapView from "./MapView";
+import HeaderView from "./HeaderView";
+import Scrollbars from "solid-custom-scrollbars";
 
 const StyledContentView = styled.div`
-    position: fixed;
-    top: 15vh;
-    left: 15vw;
-    width: 85vw;
+    width: 100%;
     height: 100%;
     background-color: ${transparentColor};
     display: flex;
     box-sizing: border-box;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
 `;
 
 interface IContentViewProps
@@ -39,55 +37,58 @@ const ContentView: Component<IContentViewProps> = (props) => {
     const gameView = useGameView();
 
     return (
-        <StyledContentView>
-            <div style={{'overflow-y': 'auto', 'width': '100%'}}>
-                <div style={{ "padding-bottom": '260px' }}>
-                    <Show when={gameView?.activeView() === 'profile'}>
-                        <ProfileView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'inventory'}>
-                        <InventoryView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'location'}>
-                        <LocationView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'map'}>
-                        <MapView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'combat'}>
-                        <CombatView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'mining'}>
-                        <MiningView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'smithing'}>
-                        <SmithingView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'fishing'}>
-                        <FishingView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'cooking'}>
-                        <CookingView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'firemaking'}>
-                        <FiremakingView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'woodcutting'}>
-                        <WoodcuttingView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'fletching'}>
-                        <FletchingView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'runecrafting'}>
-                        <RunecraftingView/>
-                    </Show>
-                    <Show when={gameView?.activeView() === 'crafting'}>
-                        <CraftingView/>
-                    </Show>
-                </div>
-            </div>
-        </StyledContentView>
-);
+        <div style={{width: '100%', height: '100%'}}>
+            <StyledContentView>
+                <Scrollbars style={{'width': '100%'}} autoHide>
+                    <HeaderView/>
+                    <div style={{ "padding-bottom": '180px', padding: '20px' }}>
+                        <Show when={gameView?.activeView() === 'profile'}>
+                            <ProfileView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'bank'}>
+                            <InventoryView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'location'}>
+                            <LocationView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'map'}>
+                            <MapView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'combat'}>
+                            <CombatView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'mining'}>
+                            <MiningView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'smithing'}>
+                            <SmithingView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'fishing'}>
+                            <FishingView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'cooking'}>
+                            <CookingView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'firemaking'}>
+                            <FiremakingView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'woodcutting'}>
+                            <WoodcuttingView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'fletching'}>
+                            <FletchingView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'runecrafting'}>
+                            <RunecraftingView/>
+                        </Show>
+                        <Show when={gameView?.activeView() === 'crafting'}>
+                            <CraftingView/>
+                        </Show>
+                    </div>
+                </Scrollbars>
+            </StyledContentView>
+        </div>
+    );
 };
 
 export default ContentView;

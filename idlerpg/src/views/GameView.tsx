@@ -14,9 +14,8 @@ const StyledGameView = styled.div`
     height: 100vh;
     background-color: ${backgroundColor};
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    padding: 10px;
 `;
 
 interface IGameViewProps
@@ -28,7 +27,6 @@ const GameView: Component<IGameViewProps> = (props) => {
     return (
         <StyledGameView>
             <ActiveTaskView/>
-            <HeaderView/>
             <TabView/>
             <ContentView/>
         </StyledGameView>

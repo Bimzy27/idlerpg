@@ -1,15 +1,17 @@
 import {Component, JSX} from "solid-js";
 import {
-    CoreButton,
+    ColumnCenterAlignedView,
     CoreImage,
     CoreText,
     TransparentButton
 } from "../styles/styles";
 import useGameView from "../contexts/GameViewContext";
 import {styled} from "solid-styled-components";
-import {backgroundAlt1Color, primaryTrimColor, transparentColor} from "../styles/colors";
+import {backgroundAlt1Color, backgroundColor, transparentColor} from "../styles/colors";
 import CoinsView from "./CoinsView";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
+import Scrollbars from "solid-custom-scrollbars";
+import GameIconView, {IGameIconViewProps} from "./GameIconView";
 
 const StyledTabButtonInnerView = styled.div`
     display: flex;
@@ -17,31 +19,25 @@ const StyledTabButtonInnerView = styled.div`
     align-items: center;
     width: 100%;
     height: 100%;
-    padding-left: 20px;
+    padding-left: 10px;
+    box-sizing: border-box;
 `;
 
 const StyledTabButtonView = styled.div`
     background-color: ${transparentColor};
-    border-radius: 5px;
-    border: 3px solid ${primaryTrimColor};
-    margin: 0.5em 1em;
     width: 100%;
     height: 80px;
+    box-sizing: border-box;
 `;
 
 const StyledTabView = styled.div`
-    position: fixed;
-    top: 15vh;
-    left: 0;
-    width: 15vw;
-    height: 85vh;
+    width: 10vw;
+    height: 100%;
     background-color: ${backgroundAlt1Color};
     display: flex;
     box-sizing: border-box;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    overflow-y: auto;
 `;
 
 interface ITabViewProps
@@ -49,44 +45,45 @@ interface ITabViewProps
 }
 
 const TabView: Component<ITabViewProps> = (props) => {
-
-    const gameView = useGameView();
     const inventory = useInventory() as InventoryData;
 
     return (
         <StyledTabView>
-            <CoreText>Active view: {gameView?.activeView()}</CoreText>
-            <TabButton viewName={'profile'}></TabButton>
-            <TabButton viewName={'inventory'}>
-                <CoinsView amount={inventory.coins()}/>
-            </TabButton>
-            <TabButton viewName={'location'}></TabButton>
-            <TabButton viewName={'map'}></TabButton>
-            <CoreText>Combat</CoreText>
-            <TabButton viewName={'attack'} imagePath={'skills/attack'} viewOverride={'combat'}></TabButton>
-            <TabButton viewName={'strength'} imagePath={'skills/strength'} viewOverride={'combat'}></TabButton>
-            <TabButton viewName={'defense'} imagePath={'skills/defense'} viewOverride={'combat'}></TabButton>
-            <TabButton viewName={'hitpoints'} imagePath={'skills/hitpoints'} viewOverride={'combat'}></TabButton>
-            <TabButton viewName={'ranged'} imagePath={'skills/ranged'} viewOverride={'combat'}></TabButton>
-            <TabButton viewName={'magic'} imagePath={'skills/magic'} viewOverride={'combat'}></TabButton>
-            <CoreText>Skills</CoreText>
-            <TabButton viewName={'mining'} imagePath={'skills/mining'}></TabButton>
-            <TabButton viewName={'smithing'} imagePath={'skills/smithing'} ></TabButton>
-            <TabButton viewName={'fishing'} imagePath={'skills/fishing'} ></TabButton>
-            <TabButton viewName={'cooking'} imagePath={'skills/cooking'} ></TabButton>
-            <TabButton viewName={'firemaking'} imagePath={'skills/firemaking'} ></TabButton>
-            <TabButton viewName={'woodcutting'} imagePath={'skills/woodcutting'} ></TabButton>
-            <TabButton viewName={'fletching'} imagePath={'skills/fletching'} ></TabButton>
-            <TabButton viewName={'runecrafting'} imagePath={'skills/runecrafting'} ></TabButton>
-            <TabButton viewName={'crafting'} imagePath={'skills/crafting'} ></TabButton>
+            <Scrollbars style={{width: "100%"}} autoHide>
+                <ColumnCenterAlignedView style={{height: '80px', "background-color": `${backgroundColor}`}}>
+                    <CoreImage src={`/assets/icon.png`} alt="NO IMG" style={{"margin-right": '50px'}} width={80} height={80}></CoreImage>
+                </ColumnCenterAlignedView>
+                <TabButton viewName={'profile'}></TabButton>
+                <TabButton viewName={'bank'}>
+                    <CoinsView amount={inventory.coins()}/>
+                </TabButton>
+                <TabButton viewName={'location'}></TabButton>
+                <TabButton viewName={'map'}></TabButton>
+                <CoreText>Combat</CoreText>
+                <TabButton viewName={'attack'} viewOverride={'combat'}></TabButton>
+                <TabButton viewName={'strength'} viewOverride={'combat'}></TabButton>
+                <TabButton viewName={'defense'} viewOverride={'combat'}></TabButton>
+                <TabButton viewName={'hitpoints'} viewOverride={'combat'}></TabButton>
+                <TabButton viewName={'ranged'} viewOverride={'combat'}></TabButton>
+                <TabButton viewName={'magic'} viewOverride={'combat'}></TabButton>
+                <CoreText>Skills</CoreText>
+                <TabButton viewName={'mining'}></TabButton>
+                <TabButton viewName={'smithing'}></TabButton>
+                <TabButton viewName={'fishing'}></TabButton>
+                <TabButton viewName={'cooking'}></TabButton>
+                <TabButton viewName={'firemaking'}></TabButton>
+                <TabButton viewName={'woodcutting'}></TabButton>
+                <TabButton viewName={'fletching'}></TabButton>
+                <TabButton viewName={'runecrafting'}></TabButton>
+                <TabButton viewName={'crafting'}></TabButton>
+            </Scrollbars>
         </StyledTabView>
     );
 };
 
-interface ITabButtonProps
+interface ITabButtonProps extends IGameIconViewProps
 {
     viewName:string;
-    imagePath?:string;
     viewOverride?:string;
     children?: JSX.Element;
 }
@@ -100,8 +97,7 @@ const TabButton = (props:ITabButtonProps) => {
         <StyledTabButtonView>
             <TransparentButton onClick={() => handleButtonClick()}>
                 <StyledTabButtonInnerView>
-                    <CoreImage src={`/assets/${props.imagePath ? props.imagePath: props.viewName}.png`} alt="NO IMG" width={35} height={35}></CoreImage>
-                    <CoreText style={{"padding-left": '20px'}}>{props.viewName}</CoreText>
+                    <GameIconView viewName={props.viewName}/>
                     {props.children}
                 </StyledTabButtonInnerView>
             </TransparentButton>

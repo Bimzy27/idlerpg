@@ -1,14 +1,11 @@
 import {styled} from "solid-styled-components";
 import {
-    backgroundAlt1Color, backgroundAlt2Color,
-    backgroundColor,
-    highlightColor, primaryColor,
+    backgroundAlt1Color, backgroundAlt2Color,primaryColor,
     primaryTrimColor,
     secondaryColor,
     textPrimaryColor,
     transparentColor
 } from "./colors";
-import TaskView from "../views/TaskView";
 
 export const CoreText = styled.p`
     color: ${textPrimaryColor};
@@ -35,6 +32,11 @@ export const TransparentButton = styled.button`
     border-color: ${transparentColor};
     width: 100%;
     height: 100%;
+
+    &:hover {
+        background-color: ${'rgba(103,127,161,0.29)'}; // Set hover background color (default: slightly gray)
+        cursor: pointer; // Add a cursor for hover indication
+    }
 `;
 
 export const CoreImage = styled.img<{width:number, height:number}>`

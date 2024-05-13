@@ -3,6 +3,7 @@ import IId from "./Id";
 export interface ISkill
 {
     name: string
+    color: string
 }
 
 export interface ISkillValue extends IId

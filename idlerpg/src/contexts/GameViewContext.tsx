@@ -1,6 +1,6 @@
 import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
 
-type GameViewData = {activeView:Accessor<string>, setActiveView:(view:string)=>void};
+export type GameViewData = {activeView:Accessor<string>, setActiveView:(view:string)=>void};
 
 export const GameViewContext = createContext<GameViewData>();
 

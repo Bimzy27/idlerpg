@@ -1,28 +1,27 @@
-import {Accessor, Component, createMemo} from "solid-js";
-import {CoreImage, CoreText, CoreText_Mid} from "../../styles/styles";
-import skillBuilder from "../../data/SkillBuilder";
+import {Component, createMemo} from "solid-js";
+import {
+    ContentFitAltView,
+    ContentFitView,
+    CoreImage,
+    CoreText,
+} from "../../styles/styles";
 import {getCurLevelXp, getLevel, getMaxLevel, getReqLevelXp, ISkillValue} from "../../models/Skill";
 import {styled} from "solid-styled-components";
-import {backgroundAlt1Color, primaryTrimColor} from "../../styles/colors";
-import useSkills, {SkillsData} from "../../contexts/SkillsContext";
+import useSkills from "../../contexts/SkillsContext";
 
 interface ISkillViewProps {
     skillId:string
 }
 
 const StyledSkillView = styled.div`
-    width: fit-content;
-    height: fit-content;
-    background-color: ${backgroundAlt1Color};
-    border-radius: 5px;
-    border: 3px solid ${primaryTrimColor};
+    width: 130px;
     box-sizing: border-box;
     display: flex;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     grid-gap: 10px;
-    padding: 10px;
 `;
-
 
 const SkillView: Component<ISkillViewProps> = (props) => {
     const skills = createMemo(() => useSkills(), []);
@@ -44,12 +43,13 @@ const SkillView: Component<ISkillViewProps> = (props) => {
     };
 
     return (
-        <StyledSkillView>
-            <CoreImage src={`/assets/skills/${props.skillId}.png`} alt="NO IMG" width={50} height={50}></CoreImage>
-            <CoreText>{skillBuilder[props.skillId].name}</CoreText>
-            <CoreText>{curLvl()}/{getMaxLevel()} LVL</CoreText>
-            <CoreText_Mid>{Math.floor(curExp())}/{reqExp()} EXP</CoreText_Mid>
-        </StyledSkillView>
+        <ContentFitAltView style={{padding: '5px'}}>
+            <StyledSkillView>
+                <CoreImage src={`/assets/skills/${props.skillId}.png`} alt="NO IMG" width={40} height={40}></CoreImage>
+                <CoreText>{curLvl()}/{getMaxLevel()}</CoreText>
+                {/*<CoreText_Mid>{Math.floor(curExp())}/{reqExp()} EXP</CoreText_Mid>*/}
+            </StyledSkillView>
+        </ContentFitAltView>
     );
 };
 
