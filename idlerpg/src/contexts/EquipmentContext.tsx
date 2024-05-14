@@ -13,6 +13,7 @@ export type EquipmentData = {
     getEquipment:(equipSlot:EquippableSlot)=>IEquipSlot,
     setEquipment:(itemEquips:IEquipSlot[])=>void,
     getWeapon:()=>IWeapon,
+    getWeaponAttackSpeed:()=>number,
 };
 
 export const EquipmentContext = createContext<EquipmentData>();
@@ -119,7 +120,12 @@ export function EquipmentProvider(props:EquipmentProps) {
         getWeapon: ()=>
         {
             return itemData[equips.getEquipment(EquippableSlot.MainHand).itemId] as IWeapon;
-        }
+        },
+        getWeaponAttackSpeed: ()=>
+        {
+            const weapon = equips.getWeapon();
+            return getItemId(weapon) === 'none' ? 3 : weapon.attackSpeed;
+        },
     };
 
     return (

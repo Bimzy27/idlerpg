@@ -10,6 +10,7 @@ import {
 import {EnemyHealthbarView} from "./HealthbarView";
 import {EnemyStatsView} from "./StatsView";
 import {getEnemyId} from "../../loaders/EnemyLoader";
+import {EnemyAttackBarView} from "./AttackBarView";
 
 interface IEnemyViewProps
 {
@@ -21,9 +22,12 @@ const EnemyView: Component<IEnemyViewProps> = (props) => {
     return (
         <ColumnCenterAlignedView>
             <CoreText>{combat.enemy().name}</CoreText>
-            <EnemyHealthbarView/>
             <RowCenterAlignedView>
-                <ContentFitAltView>
+                <EnemyHealthbarView/>
+                <EnemyAttackBarView/>
+            </RowCenterAlignedView>
+            <RowCenterAlignedView>
+                <ContentFitAltView style={{width: '100%'}}>
                     <CoreImage src={`/assets/enemies/${getEnemyId(combat.enemy())}.png`} alt="NO IMG" width={300} height={300} style={{"margin-top": '50px'}}/>
                 </ContentFitAltView>
                 <EnemyStatsView/>

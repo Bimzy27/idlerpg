@@ -27,7 +27,8 @@ interface ICombatStatsViewProps
 const CombatStatsView: Component<ICombatStatsViewProps> = (props) => {
 
     return (
-        <ContentFitAltView>
+        <ContentFitAltView style={{width: '100%'}}>
+            <CoreText>Stats</CoreText>
             <CoreText>Combat Level: {getCombatLevel(props.stats)}</CoreText>
             <CoreText>Hit Chance: {getHitChance(props.attackType, props.accuracyRating, props.opponentStats, props.opponentDefenseStats).toFixed(2)}</CoreText>
             <CoreText>Max Hit: {props.maxHit}</CoreText>
@@ -46,17 +47,14 @@ export const PlayerStatsView: Component<IPlayerStatsViewProps> = (props) => {
     const equipment = useEquipment() as EquipmentData;
 
     return (
-        <ColumnCenterAlignedView>
-            <CoreText>Stats</CoreText>
-            <CombatStatsView
-                attackType={getAttackType(combat.attackStyle().attackStyle)}
-                stats={player.getPlayerStats()}
-                maxHit={getMaxHit(getAttackType(combat.attackStyle().attackStyle), player.getPlayerStats(), equipment.getAttackStats())}
-                accuracyRating={getAccuracyRating(getAttackType(combat.attackStyle().attackStyle), player.getPlayerStats(), getAccuracyBonus(combat.attackStyle().attackStyle, equipment.getAttackStats()))}
-                opponentStats={combat.enemy().combatStats}
-                opponentDefenseStats={combat.enemy().defenseStats}
-            />
-        </ColumnCenterAlignedView>
+        <CombatStatsView
+            attackType={getAttackType(combat.attackStyle().attackStyle)}
+            stats={player.getPlayerStats()}
+            maxHit={getMaxHit(getAttackType(combat.attackStyle().attackStyle), player.getPlayerStats(), equipment.getAttackStats())}
+            accuracyRating={getAccuracyRating(getAttackType(combat.attackStyle().attackStyle), player.getPlayerStats(), getAccuracyBonus(combat.attackStyle().attackStyle, equipment.getAttackStats()))}
+            opponentStats={combat.enemy().combatStats}
+            opponentDefenseStats={combat.enemy().defenseStats}
+        />
     );
 };
 
@@ -70,16 +68,13 @@ export const EnemyStatsView: Component<IEnemyStatsViewProps> = (props) => {
     const equipment = useEquipment() as EquipmentData;
 
     return (
-        <ColumnCenterAlignedView>
-            <CoreText>Stats</CoreText>
-            <CombatStatsView
-                attackType={combat.enemy().attackType}
-                stats={combat.enemy().combatStats}
-                maxHit={combat.enemy().maxHit}
-                accuracyRating={combat.enemy().accuracyRating}
-                opponentStats={player.getPlayerStats()}
-                opponentDefenseStats={equipment.getDefenseStats()}
-            />
-        </ColumnCenterAlignedView>
+        <CombatStatsView
+            attackType={combat.enemy().attackType}
+            stats={combat.enemy().combatStats}
+            maxHit={combat.enemy().maxHit}
+            accuracyRating={combat.enemy().accuracyRating}
+            opponentStats={player.getPlayerStats()}
+            opponentDefenseStats={equipment.getDefenseStats()}
+        />
     );
 };

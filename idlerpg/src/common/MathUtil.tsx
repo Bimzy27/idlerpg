@@ -28,6 +28,11 @@ class MathUtil
     {
         return Math.min(Math.max(num, lower), upper);
     }
+
+    public static clamp01(num: number): number
+    {
+        return Math.min(Math.max(num, 0), 1);
+    }
 }
 
 export default MathUtil;

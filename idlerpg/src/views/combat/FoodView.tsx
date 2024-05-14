@@ -27,14 +27,14 @@ const FoodView: Component<IFoodViewProps> = (props) => {
     }
 
     return (
-        <ColumnCenterAlignedView>
-            <CoreText>Food</CoreText>
-            <ContentFitAltView>
-                <ItemView amount={inventory.getItem(player.food()).amount} id={player.food()}/>
-                <CoreText>Healing: {getHealing()}</CoreText>
-                <CoreButton onClick={()=>player.eatFood()}>Eat</CoreButton>
-            </ContentFitAltView>
-        </ColumnCenterAlignedView>
+        <ContentFitAltView style={{width: '100%'}}>
+            <ColumnCenterAlignedView>
+                <CoreText>Food</CoreText>
+                    <ItemView amount={inventory.getItem(player.food()).amount} id={player.food()}/>
+                    <CoreText>Healing: {getHealing()}</CoreText>
+                    <CoreButton onClick={()=>player.eatFood()}>Eat</CoreButton>
+            </ColumnCenterAlignedView>
+        </ContentFitAltView>
     );
 };
 

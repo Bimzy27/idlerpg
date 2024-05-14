@@ -1,15 +1,15 @@
 import {Component, createEffect, createSignal, Show} from "solid-js";
-import {CoreImage, CoreText, StyledActiveTaskView} from "../styles/styles";
-import useActiveTask, {ActiveTaskData} from "../contexts/ActiveTaskContext";
-import useInventory, {InventoryData} from "../contexts/InventoryContext";
-import {IReward, ItemReward, SkillReward} from "../models/Reward";
-import useSkills, {SkillsData} from "../contexts/SkillsContext";
-import {ITask, taskMeetsRequirements} from "../models/Task";
-import {ICost, ItemCost} from "../models/Cost";
+import {ColumnCenterAlignedView, CoreText} from "../../styles/styles";
+import useActiveTask, {ActiveTaskData} from "../../contexts/ActiveTaskContext";
+import useInventory, {InventoryData} from "../../contexts/InventoryContext";
+import {IReward, ItemReward, SkillReward} from "../../models/Reward";
+import useSkills, {SkillsData} from "../../contexts/SkillsContext";
+import {ITask, taskMeetsRequirements} from "../../models/Task";
+import {ICost, ItemCost} from "../../models/Cost";
 import {styled} from "solid-styled-components";
-import {highlightColor, primaryColor} from "../styles/colors";
-import {TaskImage} from "./TaskView";
-import {getTaskId, taskData} from "../loaders/TaskLoader";
+import {highlightColor, primaryColor, secondaryColor} from "../../styles/colors";
+import {TaskImage} from "../TaskView";
+import {getTaskId, taskData} from "../../loaders/TaskLoader";
 
 const TaskProgressBarContainer = styled.div`
     width: 90%;
@@ -110,20 +110,17 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
     }, [task]);
 
     return (
-
-        <Show when={getTaskId(task.task()) !== 'none'}>
-            <StyledActiveTaskView>
-                <div style={{'display': "flex", "flex-direction": 'row', "grid-gap": '15px'}}>
-                    <Show when={task.task() && task.task().intervalSeconds !== 0}>
-                        <TaskImage taskId={getTaskId(task.task())} width={50} height={50}/>
-                    </Show>
-                    <CoreText>{task.task().name}</CoreText>
-                </div>
-                <TaskProgressBarContainer>
-                    <TaskProgressBar transitionDuration={duration()} style={`width: ${progress()}%`}></TaskProgressBar>
-                </TaskProgressBarContainer>
-            </StyledActiveTaskView>
-        </Show>
+        <ColumnCenterAlignedView>
+            <div style={{'display': "flex", "flex-direction": 'row', "grid-gap": '15px'}}>
+                <Show when={task.task() && task.task().intervalSeconds !== 0}>
+                    <TaskImage taskId={getTaskId(task.task())} width={50} height={50}/>
+                </Show>
+                <CoreText>{task.task().name}</CoreText>
+            </div>
+            <TaskProgressBarContainer>
+                <TaskProgressBar transitionDuration={duration()} style={`width: ${progress()}%`}></TaskProgressBar>
+            </TaskProgressBarContainer>
+        </ColumnCenterAlignedView>
     );
 };
 

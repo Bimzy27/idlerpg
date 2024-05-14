@@ -34,6 +34,7 @@ import useEquipment, {EquipmentData} from "../../contexts/EquipmentContext";
 import {enemyData, getEnemyId} from "../../loaders/EnemyLoader";
 import {getTaskId} from "../../loaders/TaskLoader";
 import {getItemId} from "../../loaders/ItemLoader";
+import {PlayerAttackBarView} from "./AttackBarView";
 
 interface ICombatViewProps
 {
@@ -106,14 +107,11 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                 return;
             }
 
-            function getPlayerAttackSpeed():number
-            {
-                const weapon = equipment.getWeapon();
-                return getItemId(weapon) === 'none' ? 3000 : equipment.getWeapon().attackSpeed * 1000;
-            }
-
             const timeoutId1 = setTimeout(()=>
             {
+                combat.setPlayerAttackDuration(equipment.getWeaponAttackSpeed());
+                combat.setPlayerAttackProgress(100);
+
                 const timeoutId2 = setTimeout(()=>
                 {
                     const activeEnemy = combat.enemy();
@@ -156,12 +154,15 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                         }
                     }
 
+                    combat.setPlayerAttackDuration(0);
+                    combat.setPlayerAttackProgress(0);
+
                     const timeoutId3 = setTimeout(()=>
                     {
                         startPlayerAttack();
                     }, 10);
                     playerTimeoutIds.push(timeoutId3)
-                }, getPlayerAttackSpeed())
+                }, equipment.getWeaponAttackSpeed() * 1000)
                 playerTimeoutIds.push(timeoutId2);
             }, 10);
             playerTimeoutIds.push(timeoutId1);
@@ -183,6 +184,9 @@ const CombatView: Component<ICombatViewProps> = (props) => {
 
             const timeoutId1 = setTimeout(()=>
             {
+                combat.setEnemyAttackDuration(combat.enemy().attackInterval);
+                combat.setEnemyAttackProgress(100);
+
                 const timeoutId2 = setTimeout(()=>
                 {
                     const activeEnemy = combat.enemy();
@@ -205,6 +209,9 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                         }
                     }
 
+                    combat.setEnemyAttackDuration(0);
+                    combat.setEnemyAttackProgress(0);
+
                     const timeoutId3 = setTimeout(()=>
                     {
                         startEnemyAttack();
@@ -218,6 +225,10 @@ const CombatView: Component<ICombatViewProps> = (props) => {
         startEnemyAttack();
 
         return () => {
+            combat.setPlayerAttackDuration(0);
+            combat.setPlayerAttackProgress(0);
+            combat.setEnemyAttackDuration(0);
+            combat.setEnemyAttackProgress(0);
         };
     }, [combat.enemy]);
 
@@ -226,15 +237,19 @@ const CombatView: Component<ICombatViewProps> = (props) => {
         <StyledCombatView>
             <StyledCombatChildView>
                 <CoreText>Player</CoreText>
-                <PlayerHealthbarView/>
                 <RowCenterAlignedView>
-                    <EquipmentView/>
-                    <FoodView/>
+                    <ColumnCenterAlignedView>
+                        <PlayerHealthbarView/>
+                        <EquipmentView/>
+                    </ColumnCenterAlignedView>
+                    <ColumnCenterAlignedView>
+                        <PlayerAttackBarView/>
+                        <FoodView/>
+                        <AttackStyleView/>
+                        <PlayerStatsView/>
+                    </ColumnCenterAlignedView>
                 </RowCenterAlignedView>
-                <RowCenterAlignedView>
-                    <AttackStyleView/>
-                    <PlayerStatsView/>
-                </RowCenterAlignedView>
+
                 <ContentFitAltView>
                     <ColumnCenterAlignedView>
                         <CoreButton onClick={() => setIsExpanded(!isExpanded())}>Skills</CoreButton>

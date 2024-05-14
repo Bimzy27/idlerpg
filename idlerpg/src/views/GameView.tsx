@@ -1,10 +1,11 @@
 import {Component} from "solid-js";
-import ActiveTaskView from "./ActiveTaskView";
+import ActiveTaskView from "./footer/ActiveTaskView";
 import HeaderView from "./HeaderView";
 import TabView from "./TabView";
 import ContentView from "./ContentView";
 import {styled} from "solid-styled-components";
 import {backgroundColor} from "../styles/colors";
+import FooterPopupView from "./footer/FooterPopupView";
 
 const StyledGameView = styled.div`
     position: fixed;
@@ -26,7 +27,7 @@ const GameView: Component<IGameViewProps> = (props) => {
 
     return (
         <StyledGameView>
-            <ActiveTaskView/>
+            <FooterPopupView/>
             <TabView/>
             <ContentView/>
         </StyledGameView>

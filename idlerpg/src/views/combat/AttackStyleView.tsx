@@ -32,27 +32,27 @@ const AttackStyleView: Component<IAttackStyleViewProps> = (props) => {
     }
 
     return (
-        <ColumnCenterAlignedView>
-            <CoreText>Attack Style</CoreText>
-            <ContentFitAltView>
-                <ColumnCenterAlignedView>
-                    <Show when={ weaponStyle() === AttackType.Melee }>
-                        <AttackStyleButtonView attackStyle={{
-                            attackStyle: AttackStyle.stab,
-                            expPerHit: [{ id: 'attack', exp: 0.4}, { id: 'hitpoints', exp: 0.133}]
-                        }}/>
-                        <AttackStyleButtonView attackStyle={{
-                            attackStyle: AttackStyle.slash,
-                            expPerHit: [{ id: 'strength', exp: 0.4}, { id: 'hitpoints', exp: 0.133}]
-                        }}/>
-                        <AttackStyleButtonView attackStyle={{
-                            attackStyle: AttackStyle.block,
-                            expPerHit: [{ id: 'defense', exp: 0.4}, { id: 'hitpoints', exp: 0.133}]
-                        }}/>
-                    </Show>
-                </ColumnCenterAlignedView>
-            </ContentFitAltView>
-        </ColumnCenterAlignedView>
+        <ContentFitAltView style={{width: '100%'}}>
+            <ColumnCenterAlignedView>
+                <CoreText>Attack Style</CoreText>
+                    <ColumnCenterAlignedView>
+                        <Show when={ weaponStyle() === AttackType.Melee }>
+                            <AttackStyleButtonView attackStyle={{
+                                attackStyle: AttackStyle.stab,
+                                expPerHit: [{ id: 'attack', exp: 0.4}, { id: 'hitpoints', exp: 0.133}]
+                            }}/>
+                            <AttackStyleButtonView attackStyle={{
+                                attackStyle: AttackStyle.slash,
+                                expPerHit: [{ id: 'strength', exp: 0.4}, { id: 'hitpoints', exp: 0.133}]
+                            }}/>
+                            <AttackStyleButtonView attackStyle={{
+                                attackStyle: AttackStyle.block,
+                                expPerHit: [{ id: 'defense', exp: 0.4}, { id: 'hitpoints', exp: 0.133}]
+                            }}/>
+                        </Show>
+                    </ColumnCenterAlignedView>
+            </ColumnCenterAlignedView>
+        </ContentFitAltView>
     );
 };
 

@@ -45,23 +45,6 @@ export const CoreImage = styled.img<{width:number, height:number}>`
     object-fit: contain;
 `;
 
-export const StyledActiveTaskView = styled.div`
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50vw;
-    height: fit-content;
-    background-color: ${secondaryColor};
-    z-index: 200;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 5px;
-    border-width: 5px;
-    border-radius: 25px;
-`;
-
 export const ColumnCenterAlignedView = styled.div`
     width: 100%;
     height: 100%;

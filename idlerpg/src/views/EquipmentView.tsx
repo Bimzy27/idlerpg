@@ -9,7 +9,7 @@ const EquipmentView: Component = (props) => {
     const equipment = useEquipment() as EquipmentData;
 
     return (
-        <ContentFitAltView>
+        <ContentFitAltView style={{width: '100%'}}>
             <CoreText>Equipment</CoreText>
             <div style={{display: "grid", "grid-gap": '10px', "grid-template-columns": 'repeat(3, 1fr)'}}>
                 <div/>
