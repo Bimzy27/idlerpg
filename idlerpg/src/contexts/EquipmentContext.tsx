@@ -20,6 +20,15 @@ export const EquipmentContext = createContext<EquipmentData>();
 export const defaultEquipment:IEquipSlot[] = [
     { slot: EquippableSlot.MainHand, itemId: 'none' },
     { slot: EquippableSlot.OffHand, itemId: 'none' },
+    { slot: EquippableSlot.Head, itemId: 'none' },
+    { slot: EquippableSlot.Torso, itemId: 'none' },
+    { slot: EquippableSlot.Legs, itemId: 'none' },
+    { slot: EquippableSlot.Feet, itemId: 'none' },
+    { slot: EquippableSlot.Hands, itemId: 'none' },
+    { slot: EquippableSlot.Ring, itemId: 'none' },
+    { slot: EquippableSlot.Neck, itemId: 'none' },
+    { slot: EquippableSlot.Cape, itemId: 'none' },
+    { slot: EquippableSlot.Ammo, itemId: 'none' },
 ];
 
 interface EquipmentProps {

@@ -41,6 +41,74 @@ const SelectedItemView: Component<ISelectedItemProps> = (props) => {
     const inventory= useInventory() as InventoryData;
     const equipment= useEquipment() as EquipmentData;
     const player= usePlayer() as PlayerData;
+
+    function hasAttackStats():boolean
+    {
+        const attackStats = (itemData[inventory.selectedItem()] as IEquippableItem).attackStats;
+        if (attackStats)
+        {
+            if (attackStats.stabBonus && attackStats.stabBonus !== 0)
+            {
+                return true;
+            }
+            if (attackStats.slashBonus && attackStats.slashBonus !== 0)
+            {
+                return true;
+            }
+            if (attackStats.blockBonus && attackStats.blockBonus !== 0)
+            {
+                return true;
+            }
+            if (attackStats.rangedBonus && attackStats.rangedBonus !== 0)
+            {
+                return true;
+            }
+            if (attackStats.magicBonus && attackStats.magicBonus !== 0)
+            {
+                return true;
+            }
+
+            if (attackStats.meleeStrength && attackStats.meleeStrength !== 0)
+            {
+                return true;
+            }
+            if (attackStats.rangedStrength && attackStats.rangedStrength !== 0)
+            {
+                return true;
+            }
+            if (attackStats.magicStrength && attackStats.magicStrength !== 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function hasDefenseStats():boolean
+    {
+        const defenseStats = (itemData[inventory.selectedItem()] as IEquippableItem).defenseStats;
+        if (defenseStats)
+        {
+            if (defenseStats.meleeDefense && defenseStats.meleeDefense !== 0)
+            {
+                return true;
+            }
+            if (defenseStats.rangedDefense && defenseStats.rangedDefense !== 0)
+            {
+                return true;
+            }
+            if (defenseStats.magicDefense && defenseStats.magicDefense !== 0)
+            {
+                return true;
+            }
+            if (defenseStats.damageReduction && defenseStats.damageReduction !== 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     return (
         <StyledSelectedItemView>
             <CoreText>Selected Item</CoreText>
@@ -76,12 +144,23 @@ const SelectedItemView: Component<ISelectedItemProps> = (props) => {
                                 {(requirement, index) => (<RequirementView requirement={requirement}/>)}
                             </For>
                         </Show>
-                        <Show when={(itemData[inventory.selectedItem()] as IEquippableItem).attackStats}>
-                            <CoreText>  - Stats -</CoreText>
+                        <Show when={hasAttackStats()}>
+                            <CoreText>  - Attack Stats -</CoreText>
                             <CoreText>Stab: {(itemData[inventory.selectedItem()] as IEquippableItem).attackStats?.stabBonus}</CoreText>
                             <CoreText>Slash: {(itemData[inventory.selectedItem()] as IEquippableItem).attackStats?.slashBonus}</CoreText>
                             <CoreText>Block: {(itemData[inventory.selectedItem()] as IEquippableItem).attackStats?.blockBonus}</CoreText>
+                            <CoreText>Ranged: {(itemData[inventory.selectedItem()] as IEquippableItem).attackStats?.rangedBonus}</CoreText>
+                            <CoreText>Magic: {(itemData[inventory.selectedItem()] as IEquippableItem).attackStats?.magicBonus}</CoreText>
                             <CoreText>Melee Strength: {(itemData[inventory.selectedItem()] as IEquippableItem).attackStats?.meleeStrength}</CoreText>
+                            <CoreText>Ranged Strength: {(itemData[inventory.selectedItem()] as IEquippableItem).attackStats?.rangedStrength}</CoreText>
+                            <CoreText>Magic Strength: {(itemData[inventory.selectedItem()] as IEquippableItem).attackStats?.magicStrength}</CoreText>
+                        </Show>
+                        <Show when={hasDefenseStats()}>
+                            <CoreText>  - Defense Stats -</CoreText>
+                            <CoreText>Melee: {(itemData[inventory.selectedItem()] as IEquippableItem).defenseStats?.meleeDefense}</CoreText>
+                            <CoreText>Ranged: {(itemData[inventory.selectedItem()] as IEquippableItem).defenseStats?.rangedDefense}</CoreText>
+                            <CoreText>Magic: {(itemData[inventory.selectedItem()] as IEquippableItem).defenseStats?.magicDefense}</CoreText>
+                            <CoreText>Damage Reduction: {(itemData[inventory.selectedItem()] as IEquippableItem).defenseStats?.damageReduction}</CoreText>
                         </Show>
                     </ContentFitAltView>
                 </Show>

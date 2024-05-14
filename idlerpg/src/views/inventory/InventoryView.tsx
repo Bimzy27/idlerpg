@@ -4,7 +4,7 @@ import {styled} from "solid-styled-components";
 import {backgroundAlt1Color, primaryTrimColor} from "../../styles/colors";
 import useInventory, {InventoryData} from "../../contexts/InventoryContext";
 import {
-    ColumnCenterAlignedView,
+    ColumnCenterAlignedView, ContentFitAltView, ContentFitView,
     CoreText,
     RowCenterAlignedView,
     TransparentButton
@@ -21,24 +21,19 @@ interface IInventoryProps
 const StyledInventoryView = styled.div`
     width: 70%;
     height: fit-content;
-    background-color: ${backgroundAlt1Color};
-    border-radius: 5px;
-    border: 3px solid ${primaryTrimColor};
     box-sizing: border-box;
-    padding: 10px;
+    padding: 5px;
     display: flex;
     flex-wrap: wrap;
-    grid-gap: 10px;
+    grid-gap: 5px;
 `;
 
 const InventoryView: Component<IInventoryProps> = (props) => {
     const inventory= useInventory() as InventoryData;
-    const equipment= useEquipment() as EquipmentData;
-    const player= usePlayer() as PlayerData;
+
     return (
-        <ColumnCenterAlignedView>
-            <CoreText>Inventory</CoreText>
-            <RowCenterAlignedView style={{"align-items": "flex-start"}}>
+        <RowCenterAlignedView style={{"align-items": "flex-start"}}>
+            <ContentFitView>
                 <StyledInventoryView>
                     <For each={inventory.items}>
                         {(itemAmount, index) => (
@@ -49,9 +44,9 @@ const InventoryView: Component<IInventoryProps> = (props) => {
                         )}
                     </For>
                 </StyledInventoryView>
-                <SelectedItemView/>
-            </RowCenterAlignedView>
-        </ColumnCenterAlignedView>
+            </ContentFitView>
+            <SelectedItemView/>
+        </RowCenterAlignedView>
     );
 };
 
