@@ -7,6 +7,7 @@ import useInventory, {InventoryData} from "./InventoryContext";
 import useEquipment, {EquipmentData} from "./EquipmentContext";
 import usePlayer, {PlayerData} from "./PlayerContext";
 import useMap, {MapData} from "./MapContext";
+import useQuests, {QuestData} from "./QuestContext";
 
 export type ContextSaverData = {
     saveUserData:()=>void,
@@ -27,6 +28,7 @@ export function ContextSaver(props:IContextSaverProps) {
     const equipment = useEquipment() as EquipmentData;
     const player = usePlayer() as PlayerData;
     const map = useMap() as MapData;
+    const quests = useQuests() as QuestData;
 
     async function saveUserData()
     {
@@ -84,6 +86,12 @@ export function ContextSaver(props:IContextSaverProps) {
             await updateDoc(userDocRef, { location: map.location() });
         } catch (error) {
             console.error("Error saving location to Firestore:", error);
+        }
+
+        try {
+            await updateDoc(userDocRef, { questPoints: quests.questPoints() });
+        } catch (error) {
+            console.error("Error saving questPoints to Firestore:", error);
         }
     }
 

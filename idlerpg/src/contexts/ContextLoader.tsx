@@ -9,6 +9,7 @@ import {EquippableSlot, IEquipSlot} from "../models/Item";
 import useEquipment, {defaultEquipment, EquipmentData} from "./EquipmentContext";
 import useInventory, {InventoryData} from "./InventoryContext";
 import useMap, {MapData} from "./MapContext";
+import useQuests, {QuestData} from "./QuestContext";
 
 interface IContextLoaderProps {
     children?: JSX.Element;
@@ -24,6 +25,7 @@ export function ContextLoader(props:IContextLoaderProps) {
     const player = usePlayer() as PlayerData;
     const inventory = useInventory() as InventoryData;
     const map = useMap() as MapData;
+    const quests = useQuests() as QuestData;
 
     async function loadUserSkillsData()
     {
@@ -139,6 +141,24 @@ export function ContextLoader(props:IContextLoaderProps) {
     }
 
     loadUserLocation()
+
+    async function loadUserQuests()
+    {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        querySnapshot.forEach((doc) =>
+        {
+            if (doc.id === auth.data?.uid)
+            {
+                const questPoints = doc.data().questPoints;
+                if (questPoints)
+                {
+                    quests.setQuestPoints(questPoints);
+                }
+            }
+        });
+    }
+
+    loadUserQuests()
 
     return (
         <div>
