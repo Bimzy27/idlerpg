@@ -57,6 +57,7 @@ const TabView: Component<ITabViewProps> = (props) => {
                 <TabButton viewName={'bank'}>
                     <CoinsView amount={inventory.coins()}/>
                 </TabButton>
+                <TabButton viewName={'quests'}></TabButton>
                 <TabButton viewName={'location'}></TabButton>
                 <TabButton viewName={'map'}></TabButton>
                 <CoreText>Combat</CoreText>

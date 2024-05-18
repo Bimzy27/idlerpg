@@ -88,11 +88,12 @@ export function ContextSaver(props:IContextSaverProps) {
             console.error("Error saving location to Firestore:", error);
         }
 
-        try {
+        //TODO Saving QUESTS
+        /*try {
             await updateDoc(userDocRef, { questPoints: quests.questPoints() });
         } catch (error) {
             console.error("Error saving questPoints to Firestore:", error);
-        }
+        }*/
     }
 
     const contextSaver:ContextSaverData = {

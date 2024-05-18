@@ -51,6 +51,8 @@ const HeaderView: Component<IHeaderViewProps> = (props) => {
                 return "#1a9cb2";
             case 'bank':
                 return "#b47d3b";
+            case 'quests':
+                return "#0f5f8c";
             case 'location':
                 return "#1f500c";
             case 'map':

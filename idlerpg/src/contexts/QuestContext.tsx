@@ -1,8 +1,11 @@
-import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
+import {createContext, JSX, useContext} from "solid-js";
+import {createStore} from "solid-js/store";
+import questBuilder from "../data/QuestBuilder";
+import {IQuestProgress} from "../models/Quest";
 
 export type QuestData = {
-    questPoints:Accessor<number>,
-    setQuestPoints:(questPoints:number)=>void,
+    setQuestProgress:(questProgress:IQuestProgress)=>void,
+    getQuestProgress:(questId:string)=>number,
 };
 
 export const QuestContext = createContext<QuestData>();
@@ -12,13 +15,29 @@ interface QuestProps {
 }
 
 export function QuestProvider(props:QuestProps) {
-    const [questPoints, setQuestPoints] = createSignal(0);
+const [questsProgress, setQuestsProgress] = createStore<IQuestProgress[]>([]);
+
+    const questIds = Object.keys(questBuilder);
+    for (const questId in questIds)
+    {
+        setQuestsProgress([...questsProgress, { id: questIds[questId], progress: 0 }])
+    }
 
     const quests:QuestData = {
-        questPoints:questPoints,
-        setQuestPoints:(questPoints:number)=>
+        setQuestProgress:(questProgress:IQuestProgress)=>
         {
-            setQuestPoints(questPoints)
+            setQuestsProgress(qp => questProgress.id === qp.id, 'progress', questProgress.progress);
+        },
+        getQuestProgress:(questId:string)=>
+        {
+            for (let i = 0; i < questsProgress.length; i++)
+            {
+                if (questsProgress[i].id === questId)
+                {
+                    return questsProgress[i].progress;
+                }
+            }
+            return -1;
         },
     };
 
@@ -27,6 +46,12 @@ export function QuestProvider(props:QuestProps) {
             {props.children}
         </QuestContext.Provider>
     );
+}
+
+export function getQuestPoints():number
+{
+    //TODO implement
+    return 0;
 }
 
 export default function useQuests() { return useContext(QuestContext) }

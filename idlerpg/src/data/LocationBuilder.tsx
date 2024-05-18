@@ -11,7 +11,7 @@ const locationBuilder:ILocationBuilder =
             {
                 name: 'Lumberton',
                 skillIds: [ 'cooking', 'smithing', 'firemaking', 'fletching', 'crafting' ],
-                taskIds: [ 'fishing_shrimp_raw', 'mining_tin_ore', 'mining_copper_ore', 'woodcutting_normal_log' ],
+                taskIds: [ 'fishing_shrimp_raw', 'fishing_sardine_raw', 'fishing_herring_raw', 'mining_tin_ore', 'mining_copper_ore', 'woodcutting_normal_log' ],
                 vendorIds: [ 'vendor_lumberton' ],
                 enemyIds: [ 'chicken', 'cow' ]
             },

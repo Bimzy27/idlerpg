@@ -18,6 +18,7 @@ import CombatView from "./combat/CombatView";
 import MapView from "./MapView";
 import HeaderView from "./HeaderView";
 import Scrollbars from "solid-custom-scrollbars";
+import QuestsView from "./quest/QuestsView";
 
 const StyledContentView = styled.div`
     width: 100%;
@@ -48,6 +49,9 @@ const ContentView: Component<IContentViewProps> = (props) => {
                         <Show when={gameView?.activeView() === 'bank'}>
                             <InventoryView/>
                         </Show>
+                        <Show when={gameView?.activeView() === 'quests'}>
+                            <QuestsView/>
+                        </Show>
                         <Show when={gameView?.activeView() === 'location'}>
                             <LocationView/>
                         </Show>
@@ -59,8 +63,7 @@ const ContentView: Component<IContentViewProps> = (props) => {
                         </Show>
                         <Show when={gameView?.activeView() === 'mining'}>
                             <MiningView/>
-                        </Show>
-                        <Show when={gameView?.activeView() === 'smithing'}>
+                        </Show>                        <Show when={gameView?.activeView() === 'smithing'}>
                             <SmithingView/>
                         </Show>
                         <Show when={gameView?.activeView() === 'fishing'}>

@@ -6,7 +6,7 @@ import {ICost, ItemCost} from "../models/Cost";
 import {IItemAmount} from "../models/Item";
 import {IReward, ItemReward, SkillReward} from "../models/Reward";
 import {ISkillValue} from "../models/Skill";
-import {getRequirements, IRequirement, ItemRequirement, SkillRequirement} from "../models/Requirement";
+import {getRequirements} from "../models/Requirement";
 
 type TaskDic = Record<string, ITask>;
 

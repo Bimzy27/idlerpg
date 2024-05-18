@@ -3,6 +3,7 @@ import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import {IItemAmount} from "./Item";
 import {SkillsData} from "../contexts/SkillsContext";
 import {ISkillValue} from "./Skill";
+import useQuests, {QuestData} from "../contexts/QuestContext";
 
 export interface IReward
 {
@@ -36,5 +37,20 @@ export class SkillReward implements IReward
     reward(contextData:unknown):void {
         const skills = contextData as SkillsData;
         skills?.addExp(this.skillValue)
+    }
+}
+
+export class QuestPointReward implements IReward
+{
+    questPoints:number;
+
+    constructor(questPoints:number)
+    {
+        this.questPoints = questPoints;
+    }
+
+    reward(contextData:unknown):void {
+        const quests = contextData as QuestData;
+        quests.addQuestPoints(this.questPoints);
     }
 }

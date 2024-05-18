@@ -142,7 +142,8 @@ export function ContextLoader(props:IContextLoaderProps) {
 
     loadUserLocation()
 
-    async function loadUserQuests()
+    //TODO loading QUESTS
+    /*async function loadUserQuests()
     {
         const querySnapshot = await getDocs(collection(db, "users"));
         querySnapshot.forEach((doc) =>
@@ -152,13 +153,12 @@ export function ContextLoader(props:IContextLoaderProps) {
                 const questPoints = doc.data().questPoints;
                 if (questPoints)
                 {
-                    quests.setQuestPoints(questPoints);
+                    quests.addQuestPoints(questPoints);
                 }
             }
         });
     }
-
-    loadUserQuests()
+    loadUserQuests()*/
 
     return (
         <div>
