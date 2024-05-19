@@ -9,6 +9,7 @@ import {PlayerProvider} from "./PlayerContext";
 import {ContextLoader} from "./ContextLoader";
 import {ContextSaver} from "./ContextSaver";
 import {MapProvider} from "./MapContext";
+import {QuestProvider} from "./QuestContext";
 
 interface IContextProviderProps {
     children?: JSX.Element;
@@ -21,17 +22,19 @@ export function ContextProvider(props:IContextProviderProps) {
                 <SkillProvider>
                     <InventoryProvider>
                         <EquipmentProvider>
-                            <PlayerProvider>
-                                <CombatProvider>
-                                    <ActiveTaskProvider>
-                                        <ContextLoader>
-                                            <ContextSaver>
-                                                {props.children}
-                                            </ContextSaver>
-                                        </ContextLoader>
-                                    </ActiveTaskProvider>
-                                </CombatProvider>
-                            </PlayerProvider>
+                            <QuestProvider>
+                                <PlayerProvider>
+                                    <CombatProvider>
+                                        <ActiveTaskProvider>
+                                            <ContextLoader>
+                                                <ContextSaver>
+                                                    {props.children}
+                                                </ContextSaver>
+                                            </ContextLoader>
+                                        </ActiveTaskProvider>
+                                    </CombatProvider>
+                                </PlayerProvider>
+                            </QuestProvider>
                         </EquipmentProvider>
                     </InventoryProvider>
                 </SkillProvider>

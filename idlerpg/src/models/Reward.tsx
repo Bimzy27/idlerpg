@@ -3,6 +3,7 @@ import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import {IItemAmount} from "./Item";
 import {SkillsData} from "../contexts/SkillsContext";
 import {ISkillValue} from "./Skill";
+import useQuests, {QuestData} from "../contexts/QuestContext";
 
 export interface IReward
 {
