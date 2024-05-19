@@ -167,7 +167,6 @@ const CombatView: Component<ICombatViewProps> = (props) => {
             }, 10);
             playerTimeoutIds.push(timeoutId1);
         }
-        startPlayerAttack();
 
         function startEnemyAttack()
         {
@@ -190,7 +189,6 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                 const timeoutId2 = setTimeout(()=>
                 {
                     const activeEnemy = combat.enemy();
-                    const enemyStats = activeEnemy.combatStats;
 
                     //Attack Player
                     const hitChance = getHitChance(activeEnemy.attackType, activeEnemy.accuracyRating, player.getPlayerStats(), equipment.getDefenseStats());
@@ -222,13 +220,16 @@ const CombatView: Component<ICombatViewProps> = (props) => {
             }, 10);
             enemyTimeoutIds.push(timeoutId1);
         }
+
+        combat.setPlayerAttackDuration(0);
+        combat.setPlayerAttackProgress(0);
+        combat.setEnemyAttackDuration(0);
+        combat.setEnemyAttackProgress(0);
+
+        startPlayerAttack();
         startEnemyAttack();
 
         return () => {
-            combat.setPlayerAttackDuration(0);
-            combat.setPlayerAttackProgress(0);
-            combat.setEnemyAttackDuration(0);
-            combat.setEnemyAttackProgress(0);
         };
     }, [combat.enemy]);
 

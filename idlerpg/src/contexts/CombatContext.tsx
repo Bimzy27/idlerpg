@@ -100,12 +100,12 @@ export function CombatProvider(props:ICombatProps) {
         playerAttackProgress:playerAttackProgress,
         setPlayerAttackProgress:(progress:number)=>{setPlayerAttackProgress(MathUtil.clamp(progress, 0, 100))},
         playerAttackDuration:playerAttackDuration,
-        setPlayerAttackDuration:(duration:number)=>{setPlayerAttackProgress(duration)},
+        setPlayerAttackDuration:(duration:number)=>{setPlayerAttackDuration(duration)},
 
         enemyAttackProgress:enemyAttackProgress,
         setEnemyAttackProgress:(progress:number)=>{setEnemyAttackProgress(MathUtil.clamp(progress, 0, 100))},
         enemyAttackDuration:enemyAttackDuration,
-        setEnemyAttackDuration:(duration:number)=>{setEnemyAttackProgress(duration)},
+        setEnemyAttackDuration:(duration:number)=>{setEnemyAttackDuration(duration)},
     };
 
     return (
