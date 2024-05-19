@@ -2,7 +2,7 @@ import {Component, For, Show} from "solid-js";
 import {ColumnCenterAlignedView, ContentFitAltView, ContentFitView, CoreButton, CoreText} from "../../styles/styles";
 import questBuilder, {getMaxQuestPoints} from "../../data/QuestBuilder";
 import useQuests, {QuestData} from "../../contexts/QuestContext";
-import {IQuest} from "../../models/Quest";
+import {IQuest, IQuestStep, ItemQuestStep, MonsterQuestStep} from "../../models/Quest";
 
 interface IQuestsViewProps
 {
@@ -45,6 +45,17 @@ const QuestView: Component<IQuestViewProps> = (props) => {
                 <Show when={quests.getQuestProgress(props.questId) === 0}>
                     <StartQuestView questId={props.questId} quest={props.quest}/>
                 </Show>
+                <Show when={quests.getQuestProgress(props.questId) === 2 + props.quest.steps.length}>
+                    <CompleteQuestView questId={props.questId} quest={props.quest}/>
+                </Show>
+                <Show when={quests.getQuestProgress(props.questId) > 1 &&
+                            (props.quest.steps[quests.getQuestProgress(props.questId) - 2] as MonsterQuestStep).monsterId}>
+                    <MonsterQuestView questId={props.questId} quest={props.quest}/>
+                </Show>
+                <Show when={quests.getQuestProgress(props.questId) > 1 &&
+                    (props.quest.steps[quests.getQuestProgress(props.questId) - 2] as ItemQuestStep).itemAmount}>
+                    <ItemQuestView questId={props.questId} quest={props.quest}/>
+                </Show>
             </ColumnCenterAlignedView>
         </ContentFitAltView>
     );
@@ -65,6 +76,28 @@ const CompleteQuestView: Component<IQuestViewProps> = (props) => {
 
     return (
         <ColumnCenterAlignedView>
+            <CoreButton onClick={()=>quests.incrementQuestProgress(props.questId)}>Complete Quest</CoreButton>
+        </ColumnCenterAlignedView>
+    );
+};
+
+const MonsterQuestView: Component<IQuestViewProps> = (props) => {
+    const quests = useQuests() as QuestData;
+
+    return (
+        <ColumnCenterAlignedView>
+            <CoreText>Monster Step</CoreText>
+            <CoreButton onClick={()=>quests.incrementQuestProgress(props.questId)}>Complete Quest</CoreButton>
+        </ColumnCenterAlignedView>
+    );
+};
+
+const ItemQuestView: Component<IQuestViewProps> = (props) => {
+    const quests = useQuests() as QuestData;
+
+    return (
+        <ColumnCenterAlignedView>
+            <CoreText>Item Step</CoreText>
             <CoreButton onClick={()=>quests.incrementQuestProgress(props.questId)}>Complete Quest</CoreButton>
         </ColumnCenterAlignedView>
     );

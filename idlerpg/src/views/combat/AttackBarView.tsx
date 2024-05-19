@@ -1,5 +1,5 @@
 import {styled} from "solid-styled-components";
-import {highlightColor, redColor} from "../../styles/colors";
+import {highlightColor, primaryTrimColor} from "../../styles/colors";
 import {Component} from "solid-js";
 import {CoreText} from "../../styles/styles";
 import useCombat, {CombatData} from "../../contexts/CombatContext";
@@ -15,7 +15,7 @@ const AttackBarContainer = styled.div`
 
 const AttackBar = styled.div<{transitionDuration: number}>`
     height: 100%;
-    background-color: ${redColor};
+    background-color: ${primaryTrimColor};
     border-radius: 10px;
     transition: width ${props => props.transitionDuration}s linear;
 `;
