@@ -4,7 +4,7 @@ import questBuilder from "../data/QuestBuilder";
 import {IQuestProgress} from "../models/Quest";
 
 export type QuestData = {
-    setQuestProgress:(questProgress:IQuestProgress)=>void,
+    incrementQuestProgress:(questId:string)=>void,
     getQuestProgress:(questId:string)=>number,
 };
 
@@ -24,9 +24,18 @@ const [questsProgress, setQuestsProgress] = createStore<IQuestProgress[]>([]);
     }
 
     const quests:QuestData = {
-        setQuestProgress:(questProgress:IQuestProgress)=>
+        incrementQuestProgress:(questId:string)=>
         {
-            setQuestsProgress(qp => questProgress.id === qp.id, 'progress', questProgress.progress);
+            const quest  = questBuilder[questId];
+            const curProgress = quests.getQuestProgress(questId);
+
+            if (curProgress === 1)
+            {
+                return;
+            }
+
+            const progress:number = curProgress <= 0 ? 2 : curProgress === 1 + quest.steps.length ? 1 : curProgress + 1;
+            setQuestsProgress(qp => questId === qp.id, 'progress', progress);
         },
         getQuestProgress:(questId:string)=>
         {

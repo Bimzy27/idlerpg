@@ -1,6 +1,6 @@
 import {IQuest, ItemQuestStep, MonsterQuestStep} from "../models/Quest";
 import {SkillRequirement} from "../models/Requirement";
-import {ItemReward, QuestPointReward, SkillReward} from "../models/Reward";
+import {ItemReward, SkillReward} from "../models/Reward";
 import {getExpFromLevel} from "../models/Skill";
 
 interface IQuestBuilder

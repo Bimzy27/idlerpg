@@ -39,18 +39,3 @@ export class SkillReward implements IReward
         skills?.addExp(this.skillValue)
     }
 }
-
-export class QuestPointReward implements IReward
-{
-    questPoints:number;
-
-    constructor(questPoints:number)
-    {
-        this.questPoints = questPoints;
-    }
-
-    reward(contextData:unknown):void {
-        const quests = contextData as QuestData;
-        quests.addQuestPoints(this.questPoints);
-    }
-}

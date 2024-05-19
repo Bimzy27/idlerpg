@@ -42,7 +42,7 @@ const QuestView: Component<IQuestViewProps> = (props) => {
                 <CoreText>{props.quest.name}</CoreText>
                 <CoreText>QP: {props.quest.questPoints}</CoreText>
                 <CoreText>Progress: {quests.getQuestProgress(props.questId)}</CoreText>
-                <CoreButton onClick={()=>quests.setQuestProgress({id: props.questId, progress: 2})}>Start Quest</CoreButton>
+                <CoreButton onClick={()=>quests.incrementQuestProgress(props.questId)}>Start Quest</CoreButton>
             </ColumnCenterAlignedView>
         </ContentFitAltView>
     );
