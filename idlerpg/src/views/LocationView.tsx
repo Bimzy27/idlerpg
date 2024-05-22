@@ -11,7 +11,7 @@ import locationBuilder from "../data/LocationBuilder";
 import TaskView from "./TaskView";
 import SkillView from "./skills/SkillView";
 import {enemyData} from "../loaders/EnemyLoader";
-import useCombat, {CombatData} from "../contexts/CombatContext";
+import useCombat, {CombatData} from "../contexts/combat/CombatContext";
 import useActiveTask, {ActiveTaskData} from "../contexts/ActiveTaskContext";
 import useMap, {MapData} from "../contexts/MapContext";
 import VendorView from "./VendorView";

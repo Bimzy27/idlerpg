@@ -2,7 +2,7 @@ import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
 import {ITask, taskMeetsRequirements} from "../models/Task";
 import useSkills, {SkillsData} from "./SkillsContext";
 import useInventory, {InventoryData} from "./InventoryContext";
-import useCombat, {CombatData} from "./CombatContext";
+import useCombat, {CombatData} from "./combat/CombatContext";
 import {enemyData} from "../loaders/EnemyLoader";
 import {getTaskId, taskData} from "../loaders/TaskLoader";
 

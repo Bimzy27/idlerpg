@@ -4,7 +4,7 @@ import {redColor, highlightColor} from "../../styles/colors";
 import usePlayer, {PlayerData} from "../../contexts/PlayerContext";
 import {getHitpoints} from "../../models/combat/CombatStats";
 import {CoreButton, CoreImage, CoreText, RowCenterAlignedView} from "../../styles/styles";
-import useCombat, {CombatData} from "../../contexts/CombatContext";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 
 const HealthBarContainer = styled.div`
     width: 100%;

@@ -1,7 +1,7 @@
 import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
 import questBuilder from "../data/QuestBuilder";
-import {IQuestProgress} from "../models/Quest";
+import {IQuestProgress, questProgressOffset} from "../models/Quest";
 
 export type QuestData = {
     questPoints:Accessor<number>,
@@ -22,7 +22,7 @@ export function QuestProvider(props:QuestProps) {
     const questIds = Object.keys(questBuilder);
     for (const questId in questIds)
     {
-        setQuestsProgress([...questsProgress, { id: questIds[questId], progress: 0 }])
+        setQuestsProgress([...questsProgress, { id: questIds[questId], progress: 0, stepProgress: 0 }])
     }
 
     function getQuestPoints():number
@@ -32,7 +32,7 @@ export function QuestProvider(props:QuestProps) {
         for (const questId in questIds)
         {
             const progress = quests.getQuestProgress(questIds[questId]);
-            if (progress === 1)
+            if (progress === questProgressOffset - 1)
             {
                 qp += questBuilder[questIds[questId]].questPoints;
             }
@@ -48,13 +48,14 @@ export function QuestProvider(props:QuestProps) {
             const quest  = questBuilder[questId];
             const curProgress = quests.getQuestProgress(questId);
 
-            if (curProgress === 1)
+            if (curProgress === questProgressOffset - 1)
             {
                 return;
             }
 
-            const progress:number = curProgress <= 0 ? 2 : curProgress === 1 + quest.steps.length ? 1 : curProgress + 1;
+            const progress:number = curProgress <= 0 ? questProgressOffset : curProgress === questProgressOffset - 1 + quest.steps.length ? 1 : curProgress + 1;
             setQuestsProgress(qp => questId === qp.id, 'progress', progress);
+            setQuestsProgress(qp => questId === qp.id, 'stepProgress', 0);
             setQuestPoints(getQuestPoints());
         },
         getQuestProgress:(questId:string)=>

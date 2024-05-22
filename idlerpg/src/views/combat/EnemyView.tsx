@@ -1,5 +1,5 @@
 import {Component, createEffect} from "solid-js";
-import useCombat, {CombatData} from "../../contexts/CombatContext";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import {
     ColumnCenterAlignedView,
     ContentFitAltView,

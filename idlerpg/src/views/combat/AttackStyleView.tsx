@@ -1,5 +1,5 @@
 import {Component, Show} from "solid-js";
-import useCombat, {CombatData} from "../../contexts/CombatContext";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import {ColumnCenterAlignedView, ContentFitAltView, CoreImage, CoreText, TransparentButton} from "../../styles/styles";
 import useEquipment, {EquipmentData} from "../../contexts/EquipmentContext";
 import {EquippableSlot, IWeapon} from "../../models/Item";

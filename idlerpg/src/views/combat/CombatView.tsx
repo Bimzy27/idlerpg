@@ -1,6 +1,6 @@
 import {Component, createEffect, createSignal} from "solid-js";
 import EnemyView from "./EnemyView";
-import useCombat, {CombatData} from "../../contexts/CombatContext";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import {
     ColumnCenterAlignedView,
     ContentFitAltView,

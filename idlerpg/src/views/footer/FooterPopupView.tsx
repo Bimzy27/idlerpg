@@ -4,7 +4,7 @@ import {Component, Show} from "solid-js";
 import useActiveTask, {ActiveTaskData} from "../../contexts/ActiveTaskContext";
 import {getTaskId} from "../../loaders/TaskLoader";
 import ActiveTaskView from "./ActiveTaskView";
-import useCombat, {CombatData} from "../../contexts/CombatContext";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import {getEnemyId} from "../../loaders/EnemyLoader";
 import ActiveCombatView from "./ActiveCombatView";
 

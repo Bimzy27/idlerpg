@@ -2,7 +2,7 @@ import {styled} from "solid-styled-components";
 import {highlightColor, primaryTrimColor} from "../../styles/colors";
 import {Component} from "solid-js";
 import {CoreText} from "../../styles/styles";
-import useCombat, {CombatData} from "../../contexts/CombatContext";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import useEquipment, {EquipmentData} from "../../contexts/EquipmentContext";
 
 const AttackBarContainer = styled.div`

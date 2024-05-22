@@ -17,6 +17,7 @@ export interface IQuest
 export interface IQuestProgress extends IId
 {
     progress:number;
+    stepProgress:number;
 }
 
 export interface IQuestStep
@@ -44,3 +45,5 @@ export class ItemQuestStep implements IQuestStep
         this.itemAmount = itemAmount;
     }
 }
+
+export const questProgressOffset = 3;
