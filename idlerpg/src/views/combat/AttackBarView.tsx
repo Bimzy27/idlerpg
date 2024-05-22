@@ -29,16 +29,9 @@ export const PlayerAttackBarView: Component<IAttackBarViewProps> = (props) => {
     const weapon = equipment.getWeapon();
     const combat = useCombat() as CombatData;
 
-    function getAttackSpeed():number
-    {
-        const as = combat.playerAttackDuration();
-        console.log('player AS: ' + as)
-        return as;
-    }
-
     return (
         <AttackBarContainer>
-            <AttackBar transitionDuration={getAttackSpeed()} style={`width: ${combat.playerAttackProgress()}%`}></AttackBar>
+            <AttackBar transitionDuration={combat.playerAttackDuration()} style={`width: ${combat.playerAttackProgress()}%`}></AttackBar>
             <CoreText>Attack Speed: {weapon.attackSpeed}s</CoreText>
         </AttackBarContainer>
     );

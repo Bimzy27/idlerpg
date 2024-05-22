@@ -9,7 +9,8 @@ import {EquippableSlot, IEquipSlot} from "../models/Item";
 import useEquipment, {defaultEquipment, EquipmentData} from "./EquipmentContext";
 import useInventory, {InventoryData} from "./InventoryContext";
 import useMap, {MapData} from "./MapContext";
-import useQuests, {QuestData} from "./QuestContext";
+import useQuests, {defaultQuests, QuestData} from "./QuestContext";
+import {IQuestProgress} from "../models/Quest";
 
 interface IContextLoaderProps {
     children?: JSX.Element;
@@ -27,7 +28,7 @@ export function ContextLoader(props:IContextLoaderProps) {
     const map = useMap() as MapData;
     const quests = useQuests() as QuestData;
 
-    async function loadUserSkillsData()
+    async function loadUserSkills()
     {
         const querySnapshot = await getDocs(collection(db, "users"));
         querySnapshot.forEach((doc) =>
@@ -42,10 +43,9 @@ export function ContextLoader(props:IContextLoaderProps) {
                     {
                         if (skillValues[i].id === skillId)
                         {
-                            const exp = skillId === 'hitpoints' && skills[skillId] < getExpFromLevel(10) ? getExpFromLevel(10) : skills[skillId];
                             skillValues[i] = {
                                 id: skillId,
-                                exp: exp,
+                                exp: skills[skillId],
                             }
                         }
                     }
@@ -54,10 +54,9 @@ export function ContextLoader(props:IContextLoaderProps) {
             }
         });
     }
+    loadUserSkills().then(r => player.setInitialPlayerStats());
 
-    loadUserSkillsData().then(r => player.setInitialPlayerStats());
-
-    async function loadUserEquipmentData()
+    async function loadUserEquipment()
     {
         const querySnapshot = await getDocs(collection(db, "users"));
         querySnapshot.forEach((doc) =>
@@ -85,8 +84,7 @@ export function ContextLoader(props:IContextLoaderProps) {
             }
         });
     }
-
-    loadUserEquipmentData().then(r => player.setInitialPlayerStats());
+    loadUserEquipment().then(r => player.setInitialPlayerStats());
 
     async function loadUserFood()
     {
@@ -103,7 +101,6 @@ export function ContextLoader(props:IContextLoaderProps) {
             }
         });
     }
-
     loadUserFood()
 
     async function loadUserCoins()
@@ -121,7 +118,6 @@ export function ContextLoader(props:IContextLoaderProps) {
             }
         });
     }
-
     loadUserCoins()
 
     async function loadUserLocation()
@@ -139,26 +135,37 @@ export function ContextLoader(props:IContextLoaderProps) {
             }
         });
     }
-
     loadUserLocation()
 
-    //TODO loading QUESTS
-    /*async function loadUserQuests()
+    async function loadUserQuests()
     {
         const querySnapshot = await getDocs(collection(db, "users"));
         querySnapshot.forEach((doc) =>
         {
             if (doc.id === auth.data?.uid)
             {
-                const questPoints = doc.data().questPoints;
-                if (questPoints)
+                const questsData = doc.data().quests;
+                const defQuests:IQuestProgress[] = defaultQuests;
+                for(let questId in questsData)
                 {
-                    quests.addQuestPoints(questPoints);
+                    for (let i = 0; i < defQuests.length; i++)
+                    {
+                        if (defQuests[i].id === questId)
+                        {
+                            defQuests[i] =
+                                {
+                                    id: questId,
+                                    progress: questsData[questId].progress,
+                                    stepProgress: questsData[questId].stepProgress,
+                                };
+                        }
+                    }
                 }
+                quests.setQuestsProgress(defQuests);
             }
         });
     }
-    loadUserQuests()*/
+    loadUserQuests().then();
 
     return (
         <div>

@@ -17,7 +17,7 @@ export const SkillsContext = createContext<SkillsData>();
 
 export const defaultSkills:ISkillValue[] = Object.keys(skillBuilder).map(id => ({
     id,
-    exp: 0,
+    exp: id === 'hitpoints' ? getExpFromLevel(10) : 0,
 }));
 
 interface SkillProps {
@@ -25,7 +25,7 @@ interface SkillProps {
 }
 
 export function SkillProvider(props:SkillProps) {
-    const [skills, setSkills] = createStore<ISkillValue[]>([]);
+    const [skills, setSkills] = createStore<ISkillValue[]>(defaultSkills);
 
     const skillsExp:SkillsData = {
         skills: skills,

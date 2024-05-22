@@ -123,9 +123,7 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                     const accuracyBonus = getAccuracyBonus(attackStyle, equipment.getAttackStats());
                     const hitChance = getHitChance(attackType, getAccuracyRating(attackType, playerStats, accuracyBonus), activeEnemy.combatStats, activeEnemy.defenseStats);
 
-                    console.log("Player Attempt Hit")
                     const rng = MathUtil.getRandomNumber(0, 100);
-                    console.log('Player hit chance: ' + hitChance.toFixed(2) + ' rng: ' + rng.toFixed(2));
                     if (rng <= hitChance)
                     {
                         const maxHit = getMaxHit(attackType, playerStats, equipment.getAttackStats());
@@ -193,9 +191,7 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                     //Attack Player
                     const hitChance = getHitChance(activeEnemy.attackType, activeEnemy.accuracyRating, player.getPlayerStats(), equipment.getDefenseStats());
 
-                    console.log("Enemy Attempt Hit")
                     const rng = MathUtil.getRandomNumber(0, 100);
-                    console.log('Enemy hit chance: ' + hitChance.toFixed(2) + ' rng: ' + rng.toFixed(2));
                     if (rng <= hitChance)
                     {
                         const damage = MathUtil.getRandomWholeNumber(getMinHit(), activeEnemy.maxHit);

@@ -22,9 +22,9 @@ export function ContextProvider(props:IContextProviderProps) {
                 <SkillProvider>
                     <InventoryProvider>
                         <EquipmentProvider>
-                            <QuestProvider>
-                                <PlayerProvider>
-                                    <CombatProvider>
+                            <PlayerProvider>
+                                <CombatProvider>
+                                    <QuestProvider>
                                         <ActiveTaskProvider>
                                             <ContextLoader>
                                                 <ContextSaver>
@@ -32,9 +32,9 @@ export function ContextProvider(props:IContextProviderProps) {
                                                 </ContextSaver>
                                             </ContextLoader>
                                         </ActiveTaskProvider>
-                                    </CombatProvider>
-                                </PlayerProvider>
-                            </QuestProvider>
+                                    </QuestProvider>
+                                </CombatProvider>
+                            </PlayerProvider>
                         </EquipmentProvider>
                     </InventoryProvider>
                 </SkillProvider>

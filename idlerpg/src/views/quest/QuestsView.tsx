@@ -9,11 +9,15 @@ import {
 } from "../../styles/styles";
 import questBuilder, {getMaxQuestPoints} from "../../data/QuestBuilder";
 import useQuests, {QuestData} from "../../contexts/QuestContext";
-import {IQuest, IQuestStep, ItemQuestStep, MonsterQuestStep, questProgressOffset} from "../../models/Quest";
+import {IQuest, IQuestStep, ItemQuestStep, EnemyQuestStep, questProgressOffset} from "../../models/Quest";
 import ItemView from "../ItemView";
 import {IItemAmount} from "../../models/Item";
 import {itemData} from "../../loaders/ItemLoader";
 import useInventory, {InventoryData} from "../../contexts/InventoryContext";
+import EnemyIconView from "../combat/EnemyIconView";
+import useMap, {MapData} from "../../contexts/MapContext";
+import locationBuilder from "../../data/LocationBuilder";
+import useSkills, {SkillsData} from "../../contexts/SkillsContext";
 
 interface IQuestsViewProps
 {
@@ -52,7 +56,6 @@ const QuestView: Component<IQuestViewProps> = (props) => {
             <ColumnCenterAlignedView>
                 <CoreText>{props.quest.name}</CoreText>
                 <CoreText>QP: {props.quest.questPoints}</CoreText>
-                <CoreText>Progress: {quests.getQuestProgress(props.questId)}</CoreText>
                 <Show when={quests.getQuestProgress(props.questId) === 0}>
                     <StartQuestView questId={props.questId} quest={props.quest}/>
                 </Show>
@@ -63,8 +66,8 @@ const QuestView: Component<IQuestViewProps> = (props) => {
                     <CompletedQuestView questId={props.questId} quest={props.quest}/>
                 </Show>
                 <Show when={quests.getQuestProgress(props.questId) > questProgressOffset - 1 &&
-                            (props.quest.steps[quests.getQuestProgress(props.questId) - questProgressOffset] as MonsterQuestStep).monsterId}>
-                    <MonsterQuestView questId={props.questId} quest={props.quest}/>
+                            (props.quest.steps[quests.getQuestProgress(props.questId) - questProgressOffset] as EnemyQuestStep).enemyAmount}>
+                    <EnemyQuestView questId={props.questId} quest={props.quest}/>
                 </Show>
                 <Show when={quests.getQuestProgress(props.questId) > questProgressOffset - 1 &&
                     (props.quest.steps[quests.getQuestProgress(props.questId) - questProgressOffset] as ItemQuestStep).itemAmount}>
@@ -77,20 +80,46 @@ const QuestView: Component<IQuestViewProps> = (props) => {
 
 const StartQuestView: Component<IQuestViewProps> = (props) => {
     const quests = useQuests() as QuestData;
+    const map = useMap() as MapData;
+
+    function tryProgressStep()
+    {
+        if (map.location() === props.quest.startLocation)
+        {
+            quests.incrementQuestProgress(props.questId)
+        }
+    }
 
     return (
         <ColumnCenterAlignedView>
-            <CoreButton onClick={()=>quests.incrementQuestProgress(props.questId)}>Start Quest</CoreButton>
+            <Show when={map.location() !== props.quest.startLocation}>
+                <CoreText>You need to be in {locationBuilder[props.quest.startLocation].name}!</CoreText>
+            </Show>
+            <CoreButton onClick={tryProgressStep}>Start Quest</CoreButton>
         </ColumnCenterAlignedView>
     );
 };
 
 const CompleteQuestView: Component<IQuestViewProps> = (props) => {
     const quests = useQuests() as QuestData;
+    const map = useMap() as MapData;
+    const inventory = useInventory() as InventoryData;
+    const skills = useSkills() as SkillsData;
+
+    function tryProgressStep()
+    {
+        if (map.location() === props.quest.startLocation)
+        {
+            quests.tryCompleteQuestProgress(props.questId, inventory, skills)
+        }
+    }
 
     return (
         <ColumnCenterAlignedView>
-            <CoreButton onClick={()=>quests.incrementQuestProgress(props.questId)}>Complete Quest</CoreButton>
+            <Show when={map.location() !== props.quest.startLocation}>
+                <CoreText>You need to be in {locationBuilder[props.quest.startLocation].name}!</CoreText>
+            </Show>
+            <CoreButton onClick={tryProgressStep}>Complete Quest</CoreButton>
         </ColumnCenterAlignedView>
     );
 };
@@ -103,14 +132,23 @@ const CompletedQuestView: Component<IQuestViewProps> = (props) => {
     );
 };
 
-const MonsterQuestView: Component<IQuestViewProps> = (props) => {
+const EnemyQuestView: Component<IQuestViewProps> = (props) => {
     const quests = useQuests() as QuestData;
+
+    function getEnemyAmount():IItemAmount
+    {
+        const questStep:IQuestStep = props.quest.steps[quests.getQuestProgress(props.questId) - questProgressOffset]
+        if ((questStep as EnemyQuestStep).enemyAmount)
+        {
+            return (questStep as EnemyQuestStep).enemyAmount;
+        }
+        return {id: 'none', amount: 0};
+    }
 
     function tryProgressStep()
     {
-        if (inventory.hasItem(getItemAmount()))
+        if (quests.getQuestStepProgress(props.questId) >= getEnemyAmount().amount)
         {
-            inventory.removeItem(getItemAmount());
             quests.incrementQuestProgress(props.questId);
         }
     }
@@ -121,13 +159,13 @@ const MonsterQuestView: Component<IQuestViewProps> = (props) => {
 
             <RowCenterAlignedView>
                 <ColumnCenterAlignedView>
-                    <CoreText>You Have:</CoreText>
-                    <ItemView forceDisplayAmount={true} amount={inventory.getItem(getItemAmount().id).amount} id={getItemAmount().id}></ItemView>
+                    <CoreText>You've Killed:</CoreText>
+                    <EnemyIconView amount={quests.getQuestStepProgress(props.questId)} id={getEnemyAmount().id}></EnemyIconView>
                 </ColumnCenterAlignedView>
 
                 <ColumnCenterAlignedView>
-                    <CoreText>You Need:</CoreText>
-                    <ItemView amount={getItemAmount().amount} id={getItemAmount().id}></ItemView>
+                    <CoreText>You Need To Kill:</CoreText>
+                    <EnemyIconView amount={getEnemyAmount().amount} id={getEnemyAmount().id}></EnemyIconView>
                 </ColumnCenterAlignedView>
             </RowCenterAlignedView>
 

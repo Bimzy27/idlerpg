@@ -1,9 +1,9 @@
-interface IObserver {
+export interface IObserver {
     update(data: any): void;
 }
 
 
-class Subject {
+export abstract class Subject {
     private observers: IObserver[] = [];
 
     registerObserver(observer: IObserver) {
