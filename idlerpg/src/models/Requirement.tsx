@@ -2,6 +2,7 @@ import {getLevel, ISkillValue} from "./Skill";
 import {SkillsData} from "../contexts/SkillsContext";
 import {IItemAmount} from "./Item";
 import {InventoryData} from "../contexts/InventoryContext";
+import {ITask} from "./Task";
 
 export interface IRequirement
 {
@@ -59,4 +60,26 @@ export function getRequirements(data:Object[]):IRequirement[]
         }
     }
     return requirements;
+}
+
+export function meetsRequirements(requirements:IRequirement[], skills:SkillsData, inventory:InventoryData):boolean
+{
+    for (let i = 0; i < requirements.length; i++) {
+        if (requirements[i] instanceof SkillRequirement)
+        {
+            if (requirements[i].meetsRequirement(skills) === false)
+            {
+                return false;
+            }
+        }
+        else if (requirements[i] instanceof ItemRequirement)
+        {
+            if (requirements[i].meetsRequirement(inventory) === false)
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }

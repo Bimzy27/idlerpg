@@ -31,12 +31,12 @@ export function ContextLoader(props:IContextLoaderProps) {
     async function loadUserSkills()
     {
         const querySnapshot = await getDocs(collection(db, "users"));
+        const skillValues:ISkillValue[] = defaultSkills;
         querySnapshot.forEach((doc) =>
         {
             if (doc.id === auth.data?.uid)
             {
                 const skills = doc.data().skills;
-                const skillValues:ISkillValue[] = defaultSkills;
                 for(let skillId in skills)
                 {
                     for (let i = 0; i < skillValues.length; i++)
@@ -50,9 +50,9 @@ export function ContextLoader(props:IContextLoaderProps) {
                         }
                     }
                 }
-                skillsData.setSkills(skillValues);
             }
         });
+        skillsData.setSkills(skillValues);
     }
     loadUserSkills().then(r => player.setInitialPlayerStats());
 

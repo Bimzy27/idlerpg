@@ -4,8 +4,8 @@ import {
     ContentFitAltView,
     ContentFitView,
     CoreButton,
-    CoreText,
-    RowCenterAlignedView
+    CoreText, CoreText_Mid,
+    RowCenterAlignedView, TransparentButton
 } from "../../styles/styles";
 import questBuilder, {getMaxQuestPoints} from "../../data/QuestBuilder";
 import useQuests, {QuestData} from "../../contexts/QuestContext";
@@ -18,6 +18,9 @@ import EnemyIconView from "../combat/EnemyIconView";
 import useMap, {MapData} from "../../contexts/MapContext";
 import locationBuilder from "../../data/LocationBuilder";
 import useSkills, {SkillsData} from "../../contexts/SkillsContext";
+import RequirementView from "../RequirementView";
+import RewardView from "../RewardView";
+import {meetsRequirements} from "../../models/Requirement";
 
 interface IQuestsViewProps
 {
@@ -56,6 +59,22 @@ const QuestView: Component<IQuestViewProps> = (props) => {
             <ColumnCenterAlignedView>
                 <CoreText>{props.quest.name}</CoreText>
                 <CoreText>QP: {props.quest.questPoints}</CoreText>
+
+                <Show when={quests.getQuestProgress(props.questId) !== 2}>
+                    <CoreText_Mid>Requirements: {props.quest.requirements.length === 0 ? 'None' : ''}</CoreText_Mid>
+                    <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
+                        <For each={props.quest.requirements}>
+                            {(requirement, index) => (<RequirementView requirement={requirement}/>)}
+                        </For>
+                    </div>
+                    <CoreText_Mid>Rewards: {props.quest.rewards.length === 0 ? 'None' : ''}</CoreText_Mid>
+                    <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
+                        <For each={props.quest.rewards}>
+                            {(reward, index) => (<RewardView reward={reward}/>)}
+                        </For>
+                    </div>
+                </Show>
+
                 <Show when={quests.getQuestProgress(props.questId) === 0}>
                     <StartQuestView questId={props.questId} quest={props.quest}/>
                 </Show>
@@ -81,12 +100,17 @@ const QuestView: Component<IQuestViewProps> = (props) => {
 const StartQuestView: Component<IQuestViewProps> = (props) => {
     const quests = useQuests() as QuestData;
     const map = useMap() as MapData;
+    const inventory = useInventory() as InventoryData;
+    const skills = useSkills() as SkillsData;
 
     function tryProgressStep()
     {
         if (map.location() === props.quest.startLocation)
         {
-            quests.incrementQuestProgress(props.questId)
+            if (meetsRequirements(props.quest.requirements, skills, inventory))
+            {
+                quests.incrementQuestProgress(props.questId);
+            }
         }
     }
 

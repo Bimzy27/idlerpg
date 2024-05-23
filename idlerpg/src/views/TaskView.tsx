@@ -4,7 +4,7 @@ import {
     CoreText_Mid,
     TransparentButton
 } from "../styles/styles";
-import {ITask, taskMeetsRequirements} from "../models/Task";
+import {ITask} from "../models/Task";
 import useActiveTask, {ActiveTaskData} from "../contexts/ActiveTaskContext";
 import RewardView from "./RewardView";
 import RequirementView from "./RequirementView";
@@ -13,6 +13,7 @@ import {backgroundAlt1Color, primaryTrimColor, redColor, textPrimaryColor} from 
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import {styled} from "solid-styled-components";
 import {taskData} from "../loaders/TaskLoader";
+import {meetsRequirements} from "../models/Requirement";
 
 const StyledTaskView = styled.div`
     width: 32%;
@@ -38,14 +39,14 @@ interface ITaskViewProps
 const TaskView: Component<ITaskViewProps> = (props) => {
     const activeTask = useActiveTask() as ActiveTaskData;
     const task:ITask = taskData[props.taskId];
-    const skills = useSkills();
-    const inventory = useInventory();
+    const skills = useSkills() as SkillsData;
+    const inventory = useInventory() as InventoryData;
 
     return (
         <StyledTaskView>
             <TransparentButton onClick={()=>{activeTask?.setTask(task)}} style={{display:"flex", "flex-direction": "row", "align-items": "center"}}>
                 <ColumnCenterAlignedView>
-                    <TaskText color={taskMeetsRequirements(task, skills as SkillsData, inventory as InventoryData) ? textPrimaryColor : redColor}>{task.name}</TaskText>
+                    <TaskText color={meetsRequirements(task.requirements, skills, inventory) ? textPrimaryColor : redColor}>{task.name}</TaskText>
                     <TaskImage taskId={props.taskId} width={80} height={80}/>
                     <CoreText_Mid>Interval: {task.intervalSeconds} seconds</CoreText_Mid>
                 </ColumnCenterAlignedView>

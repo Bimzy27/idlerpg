@@ -25,7 +25,7 @@ interface SkillProps {
 }
 
 export function SkillProvider(props:SkillProps) {
-    const [skills, setSkills] = createStore<ISkillValue[]>(defaultSkills);
+    const [skills, setSkills] = createStore<ISkillValue[]>([]);
 
     const skillsExp:SkillsData = {
         skills: skills,

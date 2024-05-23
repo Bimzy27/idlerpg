@@ -25,7 +25,7 @@ const ExpView: Component<IExpViewProps> = (props) => {
             <Show when={props.id != ''} fallback={null} children={
                 <CoreImage src={`/assets/skills/${props.id}.png`} alt="NO IMG" width={60} height={60}></CoreImage>
             }/>
-            <CoreText style={{'position': 'absolute', 'top': '40%', 'z-index': 1, 'text-align': 'center'}}>{props.exp} EXP</CoreText>
+            <CoreText style={{'position': 'absolute', 'top': '55%', 'z-index': 1, 'text-align': 'center', "font-size": '20px'}}>{props.exp} EXP</CoreText>
         </StyledExpView>
     );
 };

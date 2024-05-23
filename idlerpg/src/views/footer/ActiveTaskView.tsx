@@ -4,12 +4,13 @@ import useActiveTask, {ActiveTaskData} from "../../contexts/ActiveTaskContext";
 import useInventory, {InventoryData} from "../../contexts/InventoryContext";
 import {IReward, ItemReward, SkillReward} from "../../models/Reward";
 import useSkills, {SkillsData} from "../../contexts/SkillsContext";
-import {ITask, taskMeetsRequirements} from "../../models/Task";
+import {ITask} from "../../models/Task";
 import {ICost, ItemCost} from "../../models/Cost";
 import {styled} from "solid-styled-components";
 import {highlightColor, primaryColor, secondaryColor} from "../../styles/colors";
 import {TaskImage} from "../TaskView";
 import {getTaskId, taskData} from "../../loaders/TaskLoader";
+import {meetsRequirements} from "../../models/Requirement";
 
 const TaskProgressBarContainer = styled.div`
     width: 90%;
@@ -82,7 +83,7 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
                     setProgress(0);
                     const timeoutId3 = setTimeout(()=>
                     {
-                        if (taskMeetsRequirements(activeTask, skills, inventory))
+                        if (meetsRequirements(activeTask.requirements, skills, inventory))
                         {
                             startTask();
                         }

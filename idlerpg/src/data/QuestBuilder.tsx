@@ -29,8 +29,8 @@ const questBuilder:IQuestBuilder =
                 endLocation:'location_lumberton',
                 steps:
                     [
-                        new EnemyQuestStep({id: 'chicken', amount: 1}),
-                        new ItemQuestStep({id: 'normal_log', amount: 1}),
+                        new EnemyQuestStep({id: 'chicken', amount: 25}),
+                        new ItemQuestStep({id: 'normal_log', amount: 50}),
                     ],
             },
         'quest_goblin_slayer':
@@ -68,6 +68,7 @@ const questBuilder:IQuestBuilder =
                 rewards:
                     [
                         new SkillReward({id: 'fishing', exp: 10000}),
+                        new ItemReward({id: 'herring', amount: 500}),
                     ],
                 startLocation:'location_faldomere',
                 endLocation:'location_faldomere',
