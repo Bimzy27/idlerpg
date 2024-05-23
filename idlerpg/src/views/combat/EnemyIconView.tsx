@@ -18,6 +18,7 @@ const StyledEnemyIconView = styled.div`
 `;
 
 interface IEnemyIconViewProps extends IEnemyAmount {
+    showAmount:boolean,
 }
 
 const EnemyIconView: Component<IEnemyIconViewProps> = (props) => {
@@ -26,7 +27,9 @@ const EnemyIconView: Component<IEnemyIconViewProps> = (props) => {
             <Show when={props.id != ''} fallback={null} children={
                 <CoreImage src={`/assets/enemies/${props.id}.png`} alt="NO IMG" width={60} height={60}></CoreImage>
             }/>
-            <CoreText style={{'position': 'absolute', 'top': '55%', 'z-index': 1, 'text-align': 'center'}}>{props.amount < 0 ? 0 : props.amount}</CoreText>
+            <Show when={props.showAmount}>
+                <CoreText style={{'position': 'absolute', 'top': '55%', 'z-index': 1, 'text-align': 'center'}}>{props.amount < 0 ? 0 : props.amount}</CoreText>
+            </Show>
         </StyledEnemyIconView>
     );
 };

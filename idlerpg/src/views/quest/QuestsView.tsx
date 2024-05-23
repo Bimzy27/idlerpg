@@ -184,12 +184,12 @@ const EnemyQuestView: Component<IQuestViewProps> = (props) => {
             <RowCenterAlignedView>
                 <ColumnCenterAlignedView>
                     <CoreText>You've Killed:</CoreText>
-                    <EnemyIconView amount={quests.getQuestStepProgress(props.questId)} id={getEnemyAmount().id}></EnemyIconView>
+                    <EnemyIconView amount={quests.getQuestStepProgress(props.questId)} id={getEnemyAmount().id} showAmount={true}></EnemyIconView>
                 </ColumnCenterAlignedView>
 
                 <ColumnCenterAlignedView>
                     <CoreText>You Need To Kill:</CoreText>
-                    <EnemyIconView amount={getEnemyAmount().amount} id={getEnemyAmount().id}></EnemyIconView>
+                    <EnemyIconView amount={getEnemyAmount().amount} id={getEnemyAmount().id} showAmount={true}></EnemyIconView>
                 </ColumnCenterAlignedView>
             </RowCenterAlignedView>
 
