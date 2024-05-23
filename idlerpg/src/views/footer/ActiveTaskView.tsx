@@ -1,5 +1,5 @@
-import {Component, createEffect, createSignal, Show} from "solid-js";
-import {ColumnCenterAlignedView, CoreText} from "../../styles/styles";
+import {Component, createEffect, createSignal, For, Show} from "solid-js";
+import {ColumnCenterAlignedView, CoreText, RowCenterAlignedView} from "../../styles/styles";
 import useActiveTask, {ActiveTaskData} from "../../contexts/ActiveTaskContext";
 import useInventory, {InventoryData} from "../../contexts/InventoryContext";
 import {IReward, ItemReward, SkillReward} from "../../models/Reward";
@@ -11,6 +11,7 @@ import {highlightColor, primaryColor, secondaryColor} from "../../styles/colors"
 import {TaskImage} from "../TaskView";
 import {getTaskId, taskData} from "../../loaders/TaskLoader";
 import {meetsRequirements} from "../../models/Requirement";
+import RewardView from "../RewardView";
 
 const TaskProgressBarContainer = styled.div`
     width: 90%;
@@ -112,11 +113,14 @@ const ActiveTaskView: Component<IActiveTaskViewProps> = (props) => {
 
     return (
         <ColumnCenterAlignedView>
-            <div style={{'display': "flex", "flex-direction": 'row', "grid-gap": '15px'}}>
+            <div style={{'display': "flex", "flex-direction": 'row', "grid-gap": '15px', "align-items": "center"}}>
                 <Show when={task.task() && task.task().intervalSeconds !== 0}>
                     <TaskImage taskId={getTaskId(task.task())} width={50} height={50}/>
+                    <CoreText>{task.task().name}</CoreText>
+                    <For each={task.task().rewards}>
+                        {(reward, index) => (<RewardView reward={reward}/>)}
+                    </For>
                 </Show>
-                <CoreText>{task.task().name}</CoreText>
             </div>
             <TaskProgressBarContainer>
                 <TaskProgressBar transitionDuration={duration()} style={`width: ${progress()}%`}></TaskProgressBar>

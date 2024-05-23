@@ -36,10 +36,6 @@ import {getTaskId} from "../../loaders/TaskLoader";
 import {getItemId} from "../../loaders/ItemLoader";
 import {PlayerAttackBarView} from "./AttackBarView";
 
-interface ICombatViewProps
-{
-}
-
 const StyledCombatView = styled.div`
     width: 90%;
     height: fit-content;
@@ -65,6 +61,10 @@ const StyledCombatChildView = styled.div`
     align-items: center;
     grid-gap: 20px;
 `;
+
+interface ICombatViewProps
+{
+}
 
 const CombatView: Component<ICombatViewProps> = (props) => {
     const combat = useCombat() as CombatData;
