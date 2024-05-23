@@ -1,6 +1,6 @@
 import {Component, createSignal, For, JSX, Show} from "solid-js";
 import SkillView from "./SkillView";
-import TaskView from "../TaskView";
+import TaskView from "../task/TaskView";
 import {ColumnCenterAlignedView, CoreButton, RowCenterAlignedView} from "../../styles/styles";
 
 interface ISkillNavigationTab

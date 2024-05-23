@@ -7,6 +7,8 @@ import ActiveTaskView from "./ActiveTaskView";
 import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import {getEnemyId} from "../../loaders/EnemyLoader";
 import ActiveCombatView from "./ActiveCombatView";
+import useGameView, {GameViewData} from "../../contexts/GameViewContext";
+import GameView from "../GameView";
 
 const StyledFooterPopupView = styled.div`
     position: fixed;
@@ -32,14 +34,25 @@ interface IFooterPopupViewProps
 const FooterPopupView: Component<IFooterPopupViewProps> = (props) => {
     const task = useActiveTask() as ActiveTaskData;
     const combat = useCombat() as CombatData;
+    const gameView = useGameView() as GameViewData;
+
+    function shouldShowTask():boolean
+    {
+        return getTaskId(task.task()) !== 'none';
+    }
+
+    function shouldShowCombat():boolean
+    {
+        return getEnemyId(combat.enemy()) !== 'none' && gameView.activeView() !== 'combat';
+    }
 
     return (
-        <Show when={getTaskId(task.task()) !== 'none' || getEnemyId(combat.enemy()) !== 'none'}>
+        <Show when={shouldShowTask() || shouldShowCombat()}>
             <StyledFooterPopupView>
-                <Show when={getTaskId(task.task()) !== 'none'}>
+                <Show when={shouldShowTask()}>
                     <ActiveTaskView/>
                 </Show>
-                <Show when={getEnemyId(combat.enemy()) !== 'none'}>
+                <Show when={shouldShowCombat()}>
                     <ActiveCombatView/>
                 </Show>
             </StyledFooterPopupView>

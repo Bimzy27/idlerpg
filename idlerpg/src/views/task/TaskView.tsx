@@ -3,17 +3,17 @@ import {
     ColumnCenterAlignedView,
     CoreText_Mid,
     TransparentButton
-} from "../styles/styles";
-import {ITask} from "../models/Task";
-import useActiveTask, {ActiveTaskData} from "../contexts/ActiveTaskContext";
-import RewardView from "./RewardView";
-import RequirementView from "./RequirementView";
-import useSkills, {SkillsData} from "../contexts/SkillsContext";
-import {backgroundAlt1Color, primaryTrimColor, redColor, textPrimaryColor} from "../styles/colors";
-import useInventory, {InventoryData} from "../contexts/InventoryContext";
+} from "../../styles/styles";
+import {ITask} from "../../models/Task";
+import useActiveTask, {ActiveTaskData} from "../../contexts/ActiveTaskContext";
+import RewardView from "../RewardView";
+import RequirementView from "../RequirementView";
+import useSkills, {SkillsData} from "../../contexts/SkillsContext";
+import {backgroundAlt1Color, primaryTrimColor, redColor, textPrimaryColor} from "../../styles/colors";
+import useInventory, {InventoryData} from "../../contexts/InventoryContext";
 import {styled} from "solid-styled-components";
-import {taskData} from "../loaders/TaskLoader";
-import {meetsRequirements} from "../models/Requirement";
+import {taskData} from "../../loaders/TaskLoader";
+import {meetsRequirements} from "../../models/Requirement";
 
 const StyledTaskView = styled.div`
     width: 32%;

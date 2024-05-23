@@ -8,7 +8,7 @@ import {
 } from "../styles/styles";
 import {ILocation} from "../models/Location";
 import locationBuilder from "../data/LocationBuilder";
-import TaskView from "./TaskView";
+import TaskView from "./task/TaskView";
 import SkillView from "./skills/SkillView";
 import {enemyData} from "../loaders/EnemyLoader";
 import useCombat, {CombatData} from "../contexts/combat/CombatContext";
@@ -22,9 +22,9 @@ interface ILocationViewProps {
 }
 
 const LocationView: Component<ILocationViewProps> = (props) => {
-    const [enemiesExpanded, setEnemiesExpanded] = createSignal(false);
-    const [tasksExpanded, setTasksExpanded] = createSignal(false);
-    const [vendorsExpanded, setVendorsExpanded] = createSignal(false);
+    const [enemiesExpanded, setEnemiesExpanded] = createSignal(true);
+    const [tasksExpanded, setTasksExpanded] = createSignal(true);
+    const [vendorsExpanded, setVendorsExpanded] = createSignal(true);
 
     const combat = useCombat() as CombatData;
     const tasks = useActiveTask() as ActiveTaskData;
@@ -33,7 +33,6 @@ const LocationView: Component<ILocationViewProps> = (props) => {
     return (
         <ColumnCenterAlignedView>
             <CoreText style={{"font-size": '50px'}}>{locationBuilder[map.location()].name}</CoreText>
-
 
             <ColumnCenterAlignedView>
                 <CoreButton onClick={() => setEnemiesExpanded(!enemiesExpanded())} style={{width: '100%'}}>Enemies</CoreButton>

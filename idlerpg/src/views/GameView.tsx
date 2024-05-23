@@ -6,6 +6,8 @@ import ContentView from "./ContentView";
 import {styled} from "solid-styled-components";
 import {backgroundColor} from "../styles/colors";
 import FooterPopupView from "./footer/FooterPopupView";
+import CombatUpdaterView from "./combat/CombatUpdaterView";
+import TaskUpdaterView from "./task/TaskUpdaterView";
 
 const StyledGameView = styled.div`
     position: fixed;
@@ -27,6 +29,8 @@ const GameView: Component<IGameViewProps> = (props) => {
 
     return (
         <StyledGameView>
+            <CombatUpdaterView/>
+            <TaskUpdaterView/>
             <FooterPopupView/>
             <TabView/>
             <ContentView/>
