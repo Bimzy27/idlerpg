@@ -234,10 +234,26 @@ const CombatView: Component<ICombatViewProps> = (props) => {
         <StyledCombatView>
             <StyledCombatChildView>
                 <CoreText>Player</CoreText>
-                <RowCenterAlignedView>
+                <RowCenterAlignedView style={{"align-items": "start"}}>
                     <ColumnCenterAlignedView>
                         <PlayerHealthbarView/>
                         <EquipmentView/>
+                        <ContentFitAltView>
+                            <ColumnCenterAlignedView>
+                                <CoreButton onClick={() => setIsExpanded(!isExpanded())}>Skills</CoreButton>
+                                <section>
+                                    <Collapse value={isExpanded()}>
+                                        <SkillView skillId={'attack'}/>
+                                        <SkillView skillId={'strength'}/>
+                                        <SkillView skillId={'defense'}/>
+                                        <SkillView skillId={'hitpoints'}/>
+                                        <SkillView skillId={'ranged'}/>
+                                        <SkillView skillId={'magic'}/>
+                                        <SkillView skillId={'prayer'}/>
+                                    </Collapse>
+                                </section>
+                            </ColumnCenterAlignedView>
+                        </ContentFitAltView>
                     </ColumnCenterAlignedView>
                     <ColumnCenterAlignedView>
                         <PlayerAttackBarView/>
@@ -246,27 +262,9 @@ const CombatView: Component<ICombatViewProps> = (props) => {
                         <PlayerStatsView/>
                     </ColumnCenterAlignedView>
                 </RowCenterAlignedView>
-
-                <ContentFitAltView>
-                    <ColumnCenterAlignedView>
-                        <CoreButton onClick={() => setIsExpanded(!isExpanded())}>Skills</CoreButton>
-                        <section>
-                            <Collapse value={isExpanded()}>
-                                <SkillView skillId={'attack'}/>
-                                <SkillView skillId={'strength'}/>
-                                <SkillView skillId={'defense'}/>
-                                <SkillView skillId={'hitpoints'}/>
-                                <SkillView skillId={'ranged'}/>
-                                <SkillView skillId={'magic'}/>
-                                <SkillView skillId={'prayer'}/>
-                            </Collapse>
-                        </section>
-                    </ColumnCenterAlignedView>
-                </ContentFitAltView>
-
             </StyledCombatChildView>
             <StyledCombatChildView>
-                <CoreText>Enemy</CoreText>
+                <CoreText>Enemy - {combat.enemy().name}</CoreText>
                 <EnemyView/>
                 <LootView/>
             </StyledCombatChildView>
