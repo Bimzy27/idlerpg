@@ -17,18 +17,37 @@ import useMap, {MapData} from "../contexts/MapContext";
 import VendorView from "./VendorView";
 import {Collapse} from "solid-collapse";
 import FightEnemyView from "./combat/FightEnemyView";
+import {taskData} from "../loaders/TaskLoader";
+import skillBuilder from "../data/SkillBuilder";
 
 interface ILocationViewProps {
 }
 
 const LocationView: Component<ILocationViewProps> = (props) => {
     const [enemiesExpanded, setEnemiesExpanded] = createSignal(true);
-    const [tasksExpanded, setTasksExpanded] = createSignal(true);
-    const [vendorsExpanded, setVendorsExpanded] = createSignal(true);
+    const [tasksExpanded, setTasksExpanded] = createSignal(false);
+    const [vendorsExpanded, setVendorsExpanded] = createSignal(false);
 
-    const combat = useCombat() as CombatData;
-    const tasks = useActiveTask() as ActiveTaskData;
     const map = useMap() as MapData;
+
+    function getSkillIds():string[]
+    {
+        let taskIds:string[] = []
+        taskIds = taskIds.concat(skillBuilder[map.location()].taskIds);
+        return taskIds;
+    }
+
+    function getTaskIds(skillId:string):string[]
+    {
+        let taskIds:string[] = []
+        for (const taskId in taskData) {
+            if (taskId.includes(skillId))
+            {
+
+            }
+        }
+        return taskIds;
+    }
 
     return (
         <ColumnCenterAlignedView>
@@ -48,24 +67,11 @@ const LocationView: Component<ILocationViewProps> = (props) => {
 
                 <CoreButton onClick={() => setTasksExpanded(!tasksExpanded())} style={{width: '100%'}}>Tasks</CoreButton>
                 <Collapse value={tasksExpanded()}>
-                    <RowCenterAlignedView>
-                        <ContentFitAltView style={{width: '50%'}}>
-                            <CoreText>Skills</CoreText>
-                            <ColumnCenterAlignedView style={{'grid-gap': '30px'}}>
-                                <For each={locationBuilder[map.location()].skillIds}>
-                                    {(id, index) => (<SkillView skillId={id}/>)}
-                                </For>
-                            </ColumnCenterAlignedView>
-                        </ContentFitAltView>
-                        <ContentFitAltView style={{width: '50%'}}>
-                            <CoreText>Tasks</CoreText>
-                            <ColumnCenterAlignedView style={{'grid-gap': '30px'}}>
-                                <For each={locationBuilder[map.location()].taskIds}>
-                                    {(id, index) => (<TaskView taskId={id}/>)}
-                                </For>
-                            </ColumnCenterAlignedView>
-                        </ContentFitAltView>
-                    </RowCenterAlignedView>
+                    <ColumnCenterAlignedView style={{'grid-gap': '30px'}}>
+                        <For each={getTaskIds()}>
+                            {(id, index) => (<TaskView taskId={id}/>)}
+                        </For>
+                    </ColumnCenterAlignedView>
                 </Collapse>
 
                 <CoreButton onClick={() => setVendorsExpanded(!vendorsExpanded())} style={{width: '100%'}}>Vendors</CoreButton>
