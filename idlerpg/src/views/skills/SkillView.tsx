@@ -3,11 +3,11 @@ import {
     ContentFitAltView,
     ContentFitView,
     CoreImage,
-    CoreText,
+    CoreText, CoreText_Mid,
 } from "../../styles/styles";
 import {getCurLevelXp, getLevel, getMaxLevel, getReqLevelXp, ISkillValue} from "../../models/Skill";
 import {styled} from "solid-styled-components";
-import useSkills from "../../contexts/SkillsContext";
+import useSkills, {SkillsData} from "../../contexts/SkillsContext";
 
 interface ISkillViewProps {
     skillId:string
@@ -24,21 +24,21 @@ const StyledSkillView = styled.div`
 `;
 
 const SkillView: Component<ISkillViewProps> = (props) => {
-    const skills = createMemo(() => useSkills(), []);
+    const skills = useSkills() as SkillsData;
 
     const curLvl = () =>
     {
-        const skillValue:ISkillValue = skills()?.skills.find(skill => skill.id === props.skillId) || {id: 'none', exp: 0};
+        const skillValue:ISkillValue = skills.skills.find(skill => skill.id === props.skillId) || {id: 'none', exp: 0};
         return getLevel(skillValue);
     };
     const curExp = () =>
     {
-        const skillValue:ISkillValue = skills()?.skills.find(skill => skill.id === props.skillId) || {id: 'none', exp: 0};
+        const skillValue:ISkillValue = skills.skills.find(skill => skill.id === props.skillId) || {id: 'none', exp: 0};
         return getCurLevelXp(skillValue);
     };
     const reqExp = () =>
     {
-        const skillValue:ISkillValue = skills()?.skills.find(skill => skill.id === props.skillId) || {id: 'none', exp: 0};
+        const skillValue:ISkillValue = skills.skills.find(skill => skill.id === props.skillId) || {id: 'none', exp: 0};
         return getReqLevelXp(skillValue);
     };
 

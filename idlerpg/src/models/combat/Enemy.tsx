@@ -2,6 +2,7 @@ import {ICombatStats, IDefenseStats} from "./CombatStats";
 import {IItemAmount} from "../Item";
 import {IDroptable} from "./Droptable";
 import {AttackType} from "./AttackStyle";
+import IId from "../Id";
 
 export interface IEnemy
 {
@@ -14,4 +15,9 @@ export interface IEnemy
     attackInterval:number;
     guaranteedDrops?:IItemAmount[];
     potentialDrops?:IDroptable;
+}
+
+export interface IEnemyAmount extends IId
+{
+    amount:number
 }

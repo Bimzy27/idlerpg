@@ -1,4 +1,4 @@
-import {CombatData} from "../../contexts/CombatContext";
+import {CombatData} from "../../contexts/combat/CombatContext";
 import mathUtil from "../../common/MathUtil";
 
 export interface IDroptable

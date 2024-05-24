@@ -1,7 +1,7 @@
 import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
 import {getHitpoints, ICombatStats} from "../models/combat/CombatStats";
 import useSkills, {SkillsData} from "./SkillsContext";
-import {CombatDamage} from "./CombatContext";
+import {CombatDamage} from "./combat/CombatContext";
 import {IFood} from "../models/Item";
 import useInventory, {InventoryData} from "./InventoryContext";
 import {itemData} from "../loaders/ItemLoader";

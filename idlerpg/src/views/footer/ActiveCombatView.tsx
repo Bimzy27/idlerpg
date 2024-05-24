@@ -1,36 +1,33 @@
 import {styled} from "solid-styled-components";
 import {highlightColor, primaryColor} from "../../styles/colors";
 import {Component, createSignal} from "solid-js";
-
-const TaskProgressBarContainer = styled.div`
-    width: 90%;
-    height: 35px;
-    background-color: ${highlightColor};
-    border-radius: 10px;
-    margin-bottom: 5px;
-`;
-
-const TaskProgressBar = styled.div<{transitionDuration: number}>`
-    height: 100%;
-    background-color: ${primaryColor};
-    transition: width ${props => props.transitionDuration}s linear;
-    border-radius: 10px;
-`;
+import {ColumnCenterAlignedView, CoreText, RowCenterAlignedView} from "../../styles/styles";
+import {EnemyHealthbarView, PlayerHealthbarView} from "../combat/HealthbarView";
+import {EnemyAttackBarView, PlayerAttackBarView} from "../combat/AttackBarView";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 
 interface IActiveCombatViewProps
 {
 }
 
 const ActiveCombatView : Component<IActiveCombatViewProps> = (props) => {
-    const [progress, setProgress] = createSignal<number>(0);
-    const [duration, setDuration] = createSignal<number>(0);
+    const combat = useCombat() as CombatData;
 
     return (
-        <div>
-            <TaskProgressBarContainer>
-                <TaskProgressBar transitionDuration={duration()} style={`width: ${progress()}%`}></TaskProgressBar>
-            </TaskProgressBarContainer>
-        </div>
+        <ColumnCenterAlignedView>
+            <RowCenterAlignedView>
+                <ColumnCenterAlignedView>
+                    <CoreText>Player</CoreText>
+                    <PlayerHealthbarView/>
+                    <PlayerAttackBarView/>
+                </ColumnCenterAlignedView>
+                <ColumnCenterAlignedView>
+                    <CoreText>Enemy - {combat.enemy().name}</CoreText>
+                    <EnemyHealthbarView/>
+                    <EnemyAttackBarView/>
+                </ColumnCenterAlignedView>
+            </RowCenterAlignedView>
+        </ColumnCenterAlignedView>
     );
 };
 

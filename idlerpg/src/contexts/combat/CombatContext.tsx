@@ -1,15 +1,16 @@
 import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
-import {IEnemy} from "../models/combat/Enemy";
+import {IEnemy} from "../../models/combat/Enemy";
 import {createStore} from "solid-js/store";
-import {IItemAmount} from "../models/Item";
-import useInventory, {InventoryData} from "./InventoryContext";
-import {AttackStyle, IAttackStyle} from "../models/combat/AttackStyle";
-import {ActiveTaskData} from "./ActiveTaskContext";
-import usePlayer, {PlayerData} from "./PlayerContext";
-import {getHitpoints} from "../models/combat/CombatStats";
-import {enemyData, getEnemyId} from "../loaders/EnemyLoader";
-import {taskData} from "../loaders/TaskLoader";
-import MathUtil from "../common/MathUtil";
+import {IItemAmount} from "../../models/Item";
+import useInventory, {InventoryData} from "../InventoryContext";
+import {AttackStyle, IAttackStyle} from "../../models/combat/AttackStyle";
+import {ActiveTaskData} from "../ActiveTaskContext";
+import usePlayer, {PlayerData} from "../PlayerContext";
+import {getHitpoints} from "../../models/combat/CombatStats";
+import {enemyData, getEnemyId} from "../../loaders/EnemyLoader";
+import {taskData} from "../../loaders/TaskLoader";
+import MathUtil from "../../common/MathUtil";
+import {EnemyDeathSubject} from "./EnemyDeath";
 
 export type CombatDamage = {died:boolean, damage:number}
 export type CombatData = {
@@ -32,6 +33,8 @@ export type CombatData = {
     setEnemyAttackProgress:(progress:number)=>void,
     enemyAttackDuration:Accessor<number>,
     setEnemyAttackDuration:(duration:number)=>void,
+
+    enemyDeathSubject:EnemyDeathSubject,
 };
 
 export const CombatContext = createContext<CombatData>();
@@ -39,6 +42,8 @@ export const CombatContext = createContext<CombatData>();
 interface ICombatProps {
     children?: JSX.Element; // Children elements
 }
+
+const enemyDeathSubject = new EnemyDeathSubject();
 
 export function CombatProvider(props:ICombatProps) {
     const [activeEnemy, setActiveEnemy] = createSignal(enemyData['none']);
@@ -84,7 +89,12 @@ export function CombatProvider(props:ICombatProps) {
             const finalDamage = damage > curHealth() ? curHealth() : damage;
             const newHealth = Math.max(0, curHealth() - finalDamage);
             setCurHealth(Math.floor(newHealth));
-            return { died: newHealth <= 0 && finalDamage > 0, damage: finalDamage };
+            const died = newHealth <= 0 && finalDamage > 0;
+            if (died)
+            {
+                combat.enemyDeathSubject.notifyEnemyDeath(getEnemyId(combat.enemy()))
+            }
+            return { died: died, damage: finalDamage };
         },
         loot: loot,
         addLoot: (lootItems:IItemAmount[])=>
@@ -106,6 +116,8 @@ export function CombatProvider(props:ICombatProps) {
         setEnemyAttackProgress:(progress:number)=>{setEnemyAttackProgress(MathUtil.clamp(progress, 0, 100))},
         enemyAttackDuration:enemyAttackDuration,
         setEnemyAttackDuration:(duration:number)=>{setEnemyAttackDuration(duration)},
+
+        enemyDeathSubject: enemyDeathSubject,
     };
 
     return (

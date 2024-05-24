@@ -1,5 +1,5 @@
 import {Component} from "solid-js";
-import useCombat, {CombatData} from "../../contexts/CombatContext";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import {ColumnCenterAlignedView, ContentFitAltView, CoreText} from "../../styles/styles";
 import usePlayer, {PlayerData} from "../../contexts/PlayerContext";
 import {

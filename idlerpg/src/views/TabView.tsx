@@ -5,13 +5,15 @@ import {
     CoreText,
     TransparentButton
 } from "../styles/styles";
-import useGameView from "../contexts/GameViewContext";
+import useGameView, {GameViewData} from "../contexts/GameViewContext";
 import {styled} from "solid-styled-components";
 import {backgroundAlt1Color, backgroundColor, transparentColor} from "../styles/colors";
 import CoinsView from "./CoinsView";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
 import Scrollbars from "solid-custom-scrollbars";
 import GameIconView, {IGameIconViewProps} from "./GameIconView";
+import useMap, {MapData} from "../contexts/MapContext";
+import locationBuilder from "../data/LocationBuilder";
 
 const StyledTabButtonInnerView = styled.div`
     display: flex;
@@ -46,6 +48,7 @@ interface ITabViewProps
 
 const TabView: Component<ITabViewProps> = (props) => {
     const inventory = useInventory() as InventoryData;
+    const map = useMap() as MapData;
 
     return (
         <StyledTabView>
@@ -58,7 +61,7 @@ const TabView: Component<ITabViewProps> = (props) => {
                     <CoinsView amount={inventory.coins()}/>
                 </TabButton>
                 <TabButton viewName={'quests'}></TabButton>
-                <TabButton viewName={'location'}></TabButton>
+                <TabButton viewName={'location'} textOverride={locationBuilder[map.location()].name}></TabButton>
                 <TabButton viewName={'map'}></TabButton>
                 <CoreText>Combat</CoreText>
                 <TabButton viewName={'attack'} viewOverride={'combat'}></TabButton>
@@ -86,6 +89,7 @@ interface ITabButtonProps extends IGameIconViewProps
 {
     viewName:string;
     viewOverride?:string;
+    textOverride?:string;
     children?: JSX.Element;
 }
 
@@ -98,7 +102,7 @@ const TabButton = (props:ITabButtonProps) => {
         <StyledTabButtonView>
             <TransparentButton onClick={() => handleButtonClick()}>
                 <StyledTabButtonInnerView>
-                    <GameIconView viewName={props.viewName}/>
+                    <GameIconView viewName={props.viewName} textOverride={props.textOverride}/>
                     {props.children}
                 </StyledTabButtonInnerView>
             </TransparentButton>

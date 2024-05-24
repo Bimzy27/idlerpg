@@ -5,6 +5,7 @@ import stringUtil from "../common/StringUtil";
 export interface IGameIconViewProps
 {
     viewName:string;
+    textOverride?:string;
     fontSize?:number;
 }
 
@@ -16,7 +17,7 @@ const GameIconView = (props:IGameIconViewProps) => {
     return (
         <RowCenterAlignedView>
             <CoreImage src={`/assets/${getImagePath()}.png`} alt="NO IMG" width={35} height={35}></CoreImage>
-            <CoreText style={{"padding-left": '6px', "font-size": `${props.fontSize ? props.fontSize : 20}px`}}>{stringUtil.capitalizeFirstLetter(props.viewName)}</CoreText>
+            <CoreText style={{"padding-left": '6px', "font-size": `${props.fontSize ? props.fontSize : 20}px`}}>{stringUtil.capitalizeFirstLetter(props.textOverride ? props.textOverride : props.viewName)}</CoreText>
         </RowCenterAlignedView>
     );
 };

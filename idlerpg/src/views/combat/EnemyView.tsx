@@ -1,5 +1,5 @@
 import {Component, createEffect} from "solid-js";
-import useCombat, {CombatData} from "../../contexts/CombatContext";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import {
     ColumnCenterAlignedView,
     ContentFitAltView,
@@ -21,12 +21,11 @@ const EnemyView: Component<IEnemyViewProps> = (props) => {
 
     return (
         <ColumnCenterAlignedView>
-            <CoreText>{combat.enemy().name}</CoreText>
-            <RowCenterAlignedView>
+            <RowCenterAlignedView style={{"align-items": "start"}}>
                 <EnemyHealthbarView/>
                 <EnemyAttackBarView/>
             </RowCenterAlignedView>
-            <RowCenterAlignedView>
+            <RowCenterAlignedView style={{"align-items": "start"}}>
                 <ContentFitAltView style={{width: '100%'}}>
                     <CoreImage src={`/assets/enemies/${getEnemyId(combat.enemy())}.png`} alt="NO IMG" width={300} height={300} style={{"margin-top": '50px'}}/>
                 </ContentFitAltView>

@@ -2,6 +2,7 @@ import {IRequirement} from "./Requirement";
 import {IReward} from "./Reward";
 import {IItemAmount} from "./Item";
 import IId from "./Id";
+import {IEnemyAmount} from "./combat/Enemy";
 
 export interface IQuest
 {
@@ -17,21 +18,20 @@ export interface IQuest
 export interface IQuestProgress extends IId
 {
     progress:number;
+    stepProgress:number;
 }
 
 export interface IQuestStep
 {
 }
 
-export class MonsterQuestStep implements IQuestStep
+export class EnemyQuestStep implements IQuestStep
 {
-    monsterId:string = '';
-    amount:number = 0;
+    enemyAmount:IEnemyAmount;
 
-    constructor(monsterId:string, amount:number)
+    constructor(enemyAmount:IEnemyAmount)
     {
-        this.monsterId = monsterId;
-        this.amount = amount;
+        this.enemyAmount = enemyAmount;
     }
 }
 
@@ -44,3 +44,5 @@ export class ItemQuestStep implements IQuestStep
         this.itemAmount = itemAmount;
     }
 }
+
+export const questProgressOffset = 3;

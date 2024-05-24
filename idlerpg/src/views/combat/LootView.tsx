@@ -1,5 +1,5 @@
 import {Component, For} from "solid-js";
-import useCombat, {CombatData} from "../../contexts/CombatContext";
+import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import {ColumnCenterAlignedView, ContentFitAltView, CoreButton, CoreText, TransparentButton} from "../../styles/styles";
 import {styled} from "solid-styled-components";
 import {backgroundAlt1Color, primaryTrimColor} from "../../styles/colors";
