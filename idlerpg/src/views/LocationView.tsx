@@ -32,22 +32,23 @@ const LocationView: Component<ILocationViewProps> = (props) => {
 
     function getSkillIds():string[]
     {
-        let taskIds:string[] = []
-        taskIds = taskIds.concat(skillBuilder[map.location()].taskIds);
-        return taskIds;
-    }
-
-    function getTaskIds(skillId:string):string[]
-    {
-        let taskIds:string[] = []
-        for (const taskId in taskData) {
-            if (taskId.includes(skillId))
+        const location = locationBuilder[map.location()];
+        let skillIds:string[] = []
+        skillIds = skillIds.concat(location.skillIds);
+        for (const taskId of location.taskIds)
+        {
+            for (const skillId in skillBuilder)
             {
-
+                if (!skillIds.includes(skillId) && taskId.includes(skillId))
+                {
+                    skillIds.push(skillId);
+                }
             }
         }
-        return taskIds;
+        return skillIds;
     }
+
+    console.log('Skills: --- ' + getSkillIds());
 
     return (
         <ColumnCenterAlignedView>
@@ -67,12 +68,14 @@ const LocationView: Component<ILocationViewProps> = (props) => {
 
                 <CoreButton onClick={() => setTasksExpanded(!tasksExpanded())} style={{width: '100%'}}>Tasks</CoreButton>
                 <Collapse value={tasksExpanded()}>
-                    <ColumnCenterAlignedView style={{'grid-gap': '30px'}}>
-                        <For each={getTaskIds()}>
-                            {(id, index) => (<TaskView taskId={id}/>)}
-                        </For>
-                    </ColumnCenterAlignedView>
+
                 </Collapse>
+
+                <ColumnCenterAlignedView style={{'grid-gap': '10px'}}>
+                    <For each={getSkillIds()}>
+                        {(skillId, index) => (<SkillTasksView skillId={skillId}/>)}
+                    </For>
+                </ColumnCenterAlignedView>
 
                 <CoreButton onClick={() => setVendorsExpanded(!vendorsExpanded())} style={{width: '100%'}}>Vendors</CoreButton>
                 <Collapse value={vendorsExpanded()}>
@@ -89,5 +92,53 @@ const LocationView: Component<ILocationViewProps> = (props) => {
     );
 };
 
+interface ISkillTasksViewProps
+{
+    skillId:string
+}
+
+const SkillTasksView: Component<ISkillTasksViewProps> = (props) => {
+    const [skillExpanded, setSkillExpanded] = createSignal(false);
+
+    const map = useMap() as MapData;
+
+    function getTaskIds():string[]
+    {
+        const location = locationBuilder[map.location()];
+        let taskIds:string[] = []
+        if (location.skillIds.includes(props.skillId))
+        {
+            for (const taskId in taskData) {
+                if (taskId.includes(props.skillId))
+                {
+                    taskIds.push(taskId);
+                }
+            }
+        }
+        else
+        {
+            for (const taskId of location.taskIds) {
+                if (taskId.includes(props.skillId))
+                {
+                    taskIds.push(taskId);
+                }
+            }
+        }
+        return taskIds;
+    }
+
+    return (
+        <ColumnCenterAlignedView>
+            <CoreButton onClick={() => setSkillExpanded(!skillExpanded())} style={{width: '100%'}}>{props.skillId}</CoreButton>
+            <Collapse value={skillExpanded()}>
+                <ColumnCenterAlignedView style={{'grid-gap': '30px'}}>
+                    <For each={getTaskIds()}>
+                        {(id, index) => (<TaskView taskId={id}/>)}
+                    </For>
+                </ColumnCenterAlignedView>
+            </Collapse>
+        </ColumnCenterAlignedView>
+    );
+};
 
 export default LocationView;
