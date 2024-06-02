@@ -5,6 +5,7 @@ import {ColumnCenterAlignedView, CoreText, RowCenterAlignedView} from "../../sty
 import {EnemyHealthbarView, PlayerHealthbarView} from "../combat/HealthbarView";
 import {EnemyAttackBarView, PlayerAttackBarView} from "../combat/AttackBarView";
 import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
+import ReturnButton from "../common/ReturnButton";
 
 interface IActiveCombatViewProps
 {
@@ -26,6 +27,7 @@ const ActiveCombatView : Component<IActiveCombatViewProps> = (props) => {
                     <EnemyHealthbarView/>
                     <EnemyAttackBarView/>
                 </ColumnCenterAlignedView>
+                {/*<ReturnButton onClick={()=>{}}/>*/}
             </RowCenterAlignedView>
         </ColumnCenterAlignedView>
     );

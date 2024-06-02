@@ -50,7 +50,7 @@ interface ITasksViewProps {
 const TasksView: Component<ITasksViewProps> = (props) => {
 
     return (
-        <div style={{ display: "grid", "grid-template-columns": "repeat(3, 1fr)", "padding-top": '10px', "grid-gap": '20px' }}>
+        <div style={{ display: "grid", "grid-template-columns": "repeat(3, 1fr)", "padding-top": '10px', "grid-gap": '20px', width: '100%', "box-sizing": "border-box" }}>
             <For each={props.taskIds}>
                 {(id, index) => (<TaskView taskId={id}/>)}
             </For>

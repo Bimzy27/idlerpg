@@ -61,7 +61,7 @@ const LocationView : Component<ILocationViewProps> = (props) => {
                 </CollapseView>
 
                 <CollapseView text={'Tasks'} defaultExpanded={false}>
-                    <div style={{"margin-left": '80px'}}>
+                    <div style={{"margin-left": '50px'}}>
                         <ColumnCenterAlignedView style={{'grid-gap': '10px'}}>
                             <For each={getSkillIds()}>
                                 {(skillId, index) => (<SkillTasksView skillId={skillId}/>)}
