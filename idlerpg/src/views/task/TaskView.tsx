@@ -16,7 +16,7 @@ import {taskData} from "../../loaders/TaskLoader";
 import {meetsRequirements} from "../../models/Requirement";
 
 const StyledTaskView = styled.div`
-    width: fit-content;
+    width: 100%;
     height: fit-content;
     background-color: ${backgroundAlt1Color};
     border-radius: 5px;
@@ -46,31 +46,30 @@ const TaskView: Component<ITaskViewProps> = (props) => {
             <TransparentButton onClick={()=>{activeTask?.setTask(task)}} style={{display:"flex", "flex-direction": "row", "align-items": "center"}}>
                 <ColumnCenterAlignedView>
                     <TaskText color={meetsRequirements(task.requirements, skills, inventory) ? textPrimaryColor : redColor}>{task.name}</TaskText>
-                    {/*<TaskImage taskId={props.taskId} width={80} height={80}/>*/}
-                    <CoreText_Mid>Interval: {task.intervalSeconds} seconds</CoreText_Mid>
+                    <RowCenterAlignedView>
+                        <CoreText_Mid>Interval: {task.intervalSeconds} seconds</CoreText_Mid>
+                        <ContentFitAltView>
+                            <ColumnCenterAlignedView>
+                                <CoreText_Mid>Requirements:</CoreText_Mid>
+                                <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
+                                    <For each={task.requirements}>
+                                        {(requirement, index) => (<RequirementView requirement={requirement}/>)}
+                                    </For>
+                                </div>
+                            </ColumnCenterAlignedView>
+                        </ContentFitAltView>
+                        <ContentFitAltView>
+                            <ColumnCenterAlignedView>
+                                <CoreText_Mid>Rewards:</CoreText_Mid>
+                                <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
+                                    <For each={task.rewards}>
+                                        {(reward, index) => (<RewardView reward={reward}/>)}
+                                    </For>
+                                </div>
+                            </ColumnCenterAlignedView>
+                        </ContentFitAltView>
+                    </RowCenterAlignedView>
                 </ColumnCenterAlignedView>
-                <RowCenterAlignedView>
-                    <ContentFitAltView>
-                        <ColumnCenterAlignedView>
-                            <CoreText_Mid>Requirements:</CoreText_Mid>
-                            <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
-                                <For each={task.requirements}>
-                                    {(requirement, index) => (<RequirementView requirement={requirement}/>)}
-                                </For>
-                            </div>
-                        </ColumnCenterAlignedView>
-                    </ContentFitAltView>
-                    <ContentFitAltView>
-                        <ColumnCenterAlignedView>
-                            <CoreText_Mid>Rewards:</CoreText_Mid>
-                            <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
-                                <For each={task.rewards}>
-                                    {(reward, index) => (<RewardView reward={reward}/>)}
-                                </For>
-                            </div>
-                        </ColumnCenterAlignedView>
-                    </ContentFitAltView>
-                </RowCenterAlignedView>
             </TransparentButton>
         </StyledTaskView>
     );

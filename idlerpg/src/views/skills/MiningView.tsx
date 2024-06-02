@@ -5,7 +5,7 @@ interface IMiningViewProps
 {
 }
 
-const MiningView: Component<IMiningViewProps> = (props) => {
+const MiningView : Component<IMiningViewProps> = (props) => {
     return (
         <div>
             <SkillContentView

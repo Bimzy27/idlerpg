@@ -2,6 +2,7 @@ import {Component, createSignal, For, JSX, Show} from "solid-js";
 import SkillView from "./SkillView";
 import TaskView from "../task/TaskView";
 import {ColumnCenterAlignedView, CoreButton, RowCenterAlignedView} from "../../styles/styles";
+import CollapseTabbedView from "../common/CollapseTabbedView";
 
 interface ISkillNavigationTab
 {
@@ -16,43 +17,44 @@ interface ISkillContentViewProps {
 }
 
 const SkillContentView: Component<ISkillContentViewProps> = (props) => {
-    const [activeTab, setActiveTab] = createSignal('');
+    const tabs = props.navigationTabs.map((tab) => ({
+        name: tab.title,
+        children: (
+            <TasksView taskIds={tab.taskIds}/>
+        ),
+    }));
 
     return (
         <ColumnCenterAlignedView style={{"grid-gap": '50px'}}>
             <SkillView skillId={props.skillId}/>
 
             <div style={{width: '100%', height: "fit-content", display: "flex", "align-items": "flex-start", "flex-wrap": "wrap", "grid-gap": '20px'}}>
-
                 <Show when={props.navigationTabs.length === 1}>
-                    <For each={props.navigationTabs[0].taskIds}>
-                        {(id, index) => (<TaskView taskId={id}/>)}
-                    </For>
+                    <TasksView taskIds={props.navigationTabs[0].taskIds}/>
                 </Show>
 
-                {/*TODO implement tabs here with buttons*/}
                 <Show when={props.navigationTabs.length > 1}>
-                    <RowCenterAlignedView>
-                        <For each={props.navigationTabs}>
-                            {(skillNavTab:ISkillNavigationTab, index) => (<CoreButton onClick={()=>setActiveTab(skillNavTab.title)}>{skillNavTab.title}</CoreButton>)}
-                        </For>
-                    </RowCenterAlignedView>
-
-                    <For each={props.navigationTabs}>
-                        {(skillNavTab:ISkillNavigationTab, index) => (
-                            <Show when={activeTab() === skillNavTab.title}>
-                                <For each={props.navigationTabs[index()].taskIds}>
-                                    {(id, index) => (<TaskView taskId={id}/>)}
-                                </For>
-                            </Show>
-                        )}
-                    </For>
-
+                    <CollapseTabbedView tabs={tabs}/>
                 </Show>
             </div>
 
             {props.children}
         </ColumnCenterAlignedView>
+    );
+};
+
+interface ITasksViewProps {
+    taskIds:string[]
+}
+
+const TasksView: Component<ITasksViewProps> = (props) => {
+
+    return (
+        <div style={{ display: "grid", "grid-template-columns": "repeat(3, 1fr)", "padding-top": '10px', "grid-gap": '20px' }}>
+            <For each={props.taskIds}>
+                {(id, index) => (<TaskView taskId={id}/>)}
+            </For>
+        </div>
     );
 };
 
