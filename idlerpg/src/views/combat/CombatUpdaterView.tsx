@@ -34,7 +34,7 @@ const CombatUpdaterView: Component<ICombatUpdaterViewProps> = (props) => {
     function startEnemyRespawn()
     {
         const prevEnemyId = getEnemyId(combat.enemy());
-        combat.setEnemy(enemyData['none'], tasks);
+        combat.setEnemy(enemyData['respawn'], tasks);
         respawnTimeoutId = setTimeout(()=>
         {
             if (getTaskId(tasks.task()) === 'none')
@@ -55,7 +55,7 @@ const CombatUpdaterView: Component<ICombatUpdaterViewProps> = (props) => {
             }
             playerTimeoutIds.length = 0;
 
-            if (getEnemyId(combat.enemy()) === 'none')
+            if (getEnemyId(combat.enemy()) === 'none' || getEnemyId(combat.enemy()) === 'respawn')
             {
                 return;
             }
@@ -127,7 +127,7 @@ const CombatUpdaterView: Component<ICombatUpdaterViewProps> = (props) => {
             }
             enemyTimeoutIds.length = 0;
 
-            if (getEnemyId(combat.enemy()) === 'none')
+            if (getEnemyId(combat.enemy()) === 'none' || getEnemyId(combat.enemy()) === 'respawn')
             {
                 return;
             }

@@ -1,11 +1,11 @@
-import {styled} from "solid-styled-components";
-import {highlightColor, primaryColor} from "../../styles/colors";
-import {Component, createSignal} from "solid-js";
-import {ColumnCenterAlignedView, CoreText, RowCenterAlignedView} from "../../styles/styles";
+import {Component} from "solid-js";
+import {ColumnCenterAlignedView, CoreImage, RowCenterAlignedView} from "../../styles/styles";
 import {EnemyHealthbarView, PlayerHealthbarView} from "../combat/HealthbarView";
 import {EnemyAttackBarView, PlayerAttackBarView} from "../combat/AttackBarView";
 import useCombat, {CombatData} from "../../contexts/combat/CombatContext";
 import ReturnButton from "../common/ReturnButton";
+import useGameView, {GameViewData} from "../../contexts/GameViewContext";
+import {getEnemyId} from "../../loaders/EnemyLoader";
 
 interface IActiveCombatViewProps
 {
@@ -13,21 +13,22 @@ interface IActiveCombatViewProps
 
 const ActiveCombatView : Component<IActiveCombatViewProps> = (props) => {
     const combat = useCombat() as CombatData;
+    const gameView = useGameView() as GameViewData;
 
     return (
         <ColumnCenterAlignedView>
             <RowCenterAlignedView>
                 <ColumnCenterAlignedView>
-                    <CoreText>Player</CoreText>
                     <PlayerHealthbarView/>
                     <PlayerAttackBarView/>
                 </ColumnCenterAlignedView>
+                <CoreImage src={'assets/combat.png'} width={80} height={80}/>
                 <ColumnCenterAlignedView>
-                    <CoreText>Enemy - {combat.enemy().name}</CoreText>
                     <EnemyHealthbarView/>
                     <EnemyAttackBarView/>
                 </ColumnCenterAlignedView>
-                {/*<ReturnButton onClick={()=>{}}/>*/}
+                <CoreImage src={`/assets/enemies/${getEnemyId(combat.enemy())}.png`} alt="NO IMG" width={80} height={80} style={{}}/>
+                <ReturnButton onReturn={()=>{ gameView.setActiveView('combat') }}/>
             </RowCenterAlignedView>
         </ColumnCenterAlignedView>
     );

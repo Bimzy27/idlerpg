@@ -1,4 +1,4 @@
-import {Component, createSignal, For, JSX} from "solid-js";
+import {Component, createSignal, For, JSX, Show} from "solid-js";
 import {
     ColumnCenterAlignedView,
     ContentFitAltView,
@@ -52,31 +52,38 @@ const LocationView : Component<ILocationViewProps> = (props) => {
             <CoreText style={{"font-size": '50px'}}>{locationBuilder[map.location()].name}</CoreText>
 
             <ColumnCenterAlignedView>
-                <CollapseView text={'Enemies'} defaultExpanded={true}>
-                    <RowCenterAlignedView style={{'grid-gap': '30px', padding: '20px'}}>
-                        <For each={locationBuilder[map.location()].enemyIds}>
-                            {(enemyId, index) => (<FightEnemyView enemyId={enemyId}/>)}
-                        </For>
-                    </RowCenterAlignedView>
-                </CollapseView>
 
-                <CollapseView text={'Tasks'} defaultExpanded={false}>
-                    <div style={{"margin-left": '50px'}}>
-                        <ColumnCenterAlignedView style={{'grid-gap': '10px'}}>
-                            <For each={getSkillIds()}>
-                                {(skillId, index) => (<SkillTasksView skillId={skillId}/>)}
+                <Show when={locationBuilder[map.location()].enemyIds.length > 0}>
+                    <CollapseView text={'Enemies'} defaultExpanded={true}>
+                        <RowCenterAlignedView style={{'grid-gap': '30px', padding: '20px'}}>
+                            <For each={locationBuilder[map.location()].enemyIds}>
+                                {(enemyId, index) => (<FightEnemyView enemyId={enemyId}/>)}
                             </For>
-                        </ColumnCenterAlignedView>
-                    </div>
-                </CollapseView>
+                        </RowCenterAlignedView>
+                    </CollapseView>
+                </Show>
 
-                <CollapseView text={'Vendors'} defaultExpanded={false}>
-                    <RowCenterAlignedView style={{'grid-gap': '30px'}}>
-                        <For each={locationBuilder[map.location()].vendorIds}>
-                            {(id, index) => (<VendorView id={id}/>)}
-                        </For>
-                    </RowCenterAlignedView>
-                </CollapseView>
+                <Show when={getSkillIds().length > 0}>
+                    <CollapseView text={'Tasks'} defaultExpanded={false}>
+                        <div style={{"margin-left": '50px'}}>
+                            <ColumnCenterAlignedView style={{'grid-gap': '10px'}}>
+                                <For each={getSkillIds()}>
+                                    {(skillId, index) => (<SkillTasksView skillId={skillId}/>)}
+                                </For>
+                            </ColumnCenterAlignedView>
+                        </div>
+                    </CollapseView>
+                </Show>
+
+                <Show when={locationBuilder[map.location()].vendorIds.length > 0}>
+                    <CollapseView text={'Vendors'} defaultExpanded={false}>
+                        <RowCenterAlignedView style={{'grid-gap': '30px'}}>
+                            <For each={locationBuilder[map.location()].vendorIds}>
+                                {(id, index) => (<VendorView id={id}/>)}
+                            </For>
+                        </RowCenterAlignedView>
+                    </CollapseView>
+                </Show>
             </ColumnCenterAlignedView>
         </ColumnCenterAlignedView>
     );

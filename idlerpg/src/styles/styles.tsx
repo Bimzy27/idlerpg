@@ -40,8 +40,8 @@ export const TransparentButton = styled.button`
 `;
 
 export const CoreImage = styled.img<{width:number, height:number}>`
-    width: '${props => props.width}';
-    height: '${props => props.height}';
+    width: '${props => props.width}px';
+    height: '${props => props.height}px';
     object-fit: contain;
 `;
 

@@ -3,6 +3,8 @@ import {Accessor, createContext, createSignal, JSX, useContext} from "solid-js";
 export type MapData = {
     location:Accessor<string>,
     setLocation:(locationId:string)=>void
+    selectedLocation:Accessor<string>,
+    setSelectedLocation:(locationId:string)=>void
 };
 
 export const MapContext = createContext<MapData>();
@@ -13,12 +15,18 @@ interface MapProps {
 
 export function MapProvider(props:MapProps) {
     const [location, setLocation] = createSignal('location_lumberton');
+    const [selectedLocation, setSelectedLocation] = createSignal('none');
 
     const loc:MapData = {
         location: location,
         setLocation:(locationId:string)=>
         {
             setLocation(locationId);
+        },
+        selectedLocation: selectedLocation,
+        setSelectedLocation:(locationId:string)=>
+        {
+            setSelectedLocation(locationId);
         }
     };
 

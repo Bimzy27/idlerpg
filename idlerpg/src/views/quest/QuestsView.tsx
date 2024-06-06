@@ -21,6 +21,7 @@ import useSkills, {SkillsData} from "../../contexts/SkillsContext";
 import RequirementView from "../RequirementView";
 import RewardView from "../RewardView";
 import {meetsRequirements} from "../../models/Requirement";
+import CollapseView from "../common/CollapseView";
 
 interface IQuestsViewProps
 {
@@ -38,7 +39,9 @@ const QuestsView: Component<IQuestsViewProps> = (props) => {
             </ContentFitAltView>
             <For each={questIds}>
                 {(questId, index) => (
-                    <QuestView questId={questId} quest={questBuilder[questId]}/>
+                    <CollapseView text={`${questBuilder[questId].name}`} defaultExpanded={false}>
+                        <QuestView questId={questId} quest={questBuilder[questId]}/>
+                    </CollapseView>
                 )}
             </For>
         </ColumnCenterAlignedView>

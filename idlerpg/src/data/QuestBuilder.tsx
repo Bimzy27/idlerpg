@@ -40,13 +40,15 @@ const questBuilder:IQuestBuilder =
                     [
                         new SkillRequirement({id: 'attack', exp: getExpFromLevel(10)}),
                         new SkillRequirement({id: 'strength', exp: getExpFromLevel(10)}),
+                        new SkillRequirement({id: 'defense', exp: getExpFromLevel(10)}),
                     ],
                 questPoints: 1,
                 rewards:
                     [
-                        new SkillReward({id: 'attack', exp: 2500}),
-                        new SkillReward({id: 'strength', exp: 2500}),
-                        new ItemReward({id: 'mithril_scimitar', amount: 1}),
+                        new SkillReward({id: 'attack', exp: 5000}),
+                        new SkillReward({id: 'strength', exp: 10000}),
+                        new SkillReward({id: 'defense', exp: 5000}),
+                        new ItemReward({id: 'adamant_scimitar', amount: 1}),
                     ],
                 startLocation:'location_faldomere',
                 endLocation:'location_faldomere',
@@ -54,7 +56,9 @@ const questBuilder:IQuestBuilder =
                     [
                         new ItemQuestStep({id: 'bronze_dagger', amount: 50}),
                         new ItemQuestStep({id: 'bronze_scimitar', amount: 50}),
-                        new EnemyQuestStep({id: 'goblin', amount: 100}),
+                        new EnemyQuestStep({id: 'goblin', amount: 50}),
+                        new EnemyQuestStep({id: 'goblin_archer', amount: 100}),
+                        new EnemyQuestStep({id: 'goblin_mage', amount: 150}),
                     ],
             },
         'quest_fishermans_curse':
