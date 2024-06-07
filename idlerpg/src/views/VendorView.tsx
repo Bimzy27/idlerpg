@@ -2,8 +2,8 @@ import {Component, For} from "solid-js";
 import {ColumnCenterAlignedView, ContentFitAltView, ContentFitView, CoreButton, CoreText} from "../styles/styles";
 import vendorBuilder from "../data/VendorBuilder";
 import {IVendorItem} from "../models/Vendor";
-import ItemView from "./ItemView";
 import useInventory, {InventoryData} from "../contexts/InventoryContext";
+import ItemView from "./ItemView";
 
 interface IVendorViewProps {
     id:string

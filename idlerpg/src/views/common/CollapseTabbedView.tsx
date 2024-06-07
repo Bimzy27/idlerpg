@@ -1,5 +1,5 @@
 import {Component, createSignal, For, JSX, Show} from "solid-js";
-import {backgroundAlt2Color} from "../../styles/colors";
+import {backgroundAlt1Color, backgroundAlt2Color} from "../../styles/colors";
 import {CoreText, RowCenterAlignedView, TransparentButton} from "../../styles/styles";
 
 interface ITabElement
@@ -19,7 +19,7 @@ const CollapseTabbedView : Component<ICollapseTabbedViewProps> = (props) => {
 
     return (
         <div style={{width: '100%', height: "fit-content"}}>
-            <div style={{"background-color": `${backgroundAlt2Color}`, width: '100%', height: '60px'}}>
+            <div style={{"background-color": `${backgroundAlt1Color}`, width: '100%', height: '60px'}}>
                 <For each={props.tabs}>
                     {(tabElement:ITabElement, index) => (
                         <TransparentButton onClick={()=>setActiveTab(tabElement.name)} style={{width: 'fit-content', "margin-left": '10px', "margin-right": '10px'}}>

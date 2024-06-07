@@ -1,8 +1,7 @@
-import {Component, Show} from "solid-js";
+import {Component} from "solid-js";
 import {CoreImage, CoreText} from "../styles/styles";
 import {styled} from "solid-styled-components";
 import {backgroundAlt2Color, primaryTrimColor} from "../styles/colors";
-import {ISkillValue} from "../models/Skill";
 
 const StyledExpView = styled.div`
     width: 60px;
@@ -15,19 +14,20 @@ const StyledExpView = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 `;
 
-interface IExpViewProps extends ISkillValue {
+interface IIntervalViewProps {
+    interval:number;
 }
 
-const ExpView: Component<IExpViewProps> = (props) => {
+const IntervalView: Component<IIntervalViewProps> = (props) => {
     return (
         <StyledExpView style={{position: 'relative'}}>
-            <CoreText style={{"font-size": '32px', "color": 'red'}}>XP</CoreText>
-            <CoreText style={{'position': 'absolute', 'top': '40%', 'z-index': 1, 'text-align': 'center', "font-size": '18px'}}>{props.exp}</CoreText>
+            <CoreImage src={`/assets/ui/interval.png`} alt="NO IMG" width={40} height={40}></CoreImage>
+            <CoreText style={{'position': 'absolute', 'top': '35%', 'z-index': 1, 'text-align': 'center', "font-size": '20px'}}>{props.interval}s</CoreText>
         </StyledExpView>
     );
 };
 
-export default ExpView;
+export default IntervalView;

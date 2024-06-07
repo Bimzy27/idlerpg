@@ -1,4 +1,3 @@
-import {IReward, ItemReward} from "../models/Reward";
 import {Component, Show} from "solid-js";
 import {IRequirement, ItemRequirement, SkillRequirement} from "../models/Requirement";
 import LevelView from "./LevelView";

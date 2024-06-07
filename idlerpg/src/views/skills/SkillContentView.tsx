@@ -3,6 +3,7 @@ import SkillView from "./SkillView";
 import TaskView from "../task/TaskView";
 import {ColumnCenterAlignedView, CoreButton, RowCenterAlignedView} from "../../styles/styles";
 import CollapseTabbedView from "../common/CollapseTabbedView";
+import MultiTaskView from "../task/MultiTaskView";
 
 interface ISkillNavigationTab
 {
@@ -20,7 +21,7 @@ const SkillContentView: Component<ISkillContentViewProps> = (props) => {
     const tabs = props.navigationTabs.map((tab) => ({
         name: tab.title,
         children: (
-            <TasksView taskIds={tab.taskIds}/>
+            <MultiTaskView taskIds={tab.taskIds}/>
         ),
     }));
 
@@ -30,7 +31,7 @@ const SkillContentView: Component<ISkillContentViewProps> = (props) => {
 
             <div style={{width: '100%', height: "fit-content", display: "flex", "align-items": "flex-start", "flex-wrap": "wrap", "grid-gap": '20px'}}>
                 <Show when={props.navigationTabs.length === 1}>
-                    <TasksView taskIds={props.navigationTabs[0].taskIds}/>
+                    <MultiTaskView taskIds={props.navigationTabs[0].taskIds}/>
                 </Show>
 
                 <Show when={props.navigationTabs.length > 1}>

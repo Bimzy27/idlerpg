@@ -1,6 +1,6 @@
-import {Component, createSignal, For, JSX} from "solid-js";
+import {Component, createSignal, For, JSX, Show} from "solid-js";
 import {
-    ColumnCenterAlignedView, ContentFitAltView,
+    ColumnCenterAlignedView, ContentFitAltView, CoreImage, CoreText,
     CoreText_Mid, RowCenterAlignedView,
     TransparentButton
 } from "../../styles/styles";
@@ -13,7 +13,9 @@ import {backgroundAlt1Color, primaryTrimColor, redColor, textPrimaryColor} from 
 import useInventory, {InventoryData} from "../../contexts/InventoryContext";
 import {styled} from "solid-styled-components";
 import {taskData} from "../../loaders/TaskLoader";
-import {meetsRequirements} from "../../models/Requirement";
+import {meetsRequirements, meetsSkillRequirements, SkillRequirement} from "../../models/Requirement";
+import IntervalView from "../IntervalView";
+import {getLevel} from "../../models/Skill";
 
 const StyledTaskView = styled.div`
     width: 100%;
@@ -39,36 +41,51 @@ const TaskView: Component<ITaskViewProps> = (props) => {
     const activeTask = useActiveTask() as ActiveTaskData;
     const task:ITask = taskData[props.taskId];
     const skills = useSkills() as SkillsData;
-    const inventory = useInventory() as InventoryData;
+
+    const filteredRequirements = task.requirements.filter(
+        (requirement) => !(requirement instanceof SkillRequirement)
+    );
+
+    const firstSkillRequirement:SkillRequirement = task.requirements.find(
+        (requirement) => requirement instanceof SkillRequirement) as SkillRequirement;
 
     return (
         <StyledTaskView>
-            <TransparentButton onClick={()=>{activeTask?.setTask(task)}} style={{display:"flex", "flex-direction": "row", "align-items": "center"}}>
+            <TransparentButton onClick={()=>{activeTask.setTask(task)}} style={{display:"flex", "flex-direction": "row", "align-items": "center"}}>
                 <ColumnCenterAlignedView>
-                    <TaskText color={meetsRequirements(task.requirements, skills, inventory) ? textPrimaryColor : redColor}>{task.name}</TaskText>
-                    <RowCenterAlignedView>
-                        <CoreText_Mid>Interval: {task.intervalSeconds} seconds</CoreText_Mid>
-                        <ContentFitAltView>
-                            <ColumnCenterAlignedView>
-                                <CoreText_Mid>Requirements:</CoreText_Mid>
-                                <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
-                                    <For each={task.requirements}>
-                                        {(requirement, index) => (<RequirementView requirement={requirement}/>)}
-                                    </For>
-                                </div>
-                            </ColumnCenterAlignedView>
-                        </ContentFitAltView>
-                        <ContentFitAltView>
-                            <ColumnCenterAlignedView>
-                                <CoreText_Mid>Rewards:</CoreText_Mid>
-                                <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
-                                    <For each={task.rewards}>
-                                        {(reward, index) => (<RewardView reward={reward}/>)}
-                                    </For>
-                                </div>
-                            </ColumnCenterAlignedView>
-                        </ContentFitAltView>
-                    </RowCenterAlignedView>
+                    <Show when={meetsSkillRequirements(task.requirements, skills)}>
+                        <TaskText color={textPrimaryColor}>{task.name}</TaskText>
+                        <RowCenterAlignedView>
+                            <IntervalView interval={task.intervalSeconds}/>
+                            <ContentFitAltView>
+                                <ColumnCenterAlignedView>
+                                    <CoreText_Mid>Requirements:</CoreText_Mid>
+                                    <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
+                                        <For each={filteredRequirements}>
+                                            {(requirement, index) => (<RequirementView requirement={requirement}/>)}
+                                        </For>
+                                    </div>
+                                </ColumnCenterAlignedView>
+                            </ContentFitAltView>
+                            <ContentFitAltView>
+                                <ColumnCenterAlignedView>
+                                    <CoreText_Mid>Rewards:</CoreText_Mid>
+                                    <div style={{display:"flex", "align-items": "center", "flex-direction": "row", "grid-gap": '20px' }}>
+                                        <For each={task.rewards}>
+                                            {(reward, index) => (<RewardView reward={reward}/>)}
+                                        </For>
+                                    </div>
+                                </ColumnCenterAlignedView>
+                            </ContentFitAltView>
+                        </RowCenterAlignedView>
+                    </Show>
+                    <Show when={!meetsSkillRequirements(task.requirements, skills)}>
+                        <CoreText style={{display: "flex", "align-items": "center", "text-align": "center"}}>
+                            Unlocked at
+                            <CoreImage src={`/assets/skills/${firstSkillRequirement.skillValue.id}.png`} alt="NO IMG" width={40} height={40} style={{margin: '10px'}}/>
+                             level {getLevel(firstSkillRequirement.skillValue)}
+                        </CoreText>
+                    </Show>
                 </ColumnCenterAlignedView>
             </TransparentButton>
         </StyledTaskView>

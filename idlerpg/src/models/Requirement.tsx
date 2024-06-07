@@ -83,3 +83,18 @@ export function meetsRequirements(requirements:IRequirement[], skills:SkillsData
 
     return true;
 }
+
+export function meetsSkillRequirements(requirements:IRequirement[], skills:SkillsData):boolean
+{
+    for (let i = 0; i < requirements.length; i++) {
+        if (requirements[i] instanceof SkillRequirement)
+        {
+            if (requirements[i].meetsRequirement(skills) === false)
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
